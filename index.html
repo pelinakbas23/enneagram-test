@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OANDA Enneagram Testi</title>
+
+  <!-- Yazı tipi -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="main-wrapper">
+    <main>
+      <!-- GİRİŞ EKRANI -->
+      <section id="intro-screen" class="intro-card">
+        <div class="intro-header-row">
+          <img src="enneagram-logo.png" alt="OANDA Enneagram" class="intro-logo" />
+          <div>
+            <h2 class="intro-title">OANDA Enneagram Kişilik Testi</h2>
+            <p class="intro-subtitle">Bilgilendirme Formu</p>
+          </div>
+        </div>
+
+        <p class="intro-text">
+          <strong>OANDA Enneagram Kişilik Testi’ne hoş geldiniz.</strong><br><br>
+          Bu test 20 sorudan oluşur ve her soruda 9 farklı ifade yer alır.<br>
+          Lütfen her soruda kendinize en uygun bulduğunuz 3 ifadeyi seçin ve bunları
+          1. Tercih, 2. Tercih, 3. Tercih şeklinde önceliklendirin.<br><br>
+          Test yaklaşık 20 dakika sürer.<br><br>
+          Enneagram değerlendirmesinin güvenilir olması için testi dikkat dağıtıcı
+          unsurlardan uzak, sakin ve mümkünse tek başınıza olduğunuz bir ortamda
+          çözmeniz önerilir. Konsantrasyonu veya duygu durumunu etkileyen maddeler
+          (örneğin alkol, bazı ilaçlar vb.) sonuçların geçerliliğini etkileyebilir.
+        </p>
+
+        <p class="intro-text">
+          Lütfen testi başlatmadan önce bilgilendirme metnini okuduğunuzu onaylayın
+          ve iletişim bilgilerinizi girin.
+        </p>
+
+        <label class="intro-consent-row">
+          <input type="checkbox" id="intro-consent" />
+          <span>Bilgilendirme metnini okudum ve kabul ediyorum.</span>
+        </label>
+
+        <div class="intro-form-row">
+  <div class="intro-field">
+    <label for="first-name">Ad</label>
+    <input type="text" id="first-name" placeholder="Adınız" />
+  </div>
+  <div class="intro-field">
+    <label for="last-name">Soyad</label>
+    <input type="text" id="last-name" placeholder="Soyadınız" />
+  </div>
+  <div class="intro-field">
+    <label for="email">E-posta</label>
+    <input type="email" id="email" placeholder="ornek@mail.com" />
+  </div>
+
+  <!-- 🔥 BURAYA KOD ALANINI EKLİYORSUN -->
+  <div class="intro-field">
+    <label for="access-code">Test Kodu</label>
+    <input type="text" id="access-code" placeholder="Örn: OANDA-4F92-AXT1" />
+  </div>
+</div>
+
+        <button id="start-test-btn" class="primary-btn" disabled>
+          Teste Başla
+        </button>
+      </section>
+
+      <!-- TEST + SONUÇ SAYFASI (aynı section içinde) -->
+      <section id="test-section">
+        <div id="test-container"></div>
+
+        <div id="navigation">
+          <button id="prev-btn" class="nav-btn">Önceki</button>
+          <button id="next-btn" class="nav-btn">Sonraki</button>
+          <button id="submit-btn" class="nav-btn">Sonuçları Göster</button>
+        </div>
+
+        <!-- Sonuçlar burada gösterilecek, başta gizli -->
+        <div id="result" class="result-card" style="display:none;"></div>
+      </section>
+    </main>
+  </div>
+
+  <footer></footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
