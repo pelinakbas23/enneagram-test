@@ -76,6 +76,17 @@
 
       <!-- TEST + SONUÇ SAYFASI (aynı section içinde) -->
       <section id="test-section">
+        <!-- PROGRESS -->
+        <div class="progress-wrap" aria-label="Test ilerleme durumu">
+          <div class="progress-top">
+            <span id="progress-text">Soru 1 / 20</span>
+            <span id="progress-percent">0%</span>
+          </div>
+          <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div id="progress-fill" class="progress-fill"></div>
+          </div>
+        </div>
+
         <div id="test-container"></div>
 
         <div id="navigation">
