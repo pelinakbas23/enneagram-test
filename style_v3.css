@@ -761,3 +761,33 @@ footer {
     max-width: 100% !important;
   }
 }
+
+/* Mobilde ana beyaz kartı genişlet */
+@media (max-width: 640px) {
+  .main-wrapper,
+  .page-wrapper,
+  .landing-wrapper {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .intro-card,
+  .landing-card,
+  .main-card {
+    padding: 18px 16px !important;   /* iç beyaz alan büyür */
+    border-radius: 14px;
+  }
+
+  /* Üst başlık alanı daha ferah olsun */
+  .landing-title,
+  h1.landing-title {
+    margin-bottom: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  .intro-card,
+  .landing-card {
+    max-width: 100% !important;
+  }
+}
