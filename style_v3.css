@@ -728,3 +728,36 @@ footer {
     transform: none !important;              /* ✅ rotate vb. varsa iptal */
   }
 }
+
+/* Mobilde üst alanı tek kolona düşür + başlığı sola hizala */
+@media (max-width: 640px) {
+  /* Üstte logo + başlık yan yana duruyorsa (flex/grid) tek kolona düşür */
+  .landing-header,
+  .landing-top,
+  .intro-header,
+  .hero,
+  .intro-card.landing-card {
+    display: block !important;
+  }
+
+  /* Başlığı sola yasla ve normal genişlikte göster */
+  .landing-title,
+  h1.landing-title,
+  .page-title {
+    text-align: left !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 12px 0 0 !important;
+    font-size: 26px;
+    line-height: 1.15;
+  }
+
+  /* Eğer başlık hala dar bir sağ kutuda kalıyorsa bu kutuyu tam genişlik yap */
+  .landing-title-wrap,
+  .title-wrap,
+  .header-right,
+  .hero-right {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
