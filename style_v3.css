@@ -710,28 +710,21 @@ footer {
 
 /* Mobilde başlık taşmasını düzelt */
 @media (max-width: 640px) {
-  /* Başlığın bulunduğu üst alan iki sütunsa tek sütuna düşsün */
-  .landing-header,
-  .landing-top,
-  .intro-header,
-  .hero {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-  }
-
-  /* Başlık metni */
   .landing-title,
   h1.landing-title,
   .page-title {
     width: 100%;
     text-align: center;
-    font-size: 28px;      /* gerekirse 24'e çek */
+    font-size: 23px;
     line-height: 1.15;
     margin: 8px 0 0;
-    white-space: normal;  /* tek satıra zorlama olmasın */
-    overflow-wrap: anywhere; /* taşarsa kır */
-    word-break: normal;
+
+    white-space: normal;
+    overflow-wrap: normal;          /* ✅ harf harf kırma yok */
+    word-break: keep-all;           /* ✅ kelimeyi bölme */
+    hyphens: none;
+
+    writing-mode: horizontal-tb !important; /* ✅ dikey yazıyı engelle */
+    transform: none !important;              /* ✅ rotate vb. varsa iptal */
   }
 }
