@@ -1377,3 +1377,366 @@ p, li, span, a, label{
   font-size: 14px;
   color: #666;
 }
+/* --- Feedback / Yorum Formu --- */
+.feedback-form{
+  margin-top: 14px;
+  max-width: 520px;
+  display: grid;
+  gap: 12px;
+}
+
+.feedback-field{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.feedback-field label{
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.feedback-field input,
+.feedback-field textarea{
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #dbe3ef;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.feedback-row{
+  display: grid;
+  gap: 8px;
+}
+
+.feedback-check{
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 14px;
+  color: #243447;
+}
+
+.feedback-preview{
+  font-size: 13px;
+  color: #6b7a8f;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.feedback-field input:focus,
+.feedback-field textarea:focus{
+  outline: none;
+  border-color: #05435f;
+  box-shadow: 0 0 0 2px rgba(5,67,95,0.15);
+}
+/* --- Testimonials Slider --- */
+.t-slider{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:12px;
+}
+
+.t-card{
+  flex:1;
+  border:1px solid #e5e7eb;
+  border-radius:16px;
+  background:#fff;
+  padding:16px;
+  min-height:140px;
+  box-shadow:0 10px 24px rgba(4,40,70,0.08);
+}
+
+.t-quote{
+  font-size:14px;
+  line-height:1.65;
+  color:#243447;
+}
+
+.t-who{
+  margin-top:10px;
+  font-size:13px;
+  font-weight:600;
+  color:#6b7a8f;
+}
+
+.t-meta{
+  margin-top:8px;
+  font-size:12px;
+  color:#9aa7b8;
+}
+
+.t-nav{
+  border:none;
+  background:#fff;
+  width:40px;
+  height:40px;
+  border-radius:999px;
+  cursor:pointer;
+  font-size:24px;
+  box-shadow:0 6px 16px rgba(0,0,0,0.08);
+}
+
+@media (max-width: 640px){
+  .t-nav{ width:36px; height:36px; }
+}
+.testimonials-intro {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.testimonials-intro h2 {
+  font-weight: 600;
+}
+
+.testimonials-intro p {
+  color: #666;
+  margin-top: 8px;
+}
+.t-empty { 
+  text-align: center; 
+}
+.testimonials-intro{
+  text-align:center;
+  margin: 10px 0 18px;  /* slider’a daha iyi oturur */
+}
+
+.testimonials-intro h3{
+  margin: 0 0 6px;
+  font-weight: 600;
+}
+
+.testimonials-intro p{
+  margin: 0;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+.testimonials-intro{
+  text-align: left;          /* ⬅️ kritik değişiklik */
+  margin: 8px 0 20px;
+  max-width: 520px;          /* satırlar çok uzamasın */
+}
+
+.testimonials-intro h3{
+  margin: 0 0 6px;
+  font-weight: 500;
+  font-size: 1rem;           /* başlıktan küçük */
+}
+
+.testimonials-intro p{
+  margin: 0;
+  color: #6b7280;
+  line-height: 1.45;
+  font-size: 0.9rem;
+}
+.feedback-intro{
+  margin: 8px 0 18px;
+  max-width: 520px;
+}
+
+.feedback-intro p{
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: #6b7280;
+}
+
+.feedback-intro strong{
+  font-weight: 500;
+  color: #111827;
+}
+
+.about-text{
+  max-width: 640px;        /* ⬅️ daha geniş */
+  margin: 0;               /* ⬅️ ortalama yok */
+  color: #374151;          /* sayfanın ana metin rengi */
+}
+
+.about-text p{
+  margin: 0 0 12px;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.about-text ul{
+  margin: 8px 0 0 18px;
+  padding: 0;
+}
+
+.about-text li{
+  margin-bottom: 6px;
+}
+.about-section .about-text {
+  max-width: 640px;
+  align-self: flex-start;
+}
+
+/* Biz kimiz? bölümünü ortalamadan çıkar, tam genişlik kullan */
+.about-section{
+  width: 100%;
+  max-width: none;          /* varsa daraltmayı kaldır */
+}
+
+.about-section .about-text{
+  width: 100%;
+  max-width: none;          /* en kritik satır */
+  margin: 0;                /* auto merkezlemeyi kaldır */
+}
+
+/* Eğer parent flex ile ortalıyorsa bunu kır */
+.about-section{
+  align-items: stretch;
+}
+.about-section .about-text{
+  align-self: stretch;
+}
+.landing-h2--sub {
+  margin-top: 24px;
+  font-size: inherit;     /* ⬅️ ana başlıkla aynı */
+  font-weight: inherit;   /* ⬅️ aynı ağırlık */
+}
+.belief-line {
+  margin-top: 14px;
+  font-size: 1.05rem;
+  line-height: 1.4;
+  opacity: 0.95;
+}
+.info-title { margin-bottom: 14px; }
+.help-list{
+  margin: 10px 0 14px;
+  padding-left: 18px;
+}
+.help-list li{
+  margin: 6px 0;        /* daha sıkı */
+  line-height: 1.45;
+}
+.help-list{ list-style: none; padding-left: 0; }
+.help-list li{
+  position: relative;
+  padding-left: 18px;
+}
+.help-list li::before{
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: .6;
+}
+.belief-line{
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.03); /* renk vermeden premium görünür */
+  border: 1px solid rgba(0,0,0,0.06);
+}
+.belief-line strong{
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+.conviction-sub{
+  opacity: .85;
+  margin-top: 6px;
+}
+.conviction-callout{
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.04);
+  border: 1px solid rgba(0,0,0,0.06);
+  font-weight: 500;
+  line-height: 1.45;
+}
+/* 1) Expectation reset kutusu */
+.expectation-box{
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.03);
+  border: 1px solid rgba(0,0,0,0.06);
+  max-width: 760px;
+}
+.expectation-box p{ margin: 0 0 6px 0; }
+.expectation-box p:last-child{ margin-bottom: 0; }
+
+.muted{ opacity: .85; }
+
+/* 2) Problem reframe cümlesi */
+.reframe-line{
+  margin-top: 10px;
+  padding-left: 2px;
+  font-weight: 500;
+  line-height: 1.45;
+  max-width: 760px;
+}
+
+/* 3) Decision / permission to decide */
+.decision-line{
+  margin: 10px 0 8px;
+  opacity: .9;
+  line-height: 1.4;
+  max-width: 760px;
+}
+
+.summary-payment-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 24px;
+  margin-top: 32px;
+  align-items: start;
+}
+
+/* Mobil */
+@media (max-width: 768px) {
+  .summary-payment-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* Mini Before / After – grup */
+.mini-ba-group{
+  display: grid;
+  gap: 14px;
+  margin: 18px 0 10px;
+}
+
+/* Tek tek kart */
+.mini-ba-icons{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.mini-ba-icons .mini-ba-col{
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.04);
+}
+
+.mini-ba-head{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  opacity: 0.85;
+}
+
+.mini-ba-head i{
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.mini-ba-icons p{
+  margin: 0;
+  line-height: 1.45;
+}
+
+@media (max-width: 640px){
+  .mini-ba-icons{
+    grid-template-columns: 1fr;
+  }
+}
