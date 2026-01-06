@@ -296,7 +296,7 @@
 
   <div class="info-body">
     <p>
-      OANDA Enneagram, alanında uzman bir akademisyen ve
+      OANDA Enneagram, alanında uzman akademisyenlerden ve
 uzman bilişsel psikoloğun yer aldığı bir ekip tarafından,
 bilimsel bilgiyle gerçek hayatı buluşturmak amacıyla oluşturuldu.
 
@@ -562,15 +562,19 @@ submitBtn.addEventListener("click", async () => {
     return;
   }
 
+  const isAnonymous = !!anonEl.checked;
+
   const payload = {
-    name: (nameEl.value || "").trim(),
-    is_anonymous: anonEl.checked,
+    name: isAnonymous ? "Anonim" : (nameEl.value || "").trim(),
+    is_anonymous: isAnonymous,
     comment
   };
 
   try {
     submitBtn.disabled = true;
     submitBtn.textContent = "Gönderiliyor…";
+    // fetch burada devam...
+
 
     //const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9paW13cGZjeGFlY25uc2RxenNxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc1NDg5NTUsImV4cCI6MjA4MzEyNDk1NX0.vL7qboO0ay5-86DxoEZsn-85S0JIqob9ihGoo9-I3h4";
 
@@ -610,8 +614,9 @@ const r = await fetch(SUBMIT_ENDPOINT, {
 updatePreview();
 })();
 
+
 /* ------------------------------
-   TESTIMONIALS SLIDER
+   TESTIMONIALS SLIDER (FIXED)
 ------------------------------ */
 (() => {
   const quoteEl = document.getElementById("t-quote");
@@ -622,68 +627,66 @@ updatePreview();
 
   if (!quoteEl || !whoEl || !countEl || !nextBtn || !prevBtn) return;
 
- const ENDPOINT =
-  "https://oiimwpfcxaecnnsdqzsq.supabase.co/functions/v1/testimonials";
+  const ENDPOINT =
+    "https://oiimwpfcxaecnnsdqzsq.supabase.co/functions/v1/testimonials";
 
   let items = [];
   let idx = 0;
   let timer = null;
 
-  function toInitials(name){
+  function escapeHtml(str = "") {
+    return String(str)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function toInitials(name) {
     const cleaned = (name || "").trim().replace(/\s+/g, " ");
     if (!cleaned) return "Anonim";
     const parts = cleaned.split(" ").filter(Boolean);
     return parts.slice(0, 3).map(p => p[0].toUpperCase() + ".").join(" ");
   }
 
-  function render(){
-  if (!items.length) {
-    slideEl.innerHTML = `
-      <div class="t-card t-empty">
-        <div class="t-comment">Henüz yayınlanmış yorum yok.</div>
-      </div>
-    `;
-    // boşken okları ve sayacı gizle
-    prevBtn.style.display = "none";
-    nextBtn.style.display = "none";
-    countEl.style.display = "none";
-    return;
+  function render() {
+    if (!items.length) {
+      quoteEl.textContent = "Henüz yayınlanmış yorum yok.";
+      whoEl.textContent = "—";
+      countEl.textContent = "";
+      prevBtn.style.display = "none";
+      nextBtn.style.display = "none";
+      return;
+    }
+
+    prevBtn.style.display = "";
+    nextBtn.style.display = "";
+
+    const it = items[idx];
+    quoteEl.textContent = `“${it.comment || ""}”`;
+    whoEl.textContent = `— ${toInitials(it.name)}`;
+    countEl.textContent = `${idx + 1} / ${items.length}`;
   }
 
-  // doluyken göster
-  prevBtn.style.display = "";
-  nextBtn.style.display = "";
-  countEl.style.display = "";
-
-  const it = items[idx];
-  const display = toInitials(it.name);
-  slideEl.innerHTML = `
-    <div class="t-card">
-      <div class="t-comment">“${escapeHtml(it.comment)}”</div>
-      <div class="t-name">— ${escapeHtml(display)}</div>
-    </div>
-  `;
-  countEl.textContent = `${idx+1}/${items.length}`;
-}
-
-  function next(){
+  function next() {
     if (!items.length) return;
     idx = (idx + 1) % items.length;
     render();
   }
 
-  function prev(){
+  function prev() {
     if (!items.length) return;
     idx = (idx - 1 + items.length) % items.length;
     render();
   }
 
-  function startAuto(){
+  function startAuto() {
     stopAuto();
     timer = setInterval(next, 6000);
   }
 
-  function stopAuto(){
+  function stopAuto() {
     if (timer) clearInterval(timer);
     timer = null;
   }
@@ -692,19 +695,25 @@ updatePreview();
   prevBtn.addEventListener("click", () => { prev(); startAuto(); });
 
   fetch(ENDPOINT)
-    .then(r => r.json())
-    .then(d => {
-  items = d.data || [];
-  idx = 0;
-  render();
-  startAuto();
-})
-
-    .catch(() => {
+    .then(async (r) => {
+      if (!r.ok) {
+        const t = await r.text().catch(() => "");
+        throw new Error(`HTTP ${r.status} ${t}`);
+      }
+      return r.json();
+    })
+    .then((d) => {
+      items = d.data || [];
+      idx = 0;
+      render();
+      startAuto();
+    })
+    .catch((e) => {
+      console.error("Testimonials fetch error:", e);
       quoteEl.textContent = "Yorumlar şu an yüklenemedi.";
       whoEl.textContent = "—";
       countEl.textContent = "";
     });
+    
 })();
-
 </script>
