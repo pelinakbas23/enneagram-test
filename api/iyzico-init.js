@@ -78,7 +78,7 @@ const request = {
     name: "OANDA Enneagram Testi",
     category1: "Psikoloji",
     itemType: Iyzipay.BASKET_ITEM_TYPE.VIRTUAL,
-    price: "299.00"
+    price: "150.00"
   }]
 };
 
