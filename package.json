@@ -1,0 +1,24 @@
+{
+  "name": "enneagram-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pelinakbas23/enneagram-test.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/pelinakbas23/enneagram-test/issues"
+  },
+  "homepage": "https://github.com/pelinakbas23/enneagram-test#readme",
+  "dependencies": {
+    "iyzipay": "^2.0.64"
+  }
+}
