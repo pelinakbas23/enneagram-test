@@ -38,6 +38,13 @@
             <div class="landing-note">
               <strong>Not:</strong> Kod gelmesi birkaç dakika sürebilir. Spam/Junk klasörünü de kontrol edin.
             </div>
+<div class="feedback-field" style="margin-top:12px;">
+  <label for="pay-email">E-posta (test kodunu buraya göndereceğiz)</label>
+  <input id="pay-email" type="email" placeholder="ornek@mail.com" autocomplete="email" required>
+  <div class="landing-muted" style="margin-top:6px;">
+    Sadece test kodu ve rapor için kullanılır.
+  </div>
+</div>
 
             <div class="landing-actions">
   <a class="btn-primary" id="startPayment" href="#" aria-disabled="true">Ödemeye Geç (iyzico)</a>
@@ -93,5 +100,55 @@
 
     <div class="footer-small">© 2025 OANDA Enneagram. Tüm hakları saklıdır.</div>
   </footer>
+  <script>
+(() => {
+  const emailEl = document.getElementById("pay-email");
+  const btn = document.getElementById("startPayment");
+
+  if (!emailEl || !btn) return;
+
+  function setEnabled(enabled){
+    btn.setAttribute("aria-disabled", enabled ? "false" : "true");
+    btn.style.pointerEvents = enabled ? "auto" : "none";
+    btn.style.opacity = enabled ? "1" : "0.6";
+  }
+
+  setEnabled(false);
+
+  emailEl.addEventListener("input", () => {
+    setEnabled(emailEl.checkValidity());
+  });
+
+  btn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    const email = (emailEl.value || "").trim();
+    if (!emailEl.checkValidity()) {
+      alert("Lütfen geçerli bir e-posta gir.");
+      return;
+    }
+
+    btn.textContent = "Ödeme sayfası açılıyor…";
+    setEnabled(false);
+
+    try {
+      const r = await fetch("/api/iyzico-init", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || "Ödeme başlatılamadı");
+
+      // iyzico ödeme sayfasına git
+      window.location.href = data.paymentPageUrl;
+    } catch (err) {
+      alert("Bir hata oldu: " + err.message);
+      btn.textContent = "Ödemeye Geç (iyzico)";
+      setEnabled(true);
+    }
+  });
+})();
+</script>
 </body>
 </html>
