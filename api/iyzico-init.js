@@ -35,7 +35,7 @@ module.exports = async (req, res) => {
     const iyzipay = new Iyzipay({
       apiKey,
       secretKey,
-      uri: "https://sandbox-api.iyzipay.com"
+      uri: "https://api.iyzipay.com"
     });
 
     const request = {
