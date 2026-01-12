@@ -1,61 +1,80 @@
-import Iyzipay from "iyzipay";
+module.exports = async (req, res) => {
+  try {
+    if (req.method !== "POST") {
+      return res.status(405).json({ error: "Method not allowed" });
+    }
 
-const iyzipay = new Iyzipay({
-  apiKey: process.env.IYZICO_API_KEY,
-  secretKey: process.env.IYZICO_SECRET_KEY,
-  uri: "https://sandbox-api.iyzipay.com" // canlıya geçince değişecek
-});
+    // Vercel bazen body'yi string geçirir — iki ihtimali de karşılıyoruz
+    const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
+    const email = (body.email || "").trim();
+    if (!email) return res.status(400).json({ error: "Email gerekli" });
 
-export default function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
+    const apiKey = process.env.IYZICO_API_KEY;
+    const secretKey = process.env.IYZICO_SECRET_KEY;
 
-  const { email } = req.body || {};
-  if (!email) {
-    return res.status(400).json({ error: "Email gerekli" });
-  }
+    // Env kontrol (değerleri ASLA göstermiyoruz)
+    if (!apiKey || !secretKey) {
+      return res.status(500).json({
+        error: "IYZICO env eksik",
+        hasApiKey: !!apiKey,
+        hasSecretKey: !!secretKey
+      });
+    }
 
-  const request = {
-    locale: Iyzipay.LOCALE.TR,
-    conversationId: "oanda-" + Date.now(),
-    price: "299.00",
-    paidPrice: "299.00",
-    currency: Iyzipay.CURRENCY.TRY,
-    basketId: "ENNEAGRAM_TEST",
-    paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
+    // iyzipay yüklü mü?
+    let Iyzipay;
+    try {
+      Iyzipay = require("iyzipay");
+    } catch (e) {
+      return res.status(500).json({
+        error: "iyzipay module missing",
+        detail: String(e?.message || e)
+      });
+    }
 
-    // ŞİMDİLİK callback koyma; sadece ödeme sayfasına gideceğiz.
-    // callbackUrl: "https://senin-domain.com/api/iyzico-callback",
+    const iyzipay = new Iyzipay({
+      apiKey,
+      secretKey,
+      uri: "https://sandbox-api.iyzipay.com"
+    });
 
-    buyer: {
-      id: "USER",
-      name: "OANDA",
-      surname: "Customer",
-      email,
-      identityNumber: "11111111111",
-      registrationAddress: "Türkiye",
-      ip: req.headers["x-forwarded-for"] || "127.0.0.1",
-      city: "Istanbul",
-      country: "Turkey"
-    },
-
-    basketItems: [
-      {
+    const request = {
+      locale: Iyzipay.LOCALE.TR,
+      conversationId: "oanda-" + Date.now(),
+      price: "299.00",
+      paidPrice: "299.00",
+      currency: Iyzipay.CURRENCY.TRY,
+      basketId: "ENNEAGRAM_TEST",
+      paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
+      buyer: {
+        id: "USER",
+        name: "OANDA",
+        surname: "Customer",
+        email,
+        identityNumber: "11111111111",
+        registrationAddress: "Türkiye",
+        ip: req.headers["x-forwarded-for"] || "127.0.0.1",
+        city: "Istanbul",
+        country: "Turkey"
+      },
+      basketItems: [{
         id: "ENNEAGRAM",
         name: "OANDA Enneagram Testi",
         category1: "Psikoloji",
         itemType: Iyzipay.BASKET_ITEM_TYPE.VIRTUAL,
         price: "299.00"
-      }
-    ]
-  };
+      }]
+    };
 
-  iyzipay.checkoutFormInitialize.create(request, (err, result) => {
-    if (err) return res.status(500).json({ error: err.message });
-    if (result?.status !== "success") {
-      return res.status(400).json({ error: result?.errorMessage || "iyzico hata" });
-    }
-    return res.json({ paymentPageUrl: result.paymentPageUrl });
-  });
-}
+    iyzipay.checkoutFormInitialize.create(request, (err, result) => {
+      if (err) return res.status(500).json({ error: "iyzipay err", detail: err.message });
+      if (result?.status !== "success") {
+        return res.status(400).json({ error: "iyzico error", detail: result?.errorMessage || "unknown" });
+      }
+      return res.status(200).json({ paymentPageUrl: result.paymentPageUrl });
+    });
+
+  } catch (e) {
+    return res.status(500).json({ error: "server error", detail: String(e?.message || e) });
+  }
+};
