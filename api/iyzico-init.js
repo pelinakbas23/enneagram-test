@@ -37,34 +37,43 @@ module.exports = async (req, res) => {
       secretKey,
       uri: "https://api.iyzipay.com"
     });
+    const baseUrl =
+  (process.env.PUBLIC_BASE_URL || "").replace(/\/$/, "") ||
+  `https://${req.headers.host}`;
 
-    const request = {
-      locale: Iyzipay.LOCALE.TR,
-      conversationId: "oanda-" + Date.now(),
-      price: "299.00",
-      paidPrice: "299.00",
-      currency: Iyzipay.CURRENCY.TRY,
-      basketId: "ENNEAGRAM_TEST",
-      paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
-      buyer: {
-        id: "USER",
-        name: "OANDA",
-        surname: "Customer",
-        email,
-        identityNumber: "11111111111",
-        registrationAddress: "Türkiye",
-        ip: req.headers["x-forwarded-for"] || "127.0.0.1",
-        city: "Istanbul",
-        country: "Turkey"
-      },
-      basketItems: [{
-        id: "ENNEAGRAM",
-        name: "OANDA Enneagram Testi",
-        category1: "Psikoloji",
-        itemType: Iyzipay.BASKET_ITEM_TYPE.VIRTUAL,
-        price: "299.00"
-      }]
-    };
+const request = {
+  locale: Iyzipay.LOCALE.TR,
+  conversationId: "oanda-" + Date.now(),
+
+  // ✅ ZORUNLU (iyzico bunu istiyor)
+  callbackUrl: `${baseUrl}/api/iyzico-callback`,
+
+  price: "299.00",
+  paidPrice: "299.00",
+  currency: Iyzipay.CURRENCY.TRY,
+  basketId: "ENNEAGRAM_TEST",
+  paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
+
+  buyer: {
+    id: "USER",
+    name: "OANDA",
+    surname: "Customer",
+    email,
+    identityNumber: "11111111111",
+    registrationAddress: "Türkiye",
+    ip: req.headers["x-forwarded-for"] || "127.0.0.1",
+    city: "Istanbul",
+    country: "Turkey"
+  },
+
+  basketItems: [{
+    id: "ENNEAGRAM",
+    name: "OANDA Enneagram Testi",
+    category1: "Psikoloji",
+    itemType: Iyzipay.BASKET_ITEM_TYPE.VIRTUAL,
+    price: "299.00"
+  }]
+};
 
     iyzipay.checkoutFormInitialize.create(request, (err, result) => {
       if (err) return res.status(500).json({ error: "iyzipay err", detail: err.message });
