@@ -48,8 +48,8 @@ const request = {
   // ✅ ZORUNLU (iyzico bunu istiyor)
   callbackUrl: `${baseUrl}/api/iyzico-callback`,
 
-  price: "150.00",
-  paidPrice: "150.00",
+  price: "1.00",
+  paidPrice: "1.00",
   currency: Iyzipay.CURRENCY.TRY,
   basketId: "ENNEAGRAM_TEST",
   paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
@@ -78,7 +78,7 @@ const request = {
     name: "OANDA Enneagram Testi",
     category1: "Psikoloji",
     itemType: Iyzipay.BASKET_ITEM_TYPE.VIRTUAL,
-    price: "150.00"
+    price: "1.00"
   }]
 };
 
