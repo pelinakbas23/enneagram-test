@@ -150,5 +150,14 @@
   });
 })();
 </script>
+<script>
+(() => {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("success") === "1") {
+    alert("Ödeme alındı ✅ Test kodun e-posta adresine gönderilecek.");
+  }
+})();
+</script>
+
 </body>
 </html>
