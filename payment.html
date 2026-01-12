@@ -138,7 +138,7 @@
       });
 
       const data = await r.json();
-      if (!r.ok) throw new Error(data.error || "Ödeme başlatılamadı");
+      if (!r.ok) throw new Error((data.detail ? `${data.error}: ${data.detail}` : data.error) || "Ödeme başlatılamadı");
 
       // iyzico ödeme sayfasına git
       window.location.href = data.paymentPageUrl;
