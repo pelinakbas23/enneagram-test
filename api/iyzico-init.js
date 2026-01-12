@@ -48,8 +48,8 @@ const request = {
   // ✅ ZORUNLU (iyzico bunu istiyor)
   callbackUrl: `${baseUrl}/api/iyzico-callback`,
 
-  price: "299.00",
-  paidPrice: "299.00",
+  price: "150.00",
+  paidPrice: "150.00",
   currency: Iyzipay.CURRENCY.TRY,
   basketId: "ENNEAGRAM_TEST",
   paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
@@ -64,6 +64,13 @@ const request = {
     ip: req.headers["x-forwarded-for"] || "127.0.0.1",
     city: "Istanbul",
     country: "Turkey"
+  },
+  billingAddress: {
+    contactName: "OANDA Customer",
+    city: "Istanbul",
+    country: "Turkey",
+    address: "Türkiye",
+    zipCode: "34000"
   },
 
   basketItems: [{
