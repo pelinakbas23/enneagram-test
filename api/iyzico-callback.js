@@ -48,13 +48,28 @@ module.exports = async (req, res) => {
       return res.end();
     }
 
-    // 4) Email al
-    const email = String(result?.buyer?.email || "").trim();
-    if (!email) {
-      res.statusCode = 302;
-      res.setHeader("Location", "/payment.html?success=0&err=no_email");
-      return res.end();
+    // 4) Email al (önce buyer.email, yoksa conversationId içinden)
+let email = String(result?.buyer?.email || "").trim();
+
+if (!email) {
+  const conv = String(result?.conversationId || "");
+  // init'te biz şöyle yolluyoruz: oanda|<encodedEmail>|<timestamp>
+  const parts = conv.split("|");
+  if (parts.length >= 2) {
+    try {
+      email = decodeURIComponent(parts[1] || "").trim();
+    } catch (e) {
+      email = String(parts[1] || "").trim();
     }
+  }
+}
+
+if (!email) {
+  res.statusCode = 302;
+  res.setHeader("Location", "/payment.html?success=0&err=no_email");
+  return res.end();
+}
+
 
     // 5) Apps Script'e POST at
     const GAS_URL = process.env.GAS_WEBAPP_URL;
