@@ -1,3 +1,4 @@
+// /api/iyzico-callback.js
 module.exports = async (req, res) => {
   try {
     // 1) Token al
@@ -35,23 +36,35 @@ module.exports = async (req, res) => {
       String(result.paymentStatus || "").toUpperCase() === "SUCCESS";
 
     if (!paymentOk) {
+      const st = encodeURIComponent(String(result?.status || ""));
+      const ps = encodeURIComponent(String(result?.paymentStatus || ""));
+      const ec = encodeURIComponent(String(result?.errorCode || ""));
+      const em = encodeURIComponent(String(result?.errorMessage || "").slice(0, 60));
       res.statusCode = 302;
-      res.setHeader("Location", "/payment.html?success=0&err=payment_failed");
+      res.setHeader(
+        "Location",
+        `/payment.html?success=0&err=payment_failed&st=${st}&ps=${ps}&ec=${ec}&em=${em}`
+      );
       return res.end();
     }
 
     // 4) Email al
-    const email = result.buyer?.email;
+    const email = String(result?.buyer?.email || "").trim();
     if (!email) {
       res.statusCode = 302;
       res.setHeader("Location", "/payment.html?success=0&err=no_email");
       return res.end();
     }
 
-    // 5) Apps Script'e POST AT (işte eksik olan parça)
+    // 5) Apps Script'e POST at
     const GAS_URL = process.env.GAS_WEBAPP_URL;
+    if (!GAS_URL) {
+      res.statusCode = 302;
+      res.setHeader("Location", "/payment.html?success=0&err=no_gas_url");
+      return res.end();
+    }
 
-    await fetch(GAS_URL, {
+    const gasResp = await fetch(GAS_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -61,15 +74,22 @@ module.exports = async (req, res) => {
       })
     });
 
+    const gasJson = await gasResp.json().catch(() => ({}));
+
+    if (!gasResp.ok || !gasJson.ok) {
+      res.statusCode = 302;
+      res.setHeader("Location", "/payment.html?success=0&err=code_email_failed");
+      return res.end();
+    }
+
     // 6) Son sayfaya yönlendir
     res.statusCode = 302;
-    res.setHeader("Location", "/payment.html?success=1");
-    res.end();
+    res.setHeader("Location", "/payment.html?success=1&codeSent=1");
+    return res.end();
 
   } catch (e) {
     res.statusCode = 302;
     res.setHeader("Location", "/payment.html?success=0&err=server");
-    res.end();
+    return res.end();
   }
 };
-
