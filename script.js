@@ -1,4 +1,4 @@
-const endpoint = "https://script.google.com/macros/s/AKfycbwGAoXihM2X3JoSkKGQ8kQqk6IbryLvf6S4XLuD31JnI2W0K-9tL5gWFFt9xGaruYgh/exec";
+const endpoint = "https://script.google.com/macros/s/AKfycbyZJPPN8EcueG2l4Se6UweA2kORmV0NWED-SC_70QN0sUVAVRVk-MNP2iFjNWm_v-P_/exec";
 /* ==========================
    20 SORULUK ENNEAGRAM TESTİ SORULARI
    ========================== */
