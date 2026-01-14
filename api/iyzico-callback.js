@@ -56,32 +56,27 @@ res.setHeader(
 );
 return res.end();
 
-    // 4) Email al (önce buyer.email, yoksa conversationId içinden)
+    // 4) Email al: önce result.buyer.email, yoksa GAS'tan token ile çek
 let email = String(result?.buyer?.email || "").trim();
 
 if (!email) {
-  const conv = String(result?.conversationId || "");
-  // init'te yolladığımız format: oanda|<encodedEmail>|<timestamp>
-  const parts = conv.split("|");
-  if (parts.length >= 2) {
+  const GAS_URL = process.env.GAS_WEBAPP_URL;
+  if (GAS_URL) {
     try {
-      email = decodeURIComponent(parts[1] || "").trim();
-    } catch (e) {
-      email = String(parts[1] || "").trim();
-    }
+      const r = await fetch(GAS_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode: "getEmailByToken", paymentToken: token })
+      });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok && j.ok && j.email) email = String(j.email).trim();
+    } catch (e) {}
   }
 }
 
-// hala yoksa debug ile dön (aşağıda)
 if (!email) {
-  const conv = encodeURIComponent(String(result?.conversationId || ""));
-  const hasBuyer = encodeURIComponent(String(!!result?.buyer));
-  const buyerKeys = encodeURIComponent(Object.keys(result?.buyer || {}).join(","));
   res.statusCode = 302;
-  res.setHeader(
-    "Location",
-    `/payment.html?success=0&err=no_email&conv=${conv}&hasBuyer=${hasBuyer}&buyerKeys=${buyerKeys}`
-  );
+  res.setHeader("Location", "/payment.html?success=0&err=no_email");
   return res.end();
 }
 
