@@ -33,17 +33,25 @@ module.exports = async (req, res) => {
     }
 
     const iyzipay = new Iyzipay({
-      apiKey,
-      secretKey,
-      uri: "https://api.iyzipay.com"
-    });
-    const baseUrl =
+  apiKey,
+  secretKey,
+  uri: "https://api.iyzipay.com"
+});
+
+const baseUrl =
   (process.env.PUBLIC_BASE_URL || "").replace(/\/$/, "") ||
   `https://${req.headers.host}`;
 
+// ✅ conversationId için güvenli parça (sadece a-z 0-9 _)
+const safeEmail = String(email || "")
+  .toLowerCase()
+  .replace(/[^a-z0-9]/g, "_")
+  .slice(0, 24);
+
 const request = {
   locale: Iyzipay.LOCALE.TR,
-  conversationId: "oanda|" + encodeURIComponent(email) + "|" + Date.now(),
+  conversationId: `oanda_${safeEmail}_${Date.now()}`,
+
 
   // ✅ ZORUNLU (iyzico bunu istiyor)
   callbackUrl: `${baseUrl}/api/iyzico-callback`,
