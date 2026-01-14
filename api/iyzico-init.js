@@ -1,5 +1,19 @@
+await fetch(process.env.GAS_WEBAPP_URL, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    mode: "debugPing",
+    where: "init_ping",
+    method: req.method,
+    host: req.headers.host,
+    paymentToken: "INIT_PING",
+    note: "vercel->gas test"
+  })
+});
+
 module.exports = async (req, res) => {
   try {
+    console.log("IYZICO_INIT HIT", new Date().toISOString(), "host=", req.headers.host);
     if (req.method !== "POST") {
       return res.status(405).json({ error: "Method not allowed" });
     }
@@ -12,7 +26,6 @@ module.exports = async (req, res) => {
     const apiKey = process.env.IYZICO_API_KEY;
     const secretKey = process.env.IYZICO_SECRET_KEY;
 
-    // Env kontrol (değerleri ASLA göstermiyoruz)
     if (!apiKey || !secretKey) {
       return res.status(500).json({
         error: "IYZICO env eksik",
@@ -21,7 +34,6 @@ module.exports = async (req, res) => {
       });
     }
 
-    // iyzipay yüklü mü?
     let Iyzipay;
     try {
       Iyzipay = require("iyzipay");
@@ -33,68 +45,93 @@ module.exports = async (req, res) => {
     }
 
     const iyzipay = new Iyzipay({
-  apiKey,
-  secretKey,
-  uri: "https://api.iyzipay.com"
-});
+      apiKey,
+      secretKey,
+      uri: "https://api.iyzipay.com"
+    });
 
-const baseUrl =
-  (process.env.PUBLIC_BASE_URL || "").replace(/\/$/, "") ||
-  `https://${req.headers.host}`;
+    const baseUrl =
+      (process.env.PUBLIC_BASE_URL || "").replace(/\/$/, "") ||
+      `https://${req.headers.host}`;
 
-// ✅ conversationId için güvenli parça (sadece a-z 0-9 _)
-const safeEmail = String(email || "")
-  .toLowerCase()
-  .replace(/[^a-z0-9]/g, "_")
-  .slice(0, 24);
+    // conversationId için güvenli parça
+    const safeEmail = String(email || "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, "_")
+      .slice(0, 24);
 
-const request = {
-  locale: Iyzipay.LOCALE.TR,
-  conversationId: `oanda_${safeEmail}_${Date.now()}`,
+    const request = {
+      locale: Iyzipay.LOCALE.TR,
+      conversationId: `oanda_${safeEmail}_${Date.now()}`,
 
+      callbackUrl: `${baseUrl}/api/iyzico-callback`,
 
-  // ✅ ZORUNLU (iyzico bunu istiyor)
-  callbackUrl: `${baseUrl}/api/iyzico-callback`,
+      price: "1.00",
+      paidPrice: "1.00",
+      currency: Iyzipay.CURRENCY.TRY,
+      basketId: "ENNEAGRAM_TEST",
+      paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
 
-  price: "1.00",
-  paidPrice: "1.00",
-  currency: Iyzipay.CURRENCY.TRY,
-  basketId: "ENNEAGRAM_TEST",
-  paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
+      buyer: {
+        id: "USER",
+        name: "OANDA",
+        surname: "Customer",
+        email,
+        identityNumber: "11111111111",
+        registrationAddress: "Türkiye",
+        ip: req.headers["x-forwarded-for"] || "127.0.0.1",
+        city: "Istanbul",
+        country: "Turkey"
+      },
+      billingAddress: {
+        contactName: "OANDA Customer",
+        city: "Istanbul",
+        country: "Turkey",
+        address: "Türkiye",
+        zipCode: "34000"
+      },
+      basketItems: [{
+        id: "ENNEAGRAM",
+        name: "OANDA Enneagram Testi",
+        category1: "Psikoloji",
+        itemType: Iyzipay.BASKET_ITEM_TYPE.VIRTUAL,
+        price: "1.00"
+      }]
+    };
 
-  buyer: {
-    id: "USER",
-    name: "OANDA",
-    surname: "Customer",
-    email,
-    identityNumber: "11111111111",
-    registrationAddress: "Türkiye",
-    ip: req.headers["x-forwarded-for"] || "127.0.0.1",
-    city: "Istanbul",
-    country: "Turkey"
-  },
-  billingAddress: {
-    contactName: "OANDA Customer",
-    city: "Istanbul",
-    country: "Turkey",
-    address: "Türkiye",
-    zipCode: "34000"
-  },
-
-  basketItems: [{
-    id: "ENNEAGRAM",
-    name: "OANDA Enneagram Testi",
-    category1: "Psikoloji",
-    itemType: Iyzipay.BASKET_ITEM_TYPE.VIRTUAL,
-    price: "1.00"
-  }]
-};
-
-    iyzipay.checkoutFormInitialize.create(request, (err, result) => {
-      if (err) return res.status(500).json({ error: "iyzipay err", detail: err.message });
-      if (result?.status !== "success") {
-        return res.status(400).json({ error: "iyzico error", detail: result?.errorMessage || "unknown" });
+    // ✅ iyzico init
+    iyzipay.checkoutFormInitialize.create(request, async (err, result) => {
+      if (err) {
+        return res.status(500).json({ error: "iyzipay err", detail: err.message });
       }
+      if (result?.status !== "success") {
+        return res.status(400).json({
+          error: "iyzico error",
+          detail: result?.errorMessage || "unknown"
+        });
+      }
+
+      // ✅ token + email’i GAS’a kaydet (retrieve email dönmezse callback buradan alacak)
+      try {
+        const token = String(result?.token || result?.checkoutFormToken || "").trim();
+        const GAS_URL = process.env.GAS_WEBAPP_URL;
+
+        if (GAS_URL && token) {
+          await fetch(GAS_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              mode: "storeTokenEmail",
+              paymentToken: token,
+              email
+            })
+          });
+        }
+      } catch (e) {
+        console.error("storeTokenEmail failed:", e?.message || e);
+        // Ödeme sayfasını yine de açıyoruz
+      }
+
       return res.status(200).json({ paymentPageUrl: result.paymentPageUrl });
     });
 
