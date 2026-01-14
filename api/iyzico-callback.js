@@ -10,6 +10,7 @@ function readRawBody(req) {
 
 module.exports = async (req, res) => {
   try {
+    console.log("IYZICO_INIT HIT", new Date().toISOString(), "host=", req.headers.host);
     // ✅ GET gelirse: token bekleme, kullanıcıyı geri gönder (normal)
     if (req.method === "GET") {
       res.statusCode = 302;
