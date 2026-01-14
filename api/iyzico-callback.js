@@ -53,7 +53,7 @@ let email = String(result?.buyer?.email || "").trim();
 
 if (!email) {
   const conv = String(result?.conversationId || "");
-  // init'te biz şöyle yolluyoruz: oanda|<encodedEmail>|<timestamp>
+  // init'te yolladığımız format: oanda|<encodedEmail>|<timestamp>
   const parts = conv.split("|");
   if (parts.length >= 2) {
     try {
@@ -64,9 +64,16 @@ if (!email) {
   }
 }
 
+// hala yoksa debug ile dön (aşağıda)
 if (!email) {
+  const conv = encodeURIComponent(String(result?.conversationId || ""));
+  const hasBuyer = encodeURIComponent(String(!!result?.buyer));
+  const buyerKeys = encodeURIComponent(Object.keys(result?.buyer || {}).join(","));
   res.statusCode = 302;
-  res.setHeader("Location", "/payment.html?success=0&err=no_email");
+  res.setHeader(
+    "Location",
+    `/payment.html?success=0&err=no_email&conv=${conv}&hasBuyer=${hasBuyer}&buyerKeys=${buyerKeys}`
+  );
   return res.end();
 }
 
