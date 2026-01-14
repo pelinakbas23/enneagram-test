@@ -137,8 +137,15 @@
         body: JSON.stringify({ email })
       });
 
-      const data = await r.json();
-      if (!r.ok) throw new Error((data.detail ? `${data.error}: ${data.detail}` : data.error) || "Ödeme başlatılamadı");
+      let data = null;
+let text = "";
+try { data = await r.json(); }
+catch (_) { text = await r.text().catch(()=> ""); }
+
+if (!r.ok) {
+  const msg = data ? (data.detail ? `${data.error}: ${data.detail}` : data.error) : (text || `HTTP ${r.status}`);
+  throw new Error(msg);
+}
 
       // iyzico ödeme sayfasına git
       window.location.href = data.paymentPageUrl;
@@ -153,28 +160,25 @@
 <script>
 (() => {
   const params = new URLSearchParams(window.location.search);
+
+  // Başarılıysa
   if (params.get("success") === "1") {
-    const token = params.get("token");
-    const email = sessionStorage.getItem("pay_email") || "";
-    if (token && email) {
-      fetch("/api/issue-code", {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({ token, email })
-      })
-      .then(r => r.json())
-      .then(d => {
-        if (d.ok) alert("Ödeme alındı ✅ Test kodun e-postana gönderildi.");
-        else alert("Ödeme alındı ama kod gönderilemedi: " + (d.error || "bilinmeyen hata"));
-      })
-      .catch(e => alert("Kod gönderme hatası: " + e.message));
+    if (params.get("codeSent") === "1") {
+      alert("Ödeme alındı ✅ Test kodun e-posta adresine gönderildi. (Spam/Junk kontrol etmeyi unutma)");
+    } else if (params.get("waiting") === "1") {
+      alert("Ödeme alındı ✅ Kodun hazırlanıyor. Birazdan e-postana gönderilecek. (Spam/Junk kontrol et)");
     } else {
       alert("Ödeme alındı ✅ Test kodun e-posta adresine gönderilecek.");
     }
+    return;
+  }
+
+  // Başarısızsa
+  if (params.get("success") === "0") {
+    const err = params.get("err") || "bilinmeyen_hata";
+    alert("Ödeme işlemi tamamlanamadı: " + err);
   }
 })();
-
 </script>
-
 </body>
 </html>
