@@ -1,12 +1,51 @@
 // /api/iyzico-callback.js
 module.exports = async (req, res) => {
   try {
-    // 1) Token al
+    // ----------------------------
+    // 1) TOKEN'I HER YOLDAN YAKALA
+    // ----------------------------
     let token = null;
 
+    // Query
     if (req.query && req.query.token) token = req.query.token;
-    else if (req.body && req.body.token) token = req.body.token;
-    else if (req.body && req.body.checkoutFormToken) token = req.body.checkoutFormToken;
+
+    // Body (Vercel body bazen string / buffer gelir)
+    if (!token && req.body != null) {
+      let body = req.body;
+
+      if (Buffer.isBuffer(body)) {
+        body = body.toString("utf8");
+      }
+
+      // String ise
+      if (typeof body === "string") {
+        const s = body.trim();
+
+        // JSON dene
+        if (s.startsWith("{")) {
+          try {
+            const obj = JSON.parse(s);
+            token = obj.token || obj.checkoutFormToken;
+          } catch (e) {}
+        }
+
+        // urlencoded dene
+        if (!token) {
+          try {
+            const params = new URLSearchParams(s);
+            token = params.get("token") || params.get("checkoutFormToken");
+          } catch (e) {}
+        }
+      }
+
+      // Object ise
+      if (!token && typeof body === "object") {
+        token =
+          body.token ||
+          body.checkoutFormToken ||
+          (body.data && (body.data.token || body.data.checkoutFormToken));
+      }
+    }
 
     if (!token) {
       res.statusCode = 302;
@@ -14,106 +53,81 @@ module.exports = async (req, res) => {
       return res.end();
     }
 
-    // 2) iyzico ödeme sonucunu çek
+    // ----------------------------
+    // 2) IYZICO'DAN ÖDEMEYİ SORGULA
+    // ----------------------------
     const Iyzipay = require("iyzipay");
     const iyzipay = new Iyzipay({
       apiKey: process.env.IYZICO_API_KEY,
       secretKey: process.env.IYZICO_SECRET_KEY,
-      uri: "https://api.iyzipay.com"
+      uri: "https://api.iyzipay.com",
     });
 
-    const result = await new Promise((resolve, reject) => {
-      iyzipay.checkoutForm.retrieve({ token }, (err, data) => {
-        if (err) return reject(err);
-        resolve(data);
-      });
-    });
-
-    // 3) Ödeme başarılı mı?
-    const paymentOk =
-      result &&
-      result.status === "success" &&
-      String(result.paymentStatus || "").toUpperCase() === "SUCCESS";
-
-    if (!paymentOk) {
-      const st = encodeURIComponent(String(result?.status || ""));
-      const ps = encodeURIComponent(String(result?.paymentStatus || ""));
-      const ec = encodeURIComponent(String(result?.errorCode || ""));
-      const em = encodeURIComponent(String(result?.errorMessage || "").slice(0, 60));
-      res.statusCode = 302;
-      res.setHeader(
-        "Location",
-        `/payment.html?success=0&err=payment_failed&st=${st}&ps=${ps}&ec=${ec}&em=${em}`
+    const payment = await new Promise((resolve, reject) => {
+      iyzipay.checkoutForm.retrieve(
+        { token },
+        (err, result) => (err ? reject(err) : resolve(result))
       );
-      return res.end();
-    }
-    // Debug: tüm result objesini error parametresi olarak yolla
-const debug = encodeURIComponent(JSON.stringify(result || {}));
-res.statusCode = 302;
-res.setHeader(
-  "Location",
-  "/payment.html?success=0&err=debug&debug=" + debug
-);
-return res.end();
+    });
 
-   // 4) Email al: önce buyer.email, yoksa GAS'tan token ile çek
-let email = String(result?.buyer?.email || "").trim();
-
-if (!email) {
-  const GAS_URL = process.env.GAS_WEBAPP_URL;
-  if (GAS_URL) {
-    try {
-      const r = await fetch(GAS_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mode: "getEmailByToken", paymentToken: token })
-      });
-      const j = await r.json().catch(() => ({}));
-      if (r.ok && j.ok && j.email) email = String(j.email).trim();
-    } catch (e) {}
-  }
-}
-
-if (!email) {
-  res.statusCode = 302;
-  res.setHeader("Location", "/payment.html?success=0&err=no_email");
-  return res.end();
-}
-
-    // 5) Apps Script'e POST at
-    const GAS_URL = process.env.GAS_WEBAPP_URL;
-    if (!GAS_URL) {
+    if (payment.paymentStatus !== "SUCCESS") {
       res.statusCode = 302;
-      res.setHeader("Location", "/payment.html?success=0&err=no_gas_url");
+      res.setHeader("Location", "/payment.html?success=0&err=payment_failed");
       return res.end();
     }
 
-    const gasResp = await fetch(GAS_URL, {
+    // ----------------------------
+    // 3) EMAIL'I AL
+    // ----------------------------
+    const email =
+      payment.buyer?.email ||
+      payment.customer?.email ||
+      payment.billingAddress?.email;
+
+    if (!email) {
+      res.statusCode = 302;
+      res.setHeader("Location", "/payment.html?success=0&err=no_email");
+      return res.end();
+    }
+
+    // ----------------------------
+    // 4) GAS → KOD VER & MAIL AT
+    // ----------------------------
+    const gasResp = await fetch(process.env.GAS_WEBAPP_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         mode: "issueCode",
         email,
-        paymentToken: token
-      })
+        paymentToken: token,
+      }),
     });
 
-    const gasJson = await gasResp.json().catch(() => ({}));
+    let gasJson = {};
+    try {
+      gasJson = await gasResp.json();
+    } catch (e) {}
 
     if (!gasResp.ok || !gasJson.ok) {
       res.statusCode = 302;
-      res.setHeader("Location", "/payment.html?success=0&err=code_email_failed");
+      res.setHeader("Location", "/payment.html?success=0&err=gas_failed");
       return res.end();
     }
 
-    // 6) Son sayfaya yönlendir
+    // ----------------------------
+    // 5) BAŞARILI
+    // ----------------------------
     res.statusCode = 302;
-    res.setHeader("Location", "/payment.html?success=1&codeSent=1");
-    return res.end();
+    res.setHeader(
+      "Location",
+      "/payment.html?success=1&codeSent=1"
+    );
+    res.end();
 
   } catch (e) {
+    console.error(e);
     res.statusCode = 302;
-    res.setHeader("Location", "/payment.html?success=0&err=server");
-    return res.end();
+    res.setHeader("Location", "/payment.html?success=0&err=exception");
+    res.end();
   }
 };
