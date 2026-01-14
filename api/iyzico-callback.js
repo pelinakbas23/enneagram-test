@@ -1,9 +1,8 @@
 // /api/iyzico-callback.js
-
 function readRawBody(req) {
   return new Promise((resolve) => {
     let data = "";
-    req.on("data", (chunk) => { data += chunk; });
+    req.on("data", (chunk) => (data += chunk));
     req.on("end", () => resolve(data));
     req.on("error", () => resolve(""));
   });
@@ -11,55 +10,45 @@ function readRawBody(req) {
 
 module.exports = async (req, res) => {
   try {
-    // ----------------------------
-    // 1) TOKEN'I HER YOLDAN YAKALA (query + parsed body + RAW BODY)
-    // ----------------------------
-    let token = null;
-
-    // 1a) Query (GET gelirse)
-    if (req.query && (req.query.token || req.query.checkoutFormToken)) {
-      token = req.query.token || req.query.checkoutFormToken;
-    }
-
-    // 1b) Parsed body (bazı durumlarda dolu gelir)
-    if (!token && req.body && typeof req.body === "object") {
-      token = req.body.token || req.body.checkoutFormToken;
-    }
-
-    // 1c) RAW body (Vercel'de form-urlencoded genelde buradan okunur)
-    if (!token) {
-      const raw = await readRawBody(req);
-      if (raw) {
-        // JSON olabilir
-        if (raw.trim().startsWith("{")) {
-          try {
-            const obj = JSON.parse(raw);
-            token = obj.token || obj.checkoutFormToken;
-          } catch (e) {}
-        }
-
-        // urlencoded olabilir: token=...&...
-        if (!token) {
-          try {
-            const params = new URLSearchParams(raw);
-            token = params.get("token") || params.get("checkoutFormToken");
-          } catch (e) {}
-        }
-      }
-    }
-
-    token = String(token || "").trim();
-
-    if (!token) {
-      // Debug için method'u da ekliyoruz (çok işe yarar)
+    // ✅ GET gelirse: token bekleme, kullanıcıyı geri gönder (normal)
+    if (req.method === "GET") {
       res.statusCode = 302;
-      res.setHeader("Location", `/payment.html?success=0&err=no_token&method=${encodeURIComponent(req.method)}`);
+      res.setHeader("Location", "/payment.html?success=1&waiting=1");
       return res.end();
     }
 
-    // ----------------------------
-    // 2) IYZICO'DAN ÖDEMEYİ SORGULA
-    // ----------------------------
+    // Buradan sonrası POST varsayımı
+    console.log("CALLBACK POST HIT");
+    console.log("CT:", req.headers["content-type"]);
+
+    const raw = await readRawBody(req);
+    console.log("RAW(first200):", (raw || "").slice(0, 200));
+
+    // Token yakala
+    let token = null;
+
+    // 1) urlencoded
+    try {
+      const params = new URLSearchParams(raw);
+      token = params.get("token") || params.get("checkoutFormToken");
+    } catch (e) {}
+
+    // 2) json
+    if (!token && raw && raw.trim().startsWith("{")) {
+      try {
+        const obj = JSON.parse(raw);
+        token = obj.token || obj.checkoutFormToken;
+      } catch (e) {}
+    }
+
+    token = String(token || "").trim();
+    if (!token) {
+      res.statusCode = 302;
+      res.setHeader("Location", "/payment.html?success=0&err=no_token_post");
+      return res.end();
+    }
+
+    // iyzico retrieve
     const Iyzipay = require("iyzipay");
     const iyzipay = new Iyzipay({
       apiKey: process.env.IYZICO_API_KEY,
@@ -79,35 +68,25 @@ module.exports = async (req, res) => {
       return res.end();
     }
 
-    // ----------------------------
-    // 3) EMAIL'I AL (iyzico bazen buyer/email dönmez → GAS fallback)
-    // ----------------------------
+    // Email yoksa GAS'tan çek
     let email =
       payment?.buyer?.email ||
       payment?.customer?.email ||
       payment?.billingAddress?.email ||
-      payment?.shippingAddress?.email ||
-      payment?.email ||
       "";
 
     email = String(email || "").trim().toLowerCase();
 
-    // Email yoksa: init aşamasında Payments'a yazdığımız email'i token ile çek
     if (!email) {
       try {
-        const gasUrl = process.env.GAS_WEBAPP_URL;
-        if (gasUrl) {
-          const r = await fetch(gasUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ mode: "getEmailByToken", paymentToken: token }),
-          });
-          const j = await r.json();
-          if (j && j.ok && j.email) email = String(j.email).trim().toLowerCase();
-        }
-      } catch (e) {
-        // düşerse no_email göreceksin
-      }
+        const r = await fetch(process.env.GAS_WEBAPP_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ mode: "getEmailByToken", paymentToken: token }),
+        });
+        const j = await r.json();
+        if (j && j.ok && j.email) email = String(j.email).trim().toLowerCase();
+      } catch (e) {}
     }
 
     if (!email) {
@@ -116,21 +95,13 @@ module.exports = async (req, res) => {
       return res.end();
     }
 
-    // ----------------------------
-    // 4) GAS → KOD VER & MAIL AT
-    // ----------------------------
+    // Kod gönder
     const gasResp = await fetch(process.env.GAS_WEBAPP_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        mode: "issueCode",
-        email,
-        paymentToken: token,
-      }),
+      body: JSON.stringify({ mode: "issueCode", email, paymentToken: token }),
     });
-
-    let gasJson = {};
-    try { gasJson = await gasResp.json(); } catch (e) {}
+    const gasJson = await gasResp.json().catch(() => ({}));
 
     if (!gasResp.ok || !gasJson.ok) {
       res.statusCode = 302;
@@ -138,15 +109,11 @@ module.exports = async (req, res) => {
       return res.end();
     }
 
-    // ----------------------------
-    // 5) BAŞARILI
-    // ----------------------------
     res.statusCode = 302;
     res.setHeader("Location", "/payment.html?success=1&codeSent=1");
     return res.end();
-
   } catch (e) {
-    console.error(e);
+    console.error("CALLBACK EX:", e?.message || e);
     res.statusCode = 302;
     res.setHeader("Location", "/payment.html?success=0&err=exception");
     return res.end();
