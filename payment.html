@@ -157,28 +157,5 @@ if (!r.ok) {
   });
 })();
 </script>
-<script>
-(() => {
-  const params = new URLSearchParams(window.location.search);
-
-  // Başarılıysa
-  if (params.get("success") === "1") {
-    if (params.get("codeSent") === "1") {
-      alert("Ödeme alındı ✅ Test kodun e-posta adresine gönderildi. (Spam/Junk kontrol etmeyi unutma)");
-    } else if (params.get("waiting") === "1") {
-      alert("Ödeme alındı ✅ Kodun hazırlanıyor. Birazdan e-postana gönderilecek. (Spam/Junk kontrol et)");
-    } else {
-      alert("Ödeme alındı ✅ Test kodun e-posta adresine gönderilecek.");
-    }
-    return;
-  }
-
-  // Başarısızsa
-  if (params.get("success") === "0") {
-    const err = params.get("err") || "bilinmeyen_hata";
-    alert("Ödeme işlemi tamamlanamadı: " + err);
-  }
-})();
-</script>
 </body>
 </html>
