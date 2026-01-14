@@ -77,12 +77,41 @@ module.exports = async (req, res) => {
     }
 
     // ----------------------------
-    // 3) EMAIL'I AL
+    // 3) EMAIL'I AL (iyzico bazen buyer/email dönmez → GAS fallback)
     // ----------------------------
-    const email =
-      payment.buyer?.email ||
-      payment.customer?.email ||
-      payment.billingAddress?.email;
+    let email =
+      payment?.buyer?.email ||
+      payment?.customer?.email ||
+      payment?.billingAddress?.email ||
+      payment?.shippingAddress?.email ||
+      payment?.email ||
+      "";
+
+    email = String(email || "").trim().toLowerCase();
+
+    // ✅ Fallback: token ile GAS'tan email'i çek
+    if (!email) {
+      try {
+        const gasUrl = process.env.GAS_WEBAPP_URL;
+        if (gasUrl) {
+          const r = await fetch(gasUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              mode: "getEmailByToken",
+              paymentToken: token,
+            }),
+          });
+
+          const j = await r.json();
+          if (j && j.ok && j.email) {
+            email = String(j.email).trim().toLowerCase();
+          }
+        }
+      } catch (e) {
+        console.error("getEmailByToken failed:", e?.message || e);
+      }
+    }
 
     if (!email) {
       res.statusCode = 302;
@@ -109,6 +138,7 @@ module.exports = async (req, res) => {
     } catch (e) {}
 
     if (!gasResp.ok || !gasJson.ok) {
+      // (İstersen gasJson.error'ı query'e ekleyebiliriz ama şimdilik güvenli kalsın)
       res.statusCode = 302;
       res.setHeader("Location", "/payment.html?success=0&err=gas_failed");
       return res.end();
@@ -118,16 +148,13 @@ module.exports = async (req, res) => {
     // 5) BAŞARILI
     // ----------------------------
     res.statusCode = 302;
-    res.setHeader(
-      "Location",
-      "/payment.html?success=1&codeSent=1"
-    );
-    res.end();
+    res.setHeader("Location", "/payment.html?success=1&codeSent=1");
+    return res.end();
 
   } catch (e) {
     console.error(e);
     res.statusCode = 302;
     res.setHeader("Location", "/payment.html?success=0&err=exception");
-    res.end();
+    return res.end();
   }
 };
