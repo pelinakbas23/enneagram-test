@@ -113,58 +113,19 @@
     btn.style.opacity = enabled ? "1" : "0.6";
   }
 
+  function setIdle(){
+    btn.textContent = "Ödemeye Geç (iyzico)";
+    setEnabled(emailEl.checkValidity());
+  }
+
+  // Sayfa ilk açılış
   setEnabled(false);
 
   emailEl.addEventListener("input", () => {
     setEnabled(emailEl.checkValidity());
   });
 
-  btn.addEventListener("click", async (e) => {
-    e.preventDefault();
-    const email = (emailEl.value || "").trim();
-    if (!emailEl.checkValidity()) {
-      alert("Lütfen geçerli bir e-posta gir.");
-      return;
-    }
-    sessionStorage.setItem("pay_email", email);
-    btn.textContent = "Ödeme sayfası açılıyor…";
-    setEnabled(false);
-
-    try {
-      const r = await fetch("/api/iyzico-init", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email })
-      });
-      let text = "";
-let data = null;
-
-try { data = await r.json(); }
-catch (_) { text = await r.text().catch(() => ""); }
-
-if (!r.ok) {
-  const step = data?.step ? `STEP=${data.step} ` : "";
-  const detail = data?.detail || data?.error || text || `HTTP ${r.status}`;
-  throw new Error(step + detail);
-}
-
-if (!data?.paymentPageUrl) {
-  throw new Error("paymentPageUrl gelmedi");
-}
-
-
-      // iyzico ödeme sayfasına git
-      window.location.href = data.paymentPageUrl;
-    } catch (err) {
-      alert("Bir hata oldu: " + err.message);
-      btn.textContent = "Ödemeye Geç (iyzico)";
-      setEnabled(true);
-    }
-  });
-})();
-</script>
-<script>
-(() => {
+  // URL parametrelerinden ödeme durum mesajı
   const params = new URLSearchParams(window.location.search);
   if (params.get("success") === "1") {
     if (params.get("codeSent") === "1") {
@@ -177,8 +138,74 @@ if (!data?.paymentPageUrl) {
   } else if (params.get("success") === "0") {
     alert("Ödeme tamamlanamadı: " + (params.get("err") || "bilinmeyen hata"));
   }
+
+  btn.addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    const email = (emailEl.value || "").trim();
+    if (!emailEl.checkValidity()) {
+      alert("Lütfen geçerli bir e-posta gir.");
+      return;
+    }
+
+    // Email'i sakla (istersen sonradan test sayfasında autofill için kullanırsın)
+    sessionStorage.setItem("pay_email", email);
+
+    btn.textContent = "Ödeme sayfası açılıyor…";
+    setEnabled(false);
+
+    try {
+      const r = await fetch("/api/iyzico-init", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+
+      let data = null;
+      let text = "";
+
+      try { data = await r.json(); }
+      catch (_) { text = await r.text().catch(() => ""); }
+
+      if (!r.ok) {
+        const step = data?.step ? `STEP=${data.step} ` : "";
+        const detail = data?.detail || data?.error || text || `HTTP ${r.status}`;
+        throw new Error(step + detail);
+      }
+
+      // 1) paymentPageUrl geldiyse direkt yönlendir
+      if (data?.paymentPageUrl) {
+        window.location.href = data.paymentPageUrl;
+        return;
+      }
+
+      // 2) URL yok ama iyzico form HTML geldiyse sayfaya bas
+      if (data?.checkoutFormContent) {
+        document.open();
+        document.write(`
+          <!doctype html>
+          <html lang="tr">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>Ödeme</title>
+          </head>
+          <body>
+            ${data.checkoutFormContent}
+          </body>
+          </html>
+        `);
+        document.close();
+        return;
+      }
+
+      // 3) İkisi de yoksa hata
+      throw new Error("paymentPageUrl gelmedi");
+
+    } catch (err) {
+      alert("Bir hata oldu: " + (err?.message || err));
+      setIdle();
+    }
+  });
 })();
 </script>
-
-</body>
-</html>
