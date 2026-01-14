@@ -595,7 +595,7 @@ const r = await fetch(SUBMIT_ENDPOINT, {
     const data = await r.json();
     if (!r.ok) throw new Error(data.error || "Gönderilemedi");
 
-    alert("Teşekkürler! Yorumun alındı. Yayınlanmadan önce kontrol edilecek.");
+    alert("Teşekkürler! Yorumun alındı.");
 
     // formu temizle
     commentEl.value = "";

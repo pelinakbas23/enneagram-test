@@ -43,7 +43,7 @@ module.exports = async (req, res) => {
 
 const request = {
   locale: Iyzipay.LOCALE.TR,
-  conversationId: "oanda-" + Date.now(),
+  conversationId: "oanda|" + encodeURIComponent(email) + "|" + Date.now(),
 
   // ✅ ZORUNLU (iyzico bunu istiyor)
   callbackUrl: `${baseUrl}/api/iyzico-callback`,

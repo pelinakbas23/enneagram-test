@@ -126,7 +126,7 @@
       alert("Lütfen geçerli bir e-posta gir.");
       return;
     }
-
+    sessionStorage.setItem("pay_email", email);
     btn.textContent = "Ödeme sayfası açılıyor…";
     setEnabled(false);
 
@@ -154,9 +154,26 @@
 (() => {
   const params = new URLSearchParams(window.location.search);
   if (params.get("success") === "1") {
-    alert("Ödeme alındı ✅ Test kodun e-posta adresine gönderilecek.");
+    const token = params.get("token");
+    const email = sessionStorage.getItem("pay_email") || "";
+    if (token && email) {
+      fetch("/api/issue-code", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({ token, email })
+      })
+      .then(r => r.json())
+      .then(d => {
+        if (d.ok) alert("Ödeme alındı ✅ Test kodun e-postana gönderildi.");
+        else alert("Ödeme alındı ama kod gönderilemedi: " + (d.error || "bilinmeyen hata"));
+      })
+      .catch(e => alert("Kod gönderme hatası: " + e.message));
+    } else {
+      alert("Ödeme alındı ✅ Test kodun e-posta adresine gönderilecek.");
+    }
   }
 })();
+
 </script>
 
 </body>

@@ -47,6 +47,14 @@ module.exports = async (req, res) => {
       );
       return res.end();
     }
+    // Debug: tüm result objesini error parametresi olarak yolla
+const debug = encodeURIComponent(JSON.stringify(result || {}));
+res.statusCode = 302;
+res.setHeader(
+  "Location",
+  "/payment.html?success=0&err=debug&debug=" + debug
+);
+return res.end();
 
     // 4) Email al (önce buyer.email, yoksa conversationId içinden)
 let email = String(result?.buyer?.email || "").trim();
