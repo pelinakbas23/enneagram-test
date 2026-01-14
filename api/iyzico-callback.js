@@ -56,7 +56,7 @@ res.setHeader(
 );
 return res.end();
 
-    // 4) Email al: önce result.buyer.email, yoksa GAS'tan token ile çek
+   // 4) Email al: önce buyer.email, yoksa GAS'tan token ile çek
 let email = String(result?.buyer?.email || "").trim();
 
 if (!email) {
@@ -79,7 +79,6 @@ if (!email) {
   res.setHeader("Location", "/payment.html?success=0&err=no_email");
   return res.end();
 }
-
 
     // 5) Apps Script'e POST at
     const GAS_URL = process.env.GAS_WEBAPP_URL;
