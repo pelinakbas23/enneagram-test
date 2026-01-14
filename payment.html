@@ -136,16 +136,22 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email })
       });
+      let text = "";
+let data = null;
 
-      let data = null;
-let text = "";
 try { data = await r.json(); }
-catch (_) { text = await r.text().catch(()=> ""); }
+catch (_) { text = await r.text().catch(() => ""); }
 
 if (!r.ok) {
-  const msg = data ? (data.detail ? `${data.error}: ${data.detail}` : data.error) : (text || `HTTP ${r.status}`);
-  throw new Error(msg);
+  const step = data?.step ? `STEP=${data.step} ` : "";
+  const detail = data?.detail || data?.error || text || `HTTP ${r.status}`;
+  throw new Error(step + detail);
 }
+
+if (!data?.paymentPageUrl) {
+  throw new Error("paymentPageUrl gelmedi");
+}
+
 
       // iyzico ödeme sayfasına git
       window.location.href = data.paymentPageUrl;
