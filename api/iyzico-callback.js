@@ -1,55 +1,59 @@
 // /api/iyzico-callback.js
+
+function readRawBody(req) {
+  return new Promise((resolve) => {
+    let data = "";
+    req.on("data", (chunk) => { data += chunk; });
+    req.on("end", () => resolve(data));
+    req.on("error", () => resolve(""));
+  });
+}
+
 module.exports = async (req, res) => {
   try {
     // ----------------------------
-    // 1) TOKEN'I HER YOLDAN YAKALA
+    // 1) TOKEN'I HER YOLDAN YAKALA (query + parsed body + RAW BODY)
     // ----------------------------
     let token = null;
 
-    // Query
-    if (req.query && req.query.token) token = req.query.token;
+    // 1a) Query (GET gelirse)
+    if (req.query && (req.query.token || req.query.checkoutFormToken)) {
+      token = req.query.token || req.query.checkoutFormToken;
+    }
 
-    // Body (Vercel body bazen string / buffer gelir)
-    if (!token && req.body != null) {
-      let body = req.body;
+    // 1b) Parsed body (bazı durumlarda dolu gelir)
+    if (!token && req.body && typeof req.body === "object") {
+      token = req.body.token || req.body.checkoutFormToken;
+    }
 
-      if (Buffer.isBuffer(body)) {
-        body = body.toString("utf8");
-      }
-
-      // String ise
-      if (typeof body === "string") {
-        const s = body.trim();
-
-        // JSON dene
-        if (s.startsWith("{")) {
+    // 1c) RAW body (Vercel'de form-urlencoded genelde buradan okunur)
+    if (!token) {
+      const raw = await readRawBody(req);
+      if (raw) {
+        // JSON olabilir
+        if (raw.trim().startsWith("{")) {
           try {
-            const obj = JSON.parse(s);
+            const obj = JSON.parse(raw);
             token = obj.token || obj.checkoutFormToken;
           } catch (e) {}
         }
 
-        // urlencoded dene
+        // urlencoded olabilir: token=...&...
         if (!token) {
           try {
-            const params = new URLSearchParams(s);
+            const params = new URLSearchParams(raw);
             token = params.get("token") || params.get("checkoutFormToken");
           } catch (e) {}
         }
       }
-
-      // Object ise
-      if (!token && typeof body === "object") {
-        token =
-          body.token ||
-          body.checkoutFormToken ||
-          (body.data && (body.data.token || body.data.checkoutFormToken));
-      }
     }
 
+    token = String(token || "").trim();
+
     if (!token) {
+      // Debug için method'u da ekliyoruz (çok işe yarar)
       res.statusCode = 302;
-      res.setHeader("Location", "/payment.html?success=0&err=no_token");
+      res.setHeader("Location", `/payment.html?success=0&err=no_token&method=${encodeURIComponent(req.method)}`);
       return res.end();
     }
 
@@ -64,9 +68,8 @@ module.exports = async (req, res) => {
     });
 
     const payment = await new Promise((resolve, reject) => {
-      iyzipay.checkoutForm.retrieve(
-        { token },
-        (err, result) => (err ? reject(err) : resolve(result))
+      iyzipay.checkoutForm.retrieve({ token }, (err, result) =>
+        err ? reject(err) : resolve(result)
       );
     });
 
@@ -89,7 +92,7 @@ module.exports = async (req, res) => {
 
     email = String(email || "").trim().toLowerCase();
 
-    // ✅ Fallback: token ile GAS'tan email'i çek
+    // Email yoksa: init aşamasında Payments'a yazdığımız email'i token ile çek
     if (!email) {
       try {
         const gasUrl = process.env.GAS_WEBAPP_URL;
@@ -97,19 +100,13 @@ module.exports = async (req, res) => {
           const r = await fetch(gasUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              mode: "getEmailByToken",
-              paymentToken: token,
-            }),
+            body: JSON.stringify({ mode: "getEmailByToken", paymentToken: token }),
           });
-
           const j = await r.json();
-          if (j && j.ok && j.email) {
-            email = String(j.email).trim().toLowerCase();
-          }
+          if (j && j.ok && j.email) email = String(j.email).trim().toLowerCase();
         }
       } catch (e) {
-        console.error("getEmailByToken failed:", e?.message || e);
+        // düşerse no_email göreceksin
       }
     }
 
@@ -133,12 +130,9 @@ module.exports = async (req, res) => {
     });
 
     let gasJson = {};
-    try {
-      gasJson = await gasResp.json();
-    } catch (e) {}
+    try { gasJson = await gasResp.json(); } catch (e) {}
 
     if (!gasResp.ok || !gasJson.ok) {
-      // (İstersen gasJson.error'ı query'e ekleyebiliriz ama şimdilik güvenli kalsın)
       res.statusCode = 302;
       res.setHeader("Location", "/payment.html?success=0&err=gas_failed");
       return res.end();
