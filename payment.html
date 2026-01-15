@@ -132,8 +132,16 @@
         const data = await r.json();
 
         if (!r.ok) {
-          throw new Error(data?.error || `HTTP ${r.status}`);
-        }
+  const detail =
+    (data?.error || "API error") +
+    (data?.status ? ` | status=${data.status}` : "") +
+    (data?.errorCode ? ` | code=${data.errorCode}` : "") +
+    (data?.errorMessage ? ` | msg=${data.errorMessage}` : "") +
+    (data?.errorGroup ? ` | group=${data.errorGroup}` : "") +
+    (data?.detail ? ` | detail=${data.detail}` : "") +
+    (data?.keys ? ` | keys=${Array.isArray(data.keys) ? data.keys.join(",") : String(data.keys)}` : "");
+  throw new Error(detail || `HTTP ${r.status}`);
+}
 
         // iyzico ödeme sayfasına yönlendir
         if (data?.paymentPageUrl) {
