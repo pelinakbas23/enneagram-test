@@ -33,12 +33,14 @@ module.exports = async (req, res) => {
       (process.env.PUBLIC_BASE_URL || "").replace(/\/$/, "") ||
       `https://${req.headers.host}`;
 
+    const ipRaw = req.headers["x-forwarded-for"] || "127.0.0.1";
+    const ip = String(ipRaw).split(",")[0].trim();  
     const request = {
       locale: Iyzipay.LOCALE.TR,
       conversationId: `oanda_${Date.now()}`,
       callbackUrl: `${baseUrl}/api/iyzico-callback`,
-      price: "1.00",
-      paidPrice: "1.00",
+      price: "1",
+      paidPrice: "1",
       currency: Iyzipay.CURRENCY.TRY,
       basketId: "ENNEAGRAM_TEST",
       paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
@@ -47,9 +49,9 @@ module.exports = async (req, res) => {
         name: "OANDA",
         surname: "Customer",
         email,
-        identityNumber: "11111111111",
+        identityNumber: "10000000146",
         registrationAddress: "Türkiye",
-        ip: (req.headers["x-forwarded-for"] || "127.0.0.1"),
+        ip,
         city: "Istanbul",
         country: "Turkey"
       },
@@ -65,7 +67,7 @@ module.exports = async (req, res) => {
         name: "OANDA Enneagram Testi",
         category1: "Psikoloji",
         itemType: Iyzipay.BASKET_ITEM_TYPE.VIRTUAL,
-        price: "1.00"
+        price: "1"
       }]
     };
 
