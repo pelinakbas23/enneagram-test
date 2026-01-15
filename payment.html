@@ -31,25 +31,29 @@
             <h2 class="landing-h2">Ödeme nasıl yapılır?</h2>
             <ol class="landing-steps">
               <li>Ödemeyi iyzico üzerinden tamamlayın.</li>
-              <li>Ödeme sonrası <strong>e‑posta adresinize tek kullanımlık Test Kodu</strong> gönderilir.</li>
+              <li>Ödeme sonrası <strong>e-posta adresinize tek kullanımlık Test Kodu</strong> gönderilir.</li>
               <li>“Teste Geç”e tıklayın, kodu <strong>Test Kodu</strong> alanına yazın ve <strong>Teste Başla</strong> deyin.</li>
             </ol>
 
             <div class="landing-note">
               <strong>Not:</strong> Kod gelmesi birkaç dakika sürebilir. Spam/Junk klasörünü de kontrol edin.
             </div>
-<div class="feedback-field" style="margin-top:12px;">
-  <label for="pay-email">E-posta (test kodunu buraya göndereceğiz)</label>
-  <input id="pay-email" type="email" placeholder="ornek@mail.com" autocomplete="email" required>
-  <div class="landing-muted" style="margin-top:6px;">
-    Sadece test kodu ve rapor için kullanılır.
-  </div>
-</div>
+
+            <div class="feedback-field" style="margin-top:12px;">
+              <label for="pay-email">E-posta (test kodunu buraya göndereceğiz)</label>
+              <input id="pay-email" type="email" placeholder="ornek@mail.com" autocomplete="email" required>
+              <div class="landing-muted" style="margin-top:6px;">
+                Sadece test kodu ve rapor için kullanılır.
+              </div>
+            </div>
 
             <div class="landing-actions">
-  <a class="btn-primary" id="startPayment" href="#" aria-disabled="true">Ödemeye Geç (iyzico)</a>
-  <a class="btn-secondary" href="test_v3.html">Zaten kodum var → Teste Geç</a>
-</div>
+              <a class="btn-primary" id="startPayment" href="#" aria-disabled="true">Ödemeye Geç (iyzico)</a>
+              <a class="btn-secondary" href="test_v3.html">Zaten kodum var → Teste Geç</a>
+            </div>
+
+            <!-- Embedded checkout form gelirse buraya basacağız -->
+            <div id="iyzico-form" style="margin-top:16px;"></div>
           </div>
 
           <div class="landing-block">
@@ -59,7 +63,7 @@
             </div>
             <p class="landing-muted">Ödemeler iyzico altyapısı ile güvenli şekilde alınır.</p>
 
-            <h2 class="landing-h2">Kısa iptal‑iade özeti</h2>
+            <h2 class="landing-h2">Kısa iptal-iade özeti</h2>
             <ul class="landing-bullets">
               <li>Tek kullanımlık kod <strong>kullanılmadıysa</strong> iade talebi değerlendirilebilir.</li>
               <li>Kod <strong>kullanıldıysa</strong> (test başlatıldıysa) hizmet verilmiş sayılır ve iade yapılmaz.</li>
@@ -70,142 +74,146 @@
     </main>
 
     <footer class="site-footer">
-    <div class="footer-brand">OANDA Enneagram</div>
-    <div class="footer-text">Online Enneagram kişilik testi ve raporlama hizmeti.</div>
+      <div class="footer-brand">OANDA Enneagram</div>
+      <div class="footer-text">Online Enneagram kişilik testi ve raporlama hizmeti.</div>
 
-    <nav class="footer-links" aria-label="Yasal bağlantılar">
-      <a href="privacy_v3.html">Gizlilik Politikası</a>
-      <a href="refund_v3.html">İptal &amp; İade Şartları</a>
-      <a href="terms_v3.html">Kullanım Koşulları</a>
-    </nav>
+      <nav class="footer-links" aria-label="Yasal bağlantılar">
+        <a href="privacy_v3.html">Gizlilik Politikası</a>
+        <a href="refund_v3.html">İptal &amp; İade Şartları</a>
+        <a href="terms_v3.html">Kullanım Koşulları</a>
+      </nav>
 
-    <div class="footer-contact">
-      <span>E-posta: <a href="mailto:@oandaenneagram@gmail.com">oandaenneagram@gmail.com</a></span>
-    </div>
-     <div class="social-links">
-    <a href="https://www.facebook.com/oandapy" target="_blank" aria-label="Facebook">
-      <i class="fa-brands fa-facebook-f"></i>
-    </a>
-    <a href="https://twitter.com/oandapy" target="_blank" aria-label="Twitter / X">
-      <i class="fa-brands fa-x-twitter"></i>
-    </a>
-    <a href="https://www.instagram.com/oandaenneagram" target="_blank" aria-label="Instagram">
-      <i class="fa-brands fa-instagram"></i>
-    </a>
-    <a href="https://www.linkedin.com/company/oandaprojeyonetimi/posts/?feedView=all" target="_blank" aria-label="LinkedIn">
-      <i class="fa-brands fa-linkedin-in"></i>
-    </a>
+      <div class="footer-contact">
+        <span>E-posta: <a href="mailto:oandaenneagram@gmail.com">oandaenneagram@gmail.com</a></span>
+      </div>
+
+      <div class="social-links">
+        <a href="https://www.facebook.com/oandapy" target="_blank" aria-label="Facebook" rel="noopener">
+          <i class="fa-brands fa-facebook-f"></i>
+        </a>
+        <a href="https://twitter.com/oandapy" target="_blank" aria-label="Twitter / X" rel="noopener">
+          <i class="fa-brands fa-x-twitter"></i>
+        </a>
+        <a href="https://www.instagram.com/oandaenneagram" target="_blank" aria-label="Instagram" rel="noopener">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+        <a href="https://www.linkedin.com/company/oandaprojeyonetimi/posts/?feedView=all" target="_blank" aria-label="LinkedIn" rel="noopener">
+          <i class="fa-brands fa-linkedin-in"></i>
+        </a>
+      </div>
+
+      <div class="footer-small">© 2025 OANDA Enneagram. Tüm hakları saklıdır.</div>
+    </footer>
   </div>
-</div>
 
-    <div class="footer-small">© 2025 OANDA Enneagram. Tüm hakları saklıdır.</div>
-  </footer>
   <script>
-(() => {
-  const emailEl = document.getElementById("pay-email");
-  const btn = document.getElementById("startPayment");
+  (() => {
+    const emailEl = document.getElementById("pay-email");
+    const btn = document.getElementById("startPayment");
+    const formMount = document.getElementById("iyzico-form");
 
-  if (!emailEl || !btn) return;
+    if (!emailEl || !btn) return;
 
-  function setEnabled(enabled){
-    btn.setAttribute("aria-disabled", enabled ? "false" : "true");
-    btn.style.pointerEvents = enabled ? "auto" : "none";
-    btn.style.opacity = enabled ? "1" : "0.6";
-  }
-
-  function setIdle(){
-    btn.textContent = "Ödemeye Geç (iyzico)";
-    setEnabled(emailEl.checkValidity());
-  }
-
-  // Sayfa ilk açılış
-  setEnabled(false);
-
-  emailEl.addEventListener("input", () => {
-    setEnabled(emailEl.checkValidity());
-  });
-
-  // URL parametrelerinden ödeme durum mesajı
-  const params = new URLSearchParams(window.location.search);
-  if (params.get("success") === "1") {
-    if (params.get("codeSent") === "1") {
-      alert("Ödeme alındı ✅ Test kodun e-posta adresine gönderildi. (Spam/Junk kontrol et)");
-    } else if (params.get("waiting") === "1") {
-      alert("Ödeme alındı ✅ Kodun hazırlanıyor, birazdan e-postana gönderilecek.");
-    } else {
-      alert("Ödeme alındı ✅ Kod e-postana gönderilecek.");
-    }
-  } else if (params.get("success") === "0") {
-    alert("Ödeme tamamlanamadı: " + (params.get("err") || "bilinmeyen hata"));
-  }
-
-  btn.addEventListener("click", async (e) => {
-    e.preventDefault();
-
-    const email = (emailEl.value || "").trim();
-    if (!emailEl.checkValidity()) {
-      alert("Lütfen geçerli bir e-posta gir.");
-      return;
+    function setEnabled(enabled) {
+      btn.setAttribute("aria-disabled", enabled ? "false" : "true");
+      btn.style.pointerEvents = enabled ? "auto" : "none";
+      btn.style.opacity = enabled ? "1" : "0.6";
     }
 
-    // Email'i sakla (istersen sonradan test sayfasında autofill için kullanırsın)
-    sessionStorage.setItem("pay_email", email);
+    function resetButton() {
+      btn.textContent = "Ödemeye Geç (iyzico)";
+      setEnabled(emailEl.checkValidity());
+    }
 
-    btn.textContent = "Ödeme sayfası açılıyor…";
+    // İlk açılış
     setEnabled(false);
 
-    try {
-      const r = await fetch("/api/iyzico-init", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email })
-      });
+    emailEl.addEventListener("input", () => {
+      setEnabled(emailEl.checkValidity());
+    });
 
-      let data = null;
-      let text = "";
-
-      try { data = await r.json(); }
-      catch (_) { text = await r.text().catch(() => ""); }
-
-      if (!r.ok) {
-        const step = data?.step ? `STEP=${data.step} ` : "";
-        const detail = data?.detail || data?.error || text || `HTTP ${r.status}`;
-        throw new Error(step + detail);
+    // URL parametrelerinden ödeme durum mesajı
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("success") === "1") {
+      if (params.get("codeSent") === "1") {
+        alert("Ödeme alındı ✅ Test kodun e-posta adresine gönderildi. (Spam/Junk kontrol et)");
+      } else if (params.get("waiting") === "1") {
+        alert("Ödeme alındı ✅ Kodun hazırlanıyor, birazdan e-postana gönderilecek.");
+      } else {
+        alert("Ödeme alındı ✅ Kod e-postana gönderilecek.");
       }
-
-      // 1) paymentPageUrl geldiyse direkt yönlendir
-      if (data?.paymentPageUrl) {
-        window.location.href = data.paymentPageUrl;
-        return;
-      }
-
-      // 2) URL yok ama iyzico form HTML geldiyse sayfaya bas
-      if (data?.checkoutFormContent) {
-        document.open();
-        document.write(`
-          <!doctype html>
-          <html lang="tr">
-          <head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>Ödeme</title>
-          </head>
-          <body>
-            ${data.checkoutFormContent}
-          </body>
-          </html>
-        `);
-        document.close();
-        return;
-      }
-
-      // 3) İkisi de yoksa hata
-      throw new Error("paymentPageUrl gelmedi");
-
-    } catch (err) {
-      alert("Bir hata oldu: " + (err?.message || err));
-      setIdle();
+    } else if (params.get("success") === "0") {
+      alert("Ödeme tamamlanamadı: " + (params.get("err") || "bilinmeyen hata"));
     }
-  });
-})();
-</script>
+
+    btn.addEventListener("click", async (e) => {
+      e.preventDefault();
+
+      // varsa önceki formu temizle
+      if (formMount) formMount.innerHTML = "";
+
+      const email = (emailEl.value || "").trim();
+      if (!emailEl.checkValidity()) {
+        alert("Lütfen geçerli bir e-posta gir.");
+        return;
+      }
+
+      sessionStorage.setItem("pay_email", email);
+
+      btn.textContent = "Ödeme hazırlanıyor…";
+      setEnabled(false);
+
+      try {
+        const r = await fetch("/api/iyzico-init", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email })
+        });
+
+        let data = null;
+        let text = "";
+
+        try { data = await r.json(); }
+        catch (_) { text = await r.text().catch(() => ""); }
+
+        if (!r.ok) {
+          const step = data?.step ? `STEP=${data.step} ` : "";
+          const detail = data?.detail || data?.error || text || `HTTP ${r.status}`;
+          throw new Error(step + detail);
+        }
+
+        // 1) paymentPageUrl geldiyse yönlendir
+        if (data?.paymentPageUrl) {
+          window.location.href = data.paymentPageUrl;
+          return;
+        }
+
+        // 2) checkoutFormContent geldiyse sayfaya göm
+        if (data?.checkoutFormContent) {
+          if (!formMount) {
+            // fallback: mount yoksa dokümana yaz
+            document.open();
+            document.write(`<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Ödeme</title></head><body>${data.checkoutFormContent}</body></html>`);
+            document.close();
+          } else {
+            formMount.innerHTML = data.checkoutFormContent;
+          }
+          btn.textContent = "Ödeme formu açıldı";
+          btn.style.pointerEvents = "none";
+          btn.style.opacity = "0.7";
+          return;
+        }
+
+        // 3) ikisi de yoksa: daha açıklayıcı hata
+        const keys = Object.keys(data || {}).join(", ");
+        throw new Error("Ödeme formu verisi gelmedi. keys=" + (keys || "(boş)"));
+
+      } catch (err) {
+        alert("Bir hata oldu: " + (err?.message || err));
+        resetButton();
+      }
+    });
+  })();
+  </script>
+</body>
+</html>

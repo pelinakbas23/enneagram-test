@@ -1,55 +1,21 @@
 // /api/iyzico-callback.js
-function readRawBody(req) {
-  return new Promise((resolve) => {
-    let data = "";
-    req.on("data", (chunk) => (data += chunk));
-    req.on("end", () => resolve(data));
-    req.on("error", () => resolve(""));
-  });
-}
-
 module.exports = async (req, res) => {
+  const redirect = (q) => {
+    res.statusCode = 302;
+    res.setHeader("Location", "/payment.html?" + q);
+    res.end();
+  };
+
   try {
-    console.log("IYZICO_INIT HIT", new Date().toISOString(), "host=", req.headers.host);
-    // ✅ GET gelirse: token bekleme, kullanıcıyı geri gönder (normal)
-    if (req.method === "GET") {
-      res.statusCode = 302;
-      res.setHeader("Location", "/payment.html?success=1&waiting=1");
-      return res.end();
-    }
-
-    // Buradan sonrası POST varsayımı
-    console.log("CALLBACK POST HIT");
-    console.log("CT:", req.headers["content-type"]);
-
-    const raw = await readRawBody(req);
-    console.log("RAW(first200):", (raw || "").slice(0, 200));
-
-    // Token yakala
+    // 1) Token al
     let token = null;
+    if (req.query?.token) token = req.query.token;
+    else if (req.body?.token) token = req.body.token;
+    else if (req.body?.checkoutFormToken) token = req.body.checkoutFormToken;
 
-    // 1) urlencoded
-    try {
-      const params = new URLSearchParams(raw);
-      token = params.get("token") || params.get("checkoutFormToken");
-    } catch (e) {}
+    if (!token) return redirect("success=0&err=no_token");
 
-    // 2) json
-    if (!token && raw && raw.trim().startsWith("{")) {
-      try {
-        const obj = JSON.parse(raw);
-        token = obj.token || obj.checkoutFormToken;
-      } catch (e) {}
-    }
-
-    token = String(token || "").trim();
-    if (!token) {
-      res.statusCode = 302;
-      res.setHeader("Location", "/payment.html?success=0&err=no_token_post");
-      return res.end();
-    }
-
-    // iyzico retrieve
+    // 2) iyzico retrieve
     const Iyzipay = require("iyzipay");
     const iyzipay = new Iyzipay({
       apiKey: process.env.IYZICO_API_KEY,
@@ -57,66 +23,68 @@ module.exports = async (req, res) => {
       uri: "https://api.iyzipay.com",
     });
 
-    const payment = await new Promise((resolve, reject) => {
-      iyzipay.checkoutForm.retrieve({ token }, (err, result) =>
-        err ? reject(err) : resolve(result)
-      );
+    const retrieveResult = await new Promise((resolve, reject) => {
+      iyzipay.checkoutForm.retrieve({ token }, (err, result) => {
+        if (err) return reject(err);
+        resolve(result);
+      });
     });
 
-    if (payment.paymentStatus !== "SUCCESS") {
-      res.statusCode = 302;
-      res.setHeader("Location", "/payment.html?success=0&err=payment_failed");
-      return res.end();
-    }
+    const ok =
+      retrieveResult?.status === "success" &&
+      String(retrieveResult?.paymentStatus || "").toUpperCase() === "SUCCESS";
 
-    // Email yoksa GAS'tan çek
-    let email =
-      payment?.buyer?.email ||
-      payment?.customer?.email ||
-      payment?.billingAddress?.email ||
-      "";
+    if (!ok) return redirect("success=0&err=payment_not_success");
 
-    email = String(email || "").trim().toLowerCase();
+    // 3) GAS url kontrol
+    const GAS_URL = process.env.GAS_WEBAPP_URL; // .../exec
+    if (!GAS_URL) return redirect("success=1&waiting=1&err=gas_url_missing");
 
+    // 4) Email: iyzico’dan al; boşsa GAS’tan token->email çek
+    let email = String(retrieveResult?.buyer?.email || "").trim();
+
+    // ✅ debugPing (GET ile) - callback buraya geldi mi?
+    try {
+      const pingUrl =
+        `${GAS_URL}?mode=debugPing` +
+        `&where=callback_enter` +
+        `&paymentToken=${encodeURIComponent(token)}` +
+        `&note=${encodeURIComponent("callback reached")}`;
+      await fetch(pingUrl); // GET
+    } catch (_) {}
+
+    // Email boşsa, token'dan email çek (GET ile)
     if (!email) {
-      try {
-        const r = await fetch(process.env.GAS_WEBAPP_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ mode: "getEmailByToken", paymentToken: token }),
-        });
-        const j = await r.json();
-        if (j && j.ok && j.email) email = String(j.email).trim().toLowerCase();
-      } catch (e) {}
+      const getUrl =
+        `${GAS_URL}?mode=getEmailByToken` +
+        `&paymentToken=${encodeURIComponent(token)}` +
+        `&where=callback` +
+        `&note=${encodeURIComponent("getEmailByToken")}`;
+
+      const r = await fetch(getUrl); // GET
+      const j = await r.json().catch(() => ({}));
+      if (j?.ok && j?.email) email = String(j.email).trim();
     }
 
-    if (!email) {
-      res.statusCode = 302;
-      res.setHeader("Location", "/payment.html?success=0&err=no_email");
-      return res.end();
-    }
+    if (!email) return redirect("success=1&waiting=1&err=no_email");
 
-    // Kod gönder
-    const gasResp = await fetch(process.env.GAS_WEBAPP_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ mode: "issueCode", email, paymentToken: token }),
-    });
+    // 5) issueCode çağır (GET ile)
+    const issueUrl =
+      `${GAS_URL}?mode=issueCode` +
+      `&email=${encodeURIComponent(email)}` +
+      `&paymentToken=${encodeURIComponent(token)}` +
+      `&where=callback` +
+      `&note=${encodeURIComponent("issueCode")}`;
+
+    const gasResp = await fetch(issueUrl); // GET
     const gasJson = await gasResp.json().catch(() => ({}));
 
-    if (!gasResp.ok || !gasJson.ok) {
-      res.statusCode = 302;
-      res.setHeader("Location", "/payment.html?success=0&err=gas_failed");
-      return res.end();
+    if (gasJson?.ok) {
+      return redirect("success=1&codeSent=1");
+    } else {
+      return redirect("success=1&waiting=1&err=issue_failed");
     }
-
-    res.statusCode = 302;
-    res.setHeader("Location", "/payment.html?success=1&codeSent=1");
-    return res.end();
   } catch (e) {
-    console.error("CALLBACK EX:", e?.message || e);
-    res.statusCode = 302;
-    res.setHeader("Location", "/payment.html?success=0&err=exception");
-    return res.end();
+    return redirect("success=1&waiting=1&err=callback_server");
   }
 };
