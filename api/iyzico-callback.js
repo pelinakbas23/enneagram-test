@@ -1,90 +1,88 @@
 // /api/iyzico-callback.js
 module.exports = async (req, res) => {
-  const redirect = (q) => {
-    res.statusCode = 302;
-    res.setHeader("Location", "/payment.html?" + q);
-    res.end();
-  };
-
   try {
-    // 1) Token al
-    let token = null;
-    if (req.query?.token) token = req.query.token;
-    else if (req.body?.token) token = req.body.token;
-    else if (req.body?.checkoutFormToken) token = req.body.checkoutFormToken;
+    // Token bazen query’de bazen body’de gelir
+    const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
+    const token =
+      (req.query && (req.query.token || req.query.checkoutFormToken)) ||
+      body.token ||
+      body.checkoutFormToken ||
+      "";
 
-    if (!token) return redirect("success=0&err=no_token");
+    const paymentToken = String(token || "").trim();
+    if (!paymentToken) {
+      return redirectFail(res, "no_token");
+    }
 
-    // 2) iyzico retrieve
+    // Iyzico sonucunu retrieve et
+    const apiKey = process.env.IYZICO_API_KEY;
+    const secretKey = process.env.IYZICO_SECRET_KEY;
     const Iyzipay = require("iyzipay");
-    const iyzipay = new Iyzipay({
-      apiKey: process.env.IYZICO_API_KEY,
-      secretKey: process.env.IYZICO_SECRET_KEY,
-      uri: "https://api.iyzipay.com",
-    });
+    const iyzipay = new Iyzipay({ apiKey, secretKey, uri: "https://api.iyzipay.com" });
 
-    const retrieveResult = await new Promise((resolve, reject) => {
-      iyzipay.checkoutForm.retrieve({ token }, (err, result) => {
+    const retrieveRequest = {
+      locale: Iyzipay.LOCALE.TR,
+      conversationId: `cb_${Date.now()}`,
+      token: paymentToken
+    };
+
+    const result = await new Promise((resolve, reject) => {
+      iyzipay.checkoutForm.retrieve(retrieveRequest, (err, r) => {
         if (err) return reject(err);
-        resolve(result);
+        resolve(r);
       });
     });
 
-    const ok =
-      retrieveResult?.status === "success" &&
-      String(retrieveResult?.paymentStatus || "").toUpperCase() === "SUCCESS";
+    // Ödeme başarılı mı?
+    const ok = result && result.status === "success" &&
+      (String(result.paymentStatus || "").toUpperCase() === "SUCCESS" || result.paymentStatus == null);
 
-    if (!ok) return redirect("success=0&err=payment_not_success");
+    if (!ok) {
+      const msg = result?.errorMessage || "payment_not_success";
+      return redirectFail(res, msg);
+    }
 
-    // 3) GAS url kontrol
+    // ✅ Başarılı ödeme → GAS issueCode çağır
     const GAS_URL = process.env.GAS_WEBAPP_URL; // .../exec
-    if (!GAS_URL) return redirect("success=1&waiting=1&err=gas_url_missing");
+    const GAS_SECRET = process.env.GAS_SECRET;
 
-    // 4) Email: iyzico’dan al; boşsa GAS’tan token->email çek
-    let email = String(retrieveResult?.buyer?.email || "").trim();
-
-    // ✅ debugPing (GET ile) - callback buraya geldi mi?
-    try {
-      const pingUrl =
-        `${GAS_URL}?mode=debugPing` +
-        `&where=callback_enter` +
-        `&paymentToken=${encodeURIComponent(token)}` +
-        `&note=${encodeURIComponent("callback reached")}`;
-      await fetch(pingUrl); // GET
-    } catch (_) {}
-
-    // Email boşsa, token'dan email çek (GET ile)
-    if (!email) {
-      const getUrl =
-        `${GAS_URL}?mode=getEmailByToken` +
-        `&paymentToken=${encodeURIComponent(token)}` +
-        `&where=callback` +
-        `&note=${encodeURIComponent("getEmailByToken")}`;
-
-      const r = await fetch(getUrl); // GET
-      const j = await r.json().catch(() => ({}));
-      if (j?.ok && j?.email) email = String(j.email).trim();
+    if (!GAS_URL || !GAS_SECRET) {
+      // ödeme başarılı ama kod gönderemedik
+      return redirectOk(res, { waiting: 1 });
     }
 
-    if (!email) return redirect("success=1&waiting=1&err=no_email");
-
-    // 5) issueCode çağır (GET ile)
-    const issueUrl =
+    const url =
       `${GAS_URL}?mode=issueCode` +
-      `&email=${encodeURIComponent(email)}` +
-      `&paymentToken=${encodeURIComponent(token)}` +
-      `&where=callback` +
-      `&note=${encodeURIComponent("issueCode")}`;
+      `&paymentToken=${encodeURIComponent(paymentToken)}` +
+      `&secret=${encodeURIComponent(GAS_SECRET)}`;
 
-    const gasResp = await fetch(issueUrl); // GET
-    const gasJson = await gasResp.json().catch(() => ({}));
+    const r = await fetch(url);
+    const text = await r.text();
+    let data = null;
+    try { data = JSON.parse(text); } catch (_) {}
 
-    if (gasJson?.ok) {
-      return redirect("success=1&codeSent=1");
-    } else {
-      return redirect("success=1&waiting=1&err=issue_failed");
+    if (!r.ok || !data?.ok) {
+      return redirectOk(res, { waiting: 1 });
     }
+
+    // Kod mail atıldı
+    return redirectOk(res, { codeSent: 1 });
+
   } catch (e) {
-    return redirect("success=1&waiting=1&err=callback_server");
+    return redirectFail(res, "cb_error");
   }
 };
+
+function redirectOk(res, extra = {}) {
+  const qs = new URLSearchParams({ success: "1", ...Object.fromEntries(Object.entries(extra).map(([k,v])=>[k,String(v)]))});
+  res.statusCode = 302;
+  res.setHeader("Location", "/payment.html?" + qs.toString());
+  res.end();
+}
+
+function redirectFail(res, err) {
+  const qs = new URLSearchParams({ success: "0", err: String(err || "failed") });
+  res.statusCode = 302;
+  res.setHeader("Location", "/payment.html?" + qs.toString());
+  res.end();
+}
