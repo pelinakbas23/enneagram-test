@@ -86,19 +86,39 @@ module.exports = async (req, res) => {
       ]
     };
 
-    // Checkout form oluştur
-    iyzipay.checkoutFormInitialize.create(request, (err, result) => {
-      if (err) {
-        return res.status(500).json({ error: "iyzico error", detail: String(err) });
-      }
-
-      // result.checkoutFormContent (embed) veya result.paymentPageUrl gelebilir
-      return res.status(200).json({
-        paymentPageUrl: result.paymentPageUrl || null,
-        checkoutFormContent: result.checkoutFormContent || null,
-        conversationId
-      });
+iyzipay.checkoutFormInitialize.create(request, (err, result) => {
+  // 1) Node-level hata
+  if (err) {
+    return res.status(500).json({
+      error: "iyzico error (node)",
+      detail: String(err)
     });
+  }
+
+  // 2) iyzico response'unda failure
+  if (!result || result.status !== "success") {
+    return res.status(400).json({
+      error: "iyzico error (result)",
+      status: result && result.status,
+      errorCode: result && result.errorCode,
+      errorMessage: result && result.errorMessage,
+      errorGroup: result && result.errorGroup
+    });
+  }
+
+  // 3) success ama beklenen alan yoksa
+  if (!result.paymentPageUrl && !result.checkoutFormContent) {
+    return res.status(500).json({
+      error: "iyzico success ama form yok",
+      keys: Object.keys(result || {})
+    });
+  }
+
+  return res.status(200).json({
+    paymentPageUrl: result.paymentPageUrl || null,
+    checkoutFormContent: result.checkoutFormContent || null
+  });
+});
 
   } catch (e) {
     return res.status(500).json({ error: e.message || String(e) });
