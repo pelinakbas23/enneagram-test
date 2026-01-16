@@ -32,47 +32,61 @@ module.exports = async (req, res) => {
     };
 
     const result = await new Promise((resolve, reject) => {
-      iyzipay.checkoutForm.retrieve(retrieveRequest, (err, r) => {
-        if (err) return reject(err);
-        resolve(r);
-      });
+      iyzipay.checkoutForm.retrieve(retrieveRequest, (err, r) => (err ? reject(err) : resolve(r)));
     });
 
     const ok =
-      result && result.status === "success" &&
+      result &&
+      result.status === "success" &&
       String(result.paymentStatus || "").toUpperCase() === "SUCCESS";
 
-    if (!ok) {
-      return redirectFail(result?.errorMessage || "payment_not_success");
-    }
+    if (!ok) return redirectFail(result?.errorMessage || "payment_not_success");
 
-    // ✅ iyzico'dan email
-    const email = String(result?.buyer?.email || "").trim();
-    if (!email) {
-      // Email yoksa yine de teste geçiriyoruz ama rapor gönderimi için email şart
-      // İstersen burada fail de edebiliriz.
-      // return redirectFail("no_email_from_iyzico");
-    }
-
-    // ✅ GAS: token-email kaydet
-    const GAS_URL = String(process.env.GAS_WEBAPP_URL || "").trim(); // .../exec
+    // ✅ GAS'tan email çek (asıl kaynak)
+    const GAS_URL    = String(process.env.GAS_WEBAPP_URL || "").trim(); // .../exec
     const GAS_SECRET = String(process.env.GAS_SECRET || "").trim();
 
-    if (GAS_URL && GAS_SECRET && email) {
-      const url =
-        `${GAS_URL}?mode=storeTokenEmail` +
-        `&paymentToken=${encodeURIComponent(paymentToken)}` +
-        `&email=${encodeURIComponent(email)}` +
-        `&secret=${encodeURIComponent(GAS_SECRET)}`;
-      try { await fetch(url); } catch (_) {}
+    let email = "";
+    if (GAS_URL && GAS_SECRET) {
+      try {
+        const r = await fetch(GAS_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            mode: "getEmailByToken",
+            secret: GAS_SECRET,
+            paymentToken
+          })
+        });
+        const j = await r.json().catch(() => ({}));
+        if (j && j.ok && j.email) email = String(j.email).trim().toLowerCase();
+      } catch (_) {}
     }
 
-    // ✅ otomatik teste yönlendir
+    // fallback (iyzico bazen email döndürebilir)
+    if (!email) email = String(result?.buyer?.email || "").trim().toLowerCase();
+
+    // ✅ paid olarak işaretle
+    if (GAS_URL && GAS_SECRET) {
+      try {
+        await fetch(GAS_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            mode: "markPaid",
+            secret: GAS_SECRET,
+            paymentToken
+          })
+        });
+      } catch (_) {}
+    }
+
+    // ✅ teste yönlendir
     res.statusCode = 302;
     res.setHeader("Location", "/test_v3.html?token=" + encodeURIComponent(paymentToken));
     res.end();
-
   } catch (e) {
     return redirectFail("cb_error");
   }
 };
+

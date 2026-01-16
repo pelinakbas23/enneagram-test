@@ -1,13 +1,10 @@
 // /api/iyzico-init.js
 module.exports = async (req, res) => {
   try {
-    if (req.method !== "POST") {
-      return res.status(405).json({ error: "Method not allowed" });
-    }
+    if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
-    // Vercel bazen body'yi string geçirir
     const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
-    const email = String(body.email || "").trim();
+    const email = String(body.email || "").trim().toLowerCase();
     if (!email) return res.status(400).json({ error: "Email gerekli" });
 
     const apiKey = String(process.env.IYZICO_API_KEY || "").trim();
@@ -15,16 +12,11 @@ module.exports = async (req, res) => {
     const IYZICO_URI = String(process.env.IYZICO_URI || "").trim() || "https://api.iyzipay.com";
 
     if (!apiKey || !secretKey) {
-      return res.status(500).json({
-        error: "IYZICO env eksik",
-        hasApiKey: !!apiKey,
-        hasSecretKey: !!secretKey
-      });
+      return res.status(500).json({ error: "IYZICO env eksik", hasApiKey: !!apiKey, hasSecretKey: !!secretKey });
     }
 
-    // Base URL: env varsa onu kullan, yoksa request'ten üret
     const proto = String(req.headers["x-forwarded-proto"] || "https");
-    const host = String(req.headers["x-forwarded-host"] || req.headers.host || "");
+    const host  = String(req.headers["x-forwarded-host"] || req.headers.host || "");
     const baseFromReq = host ? `${proto}://${host}` : "";
     const PUBLIC_BASE_URL = String(process.env.PUBLIC_BASE_URL || "").trim() || baseFromReq;
 
@@ -34,7 +26,6 @@ module.exports = async (req, res) => {
 
     const callbackUrl = `${PUBLIC_BASE_URL}/api/iyzico-callback`;
 
-    // IP (iyzico buyer.ip ister)
     const ip =
       String((req.headers["x-forwarded-for"] || "").split(",")[0]).trim() ||
       String(req.socket?.remoteAddress || "127.0.0.1");
@@ -42,8 +33,7 @@ module.exports = async (req, res) => {
     const Iyzipay = require("iyzipay");
     const iyzipay = new Iyzipay({ apiKey, secretKey, uri: IYZICO_URI });
 
-    // Ürün/ödeme bilgileri
-    const price = "1.00"; // burayı kendi fiyatınla değiştir (string olmalı)
+    const price = "1.00"; // TODO: kendi fiyatın
 
     const request = {
       locale: Iyzipay.LOCALE.TR,
@@ -70,38 +60,16 @@ module.exports = async (req, res) => {
         zipCode: "34000"
       },
 
-      shippingAddress: {
-        contactName: "OANDA Enneagram",
-        city: "Istanbul",
-        country: "Turkey",
-        address: "Online",
-        zipCode: "34000"
-      },
-
-      billingAddress: {
-        contactName: "OANDA Enneagram",
-        city: "Istanbul",
-        country: "Turkey",
-        address: "Online",
-        zipCode: "34000"
-      },
+      shippingAddress: { contactName: "OANDA Enneagram", city: "Istanbul", country: "Turkey", address: "Online", zipCode: "34000" },
+      billingAddress:  { contactName: "OANDA Enneagram", city: "Istanbul", country: "Turkey", address: "Online", zipCode: "34000" },
 
       basketItems: [
-        {
-          id: "TEST1",
-          name: "OANDA Enneagram Test",
-          category1: "Digital",
-          itemType: Iyzipay.BASKET_ITEM_TYPE.VIRTUAL,
-          price
-        }
+        { id: "TEST1", name: "OANDA Enneagram Test", category1: "Digital", itemType: Iyzipay.BASKET_ITEM_TYPE.VIRTUAL, price }
       ]
     };
 
     const result = await new Promise((resolve, reject) => {
-      iyzipay.checkoutFormInitialize.create(request, (err, r) => {
-        if (err) return reject(err);
-        resolve(r);
-      });
+      iyzipay.checkoutFormInitialize.create(request, (err, r) => (err ? reject(err) : resolve(r)));
     });
 
     if (!result || result.status !== "success") {
@@ -111,12 +79,35 @@ module.exports = async (req, res) => {
       });
     }
 
-    // Bazı yanıtlarda paymentPageUrl gelir, bazılarında checkoutFormContent
+    // ✅ Token'ı yakala (iyzico response'unda genelde "token" olur)
+    const paymentToken = String(result.token || result.checkoutFormToken || "").trim();
+
+    // ✅ token -> email kaydet (GAS)
+    const GAS_URL    = String(process.env.GAS_WEBAPP_URL || "").trim(); // .../exec
+    const GAS_SECRET = String(process.env.GAS_SECRET || "").trim();
+
+    if (GAS_URL && GAS_SECRET && paymentToken) {
+      try {
+        await fetch(GAS_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            mode: "storeTokenEmail",
+            secret: GAS_SECRET,
+            paymentToken,
+            email
+          })
+        });
+      } catch (_) {
+        // kaydetme başarısız olsa bile ödeme sayfasını açıyoruz
+      }
+    }
+
     return res.status(200).json({
       paymentPageUrl: result.paymentPageUrl || "",
-      checkoutFormContent: result.checkoutFormContent || ""
+      checkoutFormContent: result.checkoutFormContent || "",
+      paymentToken // debug istersen; istersen kaldır
     });
-
   } catch (e) {
     return res.status(500).json({ error: "Server error", detail: String(e?.message || e) });
   }
