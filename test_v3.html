@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>OANDA Enneagram Testi</title>
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-  <!-- Google Font -->
+  <!-- Yazı tipi -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -16,28 +15,34 @@
     rel="stylesheet"
   />
 
-  <!-- Ana stil -->
   <link rel="stylesheet" href="style_v3.css" />
 </head>
-
 <body>
   <div class="main-wrapper">
     <main>
-
       <!-- GİRİŞ EKRANI -->
       <section id="intro-screen" class="intro-card">
         <div class="intro-header-row">
           <img src="enneagram-logo.png" alt="OANDA Enneagram" class="intro-logo" />
+          <div>
+          </div>
         </div>
 
         <p class="intro-text">
           <strong>OANDA Enneagram Kişilik Testi’ne hoş geldiniz.</strong><br><br>
           Bu test 20 sorudan oluşur ve her soruda 9 farklı ifade yer alır.<br>
-          Lütfen her soruda size en uygun <strong>3 ifadeyi</strong> seçip
-          <strong>önceliklendirin</strong> (1., 2., 3.).<br><br>
-          Test yaklaşık <strong>20 dakika</strong> sürer.<br><br>
-          Daha güvenilir bir sonuç için testi sakin, dikkat dağıtıcı unsurlardan
-          uzak bir ortamda çözmeniz önerilir.
+          Lütfen her soruda kendinize en uygun bulduğunuz 3 ifadeyi seçin ve bunları
+          1. Tercih, 2. Tercih, 3. Tercih şeklinde önceliklendirin.<br><br>
+          Test yaklaşık 20 dakika sürer.<br><br>
+          Enneagram değerlendirmesinin güvenilir olması için testi dikkat dağıtıcı
+          unsurlardan uzak, sakin ve mümkünse tek başınıza olduğunuz bir ortamda
+          çözmeniz önerilir. Konsantrasyonu veya duygu durumunu etkileyen maddeler
+          (örneğin alkol, bazı ilaçlar vb.) sonuçların geçerliliğini etkileyebilir.
+        </p>
+
+        <p class="intro-text">
+          Lütfen testi başlatmadan önce bilgilendirme metnini okuduğunuzu onaylayın
+          ve iletişim bilgilerinizi girin.
         </p>
 
         <label class="intro-consent-row">
@@ -45,39 +50,41 @@
           <span>Bilgilendirme metnini okudum ve kabul ediyorum.</span>
         </label>
 
-        <!-- Kullanıcı Bilgileri -->
         <div class="intro-form-row">
-          <div class="intro-field">
-            <label for="first-name">Ad</label>
-            <input type="text" id="first-name" placeholder="Adınız" required />
-          </div>
+  <div class="intro-field">
+    <label for="first-name">Ad</label>
+    <input type="text" id="first-name" placeholder="Adınız" />
+  </div>
+  <div class="intro-field">
+    <label for="last-name">Soyad</label>
+    <input type="text" id="last-name" placeholder="Soyadınız" />
+  </div>
+  <div class="intro-field">
+    <label for="email">E-posta</label>
+    <input type="email" id="email" placeholder="ornek@mail.com" />
+  </div>
 
-          <div class="intro-field">
-            <label for="last-name">Soyad</label>
-            <input type="text" id="last-name" placeholder="Soyadınız" required />
-          </div>
-
-          <div class="intro-field">
-            <label for="email">E-posta</label>
-            <input type="email" id="email" placeholder="ornek@mail.com" required />
-          </div>
-        </div>
+  <!-- 🔥 BURAYA KOD ALANINI EKLİYORSUN -->
+  <div class="intro-field">
+    <label for="access-code">Test Kodu</label>
+    <input type="text" id="access-code" placeholder="Örn: OANDA-4F92-AXT1" />
+  </div>
+</div>
 
         <button id="start-test-btn" class="primary-btn" disabled>
           Teste Başla
         </button>
       </section>
 
-      <!-- TEST ALANI -->
-      <section id="test-section" style="display:none;">
-
+      <!-- TEST + SONUÇ SAYFASI (aynı section içinde) -->
+      <section id="test-section">
         <!-- PROGRESS -->
         <div class="progress-wrap" aria-label="Test ilerleme durumu">
           <div class="progress-top">
             <span id="progress-text">Soru 1 / 20</span>
             <span id="progress-percent">0%</span>
           </div>
-          <div class="progress-bar">
+          <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
             <div id="progress-fill" class="progress-fill"></div>
           </div>
         </div>
@@ -90,71 +97,45 @@
           <button id="submit-btn" class="nav-btn">Sonuçları Göster</button>
         </div>
 
+        <!-- Sonuçlar burada gösterilecek, başta gizli -->
         <div id="result" class="result-card" style="display:none;"></div>
       </section>
-
     </main>
   </div>
 
-  <!-- FOOTER -->
-  <footer class="site-footer">
+  <footer></footer>
+
+  <script src="script.js"></script>
+<footer class="site-footer">
     <div class="footer-brand">OANDA Enneagram</div>
     <div class="footer-text">Online Enneagram kişilik testi ve raporlama hizmeti.</div>
 
-    <nav class="footer-links">
+    <nav class="footer-links" aria-label="Yasal bağlantılar">
       <a href="privacy_v3.html">Gizlilik Politikası</a>
       <a href="refund_v3.html">İptal &amp; İade Şartları</a>
       <a href="terms_v3.html">Kullanım Koşulları</a>
     </nav>
 
     <div class="footer-contact">
-      <span>E-posta:
-        <a href="mailto:oandaenneagram@gmail.com">oandaenneagram@gmail.com</a>
-      </span>
+      <span>E-posta: <a href="mailto:@oandaenneagram@gmail.com">oandaenneagram@gmail.com</a></span>
     </div>
-
-    <div class="social-links">
-      <a href="https://www.facebook.com/oandapy" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
-      <a href="https://twitter.com/oandapy" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
-      <a href="https://www.instagram.com/oandaenneagram" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-      <a href="https://www.linkedin.com/company/oandaprojeyonetimi/posts/?feedView=all" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
-    </div>
+     <div class="social-links">
+    <a href="https://www.facebook.com/oandapy" target="_blank" aria-label="Facebook">
+      <i class="fa-brands fa-facebook-f"></i>
+    </a>
+    <a href="https://twitter.com/oandapy" target="_blank" aria-label="Twitter / X">
+      <i class="fa-brands fa-x-twitter"></i>
+    </a>
+    <a href="https://www.instagram.com/oandaenneagram" target="_blank" aria-label="Instagram">
+      <i class="fa-brands fa-instagram"></i>
+    </a>
+    <a href="https://www.linkedin.com/company/oandaprojeyonetimi/posts/?feedView=all" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+  <i class="fa-brands fa-linkedin-in"></i>
+</a>
+  </div>
+</div>
 
     <div class="footer-small">© 2025 OANDA Enneagram. Tüm hakları saklıdır.</div>
   </footer>
-
-  <!-- 🔒 TOKEN KONTROLÜ -->
-  <script>
-  (() => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
-
-    if (!token) {
-      alert("Bu teste erişim yetkiniz yok.");
-      window.location.href = "/";
-      return;
-    }
-
-    fetch(`/api/check-token?token=${encodeURIComponent(token)}`)
-      .then(r => r.json())
-      .then(d => {
-        if (!d.ok) {
-          alert("Bu test linki geçersiz veya daha önce kullanılmış.");
-          window.location.href = "/";
-        }
-      })
-      .catch(() => {
-        alert("Erişim kontrolü yapılamadı.");
-        window.location.href = "/";
-      });
-
-    // Test sonunda kullanılacak
-    window.__TEST_TOKEN__ = token;
-  })();
-  </script>
-
-  <!-- ANA TEST SCRIPT -->
-  <script src="script.js"></script>
-
 </body>
 </html>

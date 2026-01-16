@@ -1,7 +1,6 @@
 // /api/iyzico-callback.js
 module.exports = async (req, res) => {
   try {
-    // Token bazen query’de bazen body’de gelir
     const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
     const token =
       (req.query && (req.query.token || req.query.checkoutFormToken)) ||
@@ -10,15 +9,14 @@ module.exports = async (req, res) => {
       "";
 
     const paymentToken = String(token || "").trim();
-    if (!paymentToken) {
-      return redirectFail(res, "no_token");
-    }
+    if (!paymentToken) return redirectFail(res, "no_token");
 
-    // Iyzico sonucunu retrieve et
-    const apiKey = process.env.IYZICO_API_KEY;
-    const secretKey = process.env.IYZICO_SECRET_KEY;
+    const apiKey = String(process.env.IYZICO_API_KEY || "").trim();
+    const secretKey = String(process.env.IYZICO_SECRET_KEY || "").trim();
+    const IYZICO_URI = (String(process.env.IYZICO_URI || "").trim() || "https://api.iyzipay.com");
+
     const Iyzipay = require("iyzipay");
-    const iyzipay = new Iyzipay({ apiKey, secretKey, uri: "https://api.iyzipay.com" });
+    const iyzipay = new Iyzipay({ apiKey, secretKey, uri: IYZICO_URI });
 
     const retrieveRequest = {
       locale: Iyzipay.LOCALE.TR,
@@ -33,52 +31,35 @@ module.exports = async (req, res) => {
       });
     });
 
-    // Ödeme başarılı mı?
-    const ok = result && result.status === "success" &&
-      (String(result.paymentStatus || "").toUpperCase() === "SUCCESS" || result.paymentStatus == null);
+    const ok =
+      result && result.status === "success" &&
+      String(result.paymentStatus || "").toUpperCase() === "SUCCESS";
 
     if (!ok) {
-      const msg = result?.errorMessage || "payment_not_success";
-      return redirectFail(res, msg);
+      return redirectFail(res, result?.errorMessage || "payment_not_success");
     }
 
-    // ✅ Başarılı ödeme → GAS issueCode çağır
-    const GAS_URL = process.env.GAS_WEBAPP_URL; // .../exec
-    const GAS_SECRET = process.env.GAS_SECRET;
+    // (Opsiyonel) ödeme başarılı → GAS ile kod üret / mail at
+    const GAS_URL = String(process.env.GAS_WEBAPP_URL || "").trim();
+    const GAS_SECRET = String(process.env.GAS_SECRET || "").trim();
 
-    if (!GAS_URL || !GAS_SECRET) {
-      // ödeme başarılı ama kod gönderemedik
-      return redirectOk(res, { waiting: 1 });
+    if (GAS_URL && GAS_SECRET) {
+      const url =
+        `${GAS_URL}?mode=issueCode` +
+        `&paymentToken=${encodeURIComponent(paymentToken)}` +
+        `&secret=${encodeURIComponent(GAS_SECRET)}`;
+      try { await fetch(url); } catch (_) {}
     }
 
-    const url =
-      `${GAS_URL}?mode=issueCode` +
-      `&paymentToken=${encodeURIComponent(paymentToken)}` +
-      `&secret=${encodeURIComponent(GAS_SECRET)}`;
-
-    const r = await fetch(url);
-    const text = await r.text();
-    let data = null;
-    try { data = JSON.parse(text); } catch (_) {}
-
-    if (!r.ok || !data?.ok) {
-      return redirectOk(res, { waiting: 1 });
-    }
-
-    // Kod mail atıldı
-    return redirectOk(res, { codeSent: 1 });
+    // ✅ En kritik: otomatik teste yönlendir
+    res.statusCode = 302;
+    res.setHeader("Location", "/test_v3.html?token=" + encodeURIComponent(paymentToken));
+    res.end();
 
   } catch (e) {
     return redirectFail(res, "cb_error");
   }
 };
-
-function redirectOk(res, extra = {}) {
-  const qs = new URLSearchParams({ success: "1", ...Object.fromEntries(Object.entries(extra).map(([k,v])=>[k,String(v)]))});
-  res.statusCode = 302;
-  res.setHeader("Location", "/payment.html?" + qs.toString());
-  res.end();
-}
 
 function redirectFail(res, err) {
   const qs = new URLSearchParams({ success: "0", err: String(err || "failed") });

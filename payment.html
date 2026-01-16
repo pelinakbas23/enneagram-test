@@ -13,161 +13,199 @@
   />
   <link rel="stylesheet" href="style_v3.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Bu sayfaya özel minik dokunuşlar (style_v3.css ile uyumlu) -->
+  <style>
+    .page-title{
+      margin: 10px 0 14px;
+      font-size: 34px;
+      line-height: 1.15;
+      font-weight: 700;
+      color: #123047;
+      letter-spacing: -0.02em;
+    }
+    .landing-block .landing-h2{
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 10px 0;
+    }
+    .landing-steps{ margin-top: 0; }
+    .landing-actions{ margin-top: 14px; }
+    .status-line{
+      margin-top: 10px;
+      font-size: 13px;
+      color: #4b5563;
+    }
+    .status-line b{ color:#123047; }
+    .email-field{ margin-top: 12px; max-width: 520px; }
+    .email-field .intro-field{ width: 100%; max-width: 520px; }
+
+    /* payment-band içinde görsel her zaman düzgün otursun */
+    .payment-band img{
+      display:block;
+      width:100%;
+      height:auto;
+    }
+  </style>
 </head>
 
 <body>
   <div class="main-wrapper">
-    <main>
-      <section class="intro-card landing-card">
-        <div class="intro-header-row">
-          <img src="enneagram-logo.png" alt="OANDA Enneagram" class="intro-logo" />
-          <div>
-            <h1 class="landing-title">Ödeme ve Teste Giriş</h1>
+    <section class="intro-card landing-card">
+      <!-- HEADER -->
+      <div class="intro-header-row">
+        <!-- Üstteki ENNEAGRAM logosu: sende dosya var (Enneagram.png) -->
+        <img src="enneagram-logo.png" alt="ENNEAGRAM" class="intro-logo" onerror="this.style.display='none'"/>
+        <div>
+  <div class="intro-title">OANDA ENNEAGRAM</div>
+  <div class="intro-subtitle">
+    KİŞİLİK TESTİ VE SONUÇ RAPORU
+  </div>
+</div>
+      </div>
+
+      <h1 class="page-title">Ödeme ve Teste Giriş</h1>
+
+      <!-- 2 KOLON -->
+      <div class="landing-grid">
+        <!-- SOL KART -->
+        <div class="landing-block">
+          <h2 class="landing-h2">Ödeme nasıl yapılır?</h2>
+
+          <ol class="landing-steps">
+            <li>Ödemeyi iyzico üzerinden tamamlayın.</li>
+            <li>Ödeme sonrası <b>e-posta adresinize tek kullanımlık Test Kodu</b> gönderilir.</li>
+            <li>“Teste Geç”e tıklayın, kodu <b>Test Kodu</b> alanına yazın ve <b>Teste Başla</b> deyin.</li>
+          </ol>
+
+          <div class="landing-note">
+            <b>Not:</b> Kod gelmesi birkaç dakika sürebilir. Spam/Junk klasörünü de kontrol edin.
           </div>
+
+          <div class="email-field">
+            <div class="intro-field">
+              <label for="email">E-posta (test kodunu buraya göndereceğiz)</label>
+              <input id="email" type="email" placeholder="ornek@mail.com" autocomplete="email" />
+            </div>
+            <p class="landing-muted">Sadece test kodu ve rapor için kullanılır.</p>
+          </div>
+
+          <div class="landing-actions">
+            <button class="btn-primary" id="payBtn" type="button">Ödemeye Geç (iyzico)</button>
+            <a class="btn-secondary" href="test_v3.html">Zaten kodum var → Teste Geç</a>
+          </div>
+
+          <div class="status-line" id="status"></div>
         </div>
 
-        <div class="landing-grid">
-          <div class="landing-block">
-            <h2 class="landing-h2">Nasıl ilerleyecek?</h2>
-            <ol class="landing-steps">
-              <li>Ödemeyi iyzico üzerinden güvenle tamamlayın.</li>
-              <li>Ödeme başarıyla tamamlandığında <strong>otomatik olarak teste yönlendirilirsiniz</strong>.</li>
-              <li>Test yalnızca <strong>tek sefer</strong> kullanılabilir.</li>
-            </ol>
+        <!-- SAĞ KART -->
+        <div class="landing-block">
+          <h2 class="landing-h2">Ödeme yöntemleri</h2>
 
-            <div class="landing-actions">
-              <a class="btn-primary" id="startPayment" href="#" aria-disabled="true">
-                Ödemeye Geç (iyzico)
-              </a>
-            </div>
-
-            <!-- iyzico checkout formu buraya gömülebilir -->
-            <div id="iyzico-form" style="margin-top:16px;"></div>
+          <!-- ÖDEME LOGOLARI ŞERİDİ: sadece burada olacak -->
+          <div class="payment-band">
+            <img
+              src="logo_band_colored@1X.png"
+              alt="iyzico • Visa • MasterCard • American Express • Troy"
+              onerror="this.style.display='none'"
+            />
           </div>
 
-          <div class="landing-block">
-            <h2 class="landing-h2">Ödeme yöntemleri</h2>
-            <div class="payment-band">
-              <img src="logo_band_colored@1X.png" alt="iyzico ile Visa, MasterCard, American Express, Troy" />
-            </div>
-            <p class="landing-muted">
-              Ödemeler iyzico altyapısı ile güvenli şekilde alınır.
-            </p>
+          <p class="landing-muted" style="margin-top:10px;">
+            Ödemeler iyzico altyapısı ile güvenli şekilde alınır.
+          </p>
 
-            <h2 class="landing-h2">İptal &amp; İade</h2>
-            <ul class="landing-bullets">
-              <li>Test başlatılmadan önce iade talebi değerlendirilebilir.</li>
-              <li>Test başlatıldıktan sonra iade yapılmaz.</li>
-            </ul>
-          </div>
+          <h2 class="landing-h2" style="margin-top:14px;">Kısa iptal-iade özeti</h2>
+          <ul class="landing-bullets">
+            <li>Tek kullanımlık kod <b>kullanılmadıysa</b> iade talebi değerlendirilebilir.</li>
+            <li>Kod <b>kullanıldıysa</b> (test başlatıldıysa) hizmet verilmiş sayılır ve iade yapılmaz.</li>
+          </ul>
         </div>
-      </section>
-    </main>
+      </div>
 
-    <footer class="site-footer">
-      <div class="footer-brand">OANDA Enneagram</div>
-      <div class="footer-text">Online Enneagram kişilik testi ve raporlama hizmeti.</div>
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="footer-brand">OANDA Enneagram</div>
+        <div class="footer-text">Online Enneagram kişilik testi ve raporlama hizmeti.</div>
 
-      <nav class="footer-links">
-        <a href="privacy_v3.html">Gizlilik Politikası</a>
-        <a href="refund_v3.html">İptal &amp; İade Şartları</a>
-        <a href="terms_v3.html">Kullanım Koşulları</a>
-      </nav>
+        <div class="footer-links">
+          <a href="privacy_v3.html">Gizlilik Politikası</a>
+          <a href="refund_v3.html">İptal &amp; İade Şartları</a>
+          <a href="terms_v3.html">Kullanım Koşulları</a>
+        </div>
 
-      <div class="footer-contact">
-        <span>E-posta:
+        <div class="footer-contact">
+          E-posta:
           <a href="mailto:oandaenneagram@gmail.com">oandaenneagram@gmail.com</a>
-        </span>
-      </div>
+        </div>
 
-      <div class="footer-small">
-        © 2025 OANDA Enneagram. Tüm hakları saklıdır.
-      </div>
-    </footer>
+        <div class="social-links">
+          <a href="https://www.facebook.com/oandapy" target="_blank" aria-label="Facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+          <a href="https://twitter.com/oandapy" target="_blank" aria-label="Twitter / X">
+            <i class="fa-brands fa-x-twitter"></i>
+          </a>
+          <a href="https://www.instagram.com/oandaenneagram" target="_blank" aria-label="Instagram">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+          <a href="https://www.linkedin.com/company/oandaprojeyonetimi/posts/?feedView=all"
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="LinkedIn">
+            <i class="fa-brands fa-linkedin-in"></i>
+          </a>
+        </div>
+      </footer>
+    </section>
   </div>
 
   <script>
-  (() => {
-    const btn = document.getElementById("startPayment");
-    const formMount = document.getElementById("iyzico-form");
+    const payBtn = document.getElementById("payBtn");
+    const emailEl = document.getElementById("email");
+    const statusEl = document.getElementById("status");
 
-    function setEnabled(enabled) {
-      btn.setAttribute("aria-disabled", enabled ? "false" : "true");
-      btn.style.pointerEvents = enabled ? "auto" : "none";
-      btn.style.opacity = enabled ? "1" : "0.6";
-    }
+    function setStatus(msg){ statusEl.innerHTML = msg ? msg : ""; }
 
-    // buton aktif
-    setEnabled(true);
+    payBtn.addEventListener("click", async () => {
+      const email = (emailEl.value || "").trim();
+      if (!email) {
+        alert("Lütfen e-posta adresinizi girin.");
+        emailEl.focus();
+        return;
+      }
 
-    // ödeme dönüşü → direkt teste yönlendir
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("success") === "1" && params.get("token")) {
-      alert("Ödeme alındı ✅ Teste yönlendiriliyorsunuz.");
-      const token = params.get("token");
-      setTimeout(() => {
-        window.location.href =
-          `/test_v3.html?token=${encodeURIComponent(token)}`;
-      }, 800);
-      return;
-    }
-
-    if (params.get("success") === "0") {
-      alert("Ödeme tamamlanamadı: " + (params.get("err") || "bilinmeyen hata"));
-    }
-
-    btn.addEventListener("click", async (e) => {
-      e.preventDefault();
-      if (formMount) formMount.innerHTML = "";
-
-      btn.textContent = "Ödeme hazırlanıyor…";
-      setEnabled(false);
+      payBtn.disabled = true;
+      payBtn.textContent = "Açılıyor…";
+      setStatus("Ödeme sayfası açılıyor…");
 
       try {
         const r = await fetch("/api/iyzico-init", {
           method: "POST",
-          headers: { "Content-Type": "application/json" }
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email })
         });
 
-        const data = await r.json();
+        const data = await r.json().catch(() => ({}));
 
         if (!r.ok) {
-  const detail =
-    (data?.error || "API error") +
-    (data?.status ? ` | status=${data.status}` : "") +
-    (data?.errorCode ? ` | code=${data.errorCode}` : "") +
-    (data?.errorMessage ? ` | msg=${data.errorMessage}` : "") +
-    (data?.errorGroup ? ` | group=${data.errorGroup}` : "") +
-    (data?.detail ? ` | detail=${data.detail}` : "") +
-    (data?.keys ? ` | keys=${Array.isArray(data.keys) ? data.keys.join(",") : String(data.keys)}` : "");
-  throw new Error(detail || `HTTP ${r.status}`);
-}
+          throw new Error(data?.error || data?.errorMessage || "Ödeme başlatılamadı.");
+        }
 
-        // iyzico ödeme sayfasına yönlendir
-        if (data?.paymentPageUrl) {
+        if (data.paymentPageUrl) {
           window.location.href = data.paymentPageUrl;
           return;
         }
 
-        // embedded form geldiyse sayfaya bas
-        if (data?.checkoutFormContent) {
-          formMount.innerHTML = data.checkoutFormContent;
-          btn.textContent = "Ödeme formu açıldı";
-          btn.style.pointerEvents = "none";
-          btn.style.opacity = "0.7";
-          return;
-        }
-
-        throw new Error("Ödeme başlatılamadı.");
-
+        throw new Error("İyzico yanıtı beklenmedik (paymentPageUrl yok).");
       } catch (err) {
         alert("Bir hata oldu: " + (err?.message || err));
-        btn.textContent = "Ödemeye Geç (iyzico)";
-        setEnabled(true);
+        setStatus("");
+      } finally {
+        payBtn.disabled = false;
+        payBtn.textContent = "Ödemeye Geç (iyzico)";
       }
     });
-  })();
   </script>
 </body>
 </html>
-

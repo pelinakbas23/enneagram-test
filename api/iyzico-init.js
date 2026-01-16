@@ -1,126 +1,90 @@
-// /api/iyzico-init.js
+// /api/iyzico-callback.js
 module.exports = async (req, res) => {
+  const redirect = (q) => {
+    res.statusCode = 302;
+    res.setHeader("Location", "/payment.html?" + q);
+    res.end();
+  };
+
   try {
-    if (req.method !== "POST") {
-      return res.status(405).json({ error: "Method not allowed" });
-    }
+    // 1) Token al
+    let token = null;
+    if (req.query?.token) token = req.query.token;
+    else if (req.body?.token) token = req.body.token;
+    else if (req.body?.checkoutFormToken) token = req.body.checkoutFormToken;
 
-    const apiKey = process.env.IYZICO_API_KEY;
-    const secretKey = process.env.IYZICO_SECRET_KEY;
-    const baseUrl = process.env.PUBLIC_BASE_URL; // örn: https://www.oandaenneagram.com
+    if (!token) return redirect("success=0&err=no_token");
 
-    if (!apiKey || !secretKey) {
-      return res.status(500).json({ error: "IYZICO env eksik" });
-    }
-    if (!baseUrl) {
-      return res.status(500).json({ error: "PUBLIC_BASE_URL env eksik" });
-    }
-
-    // iyzipay
-    let Iyzipay;
-    try {
-      Iyzipay = require("iyzipay");
-    } catch (e) {
-      return res.status(500).json({ error: "iyzipay paketi bulunamadı" });
-    }
-
+    // 2) iyzico retrieve
+    const Iyzipay = require("iyzipay");
     const iyzipay = new Iyzipay({
-      apiKey,
-      secretKey,
-      uri: "https://sandbox-api.iyzipay.com" // PROD'a geçince: https://api.iyzipay.com
+      apiKey: process.env.IYZICO_API_KEY,
+      secretKey: process.env.IYZICO_SECRET_KEY,
+      uri: "https://api.iyzipay.com",
     });
 
-    const conversationId =
-      "OID-" + Date.now() + "-" + Math.random().toString(16).slice(2);
-
-    const callbackUrl = `${baseUrl}/api/iyzico-callback`;
-
-    // Minimum request (senin fiyat/ürün bilgilerine göre uyarlayabilirsin)
-    const request = {
-      locale: Iyzipay.LOCALE.TR,
-      conversationId,
-      price: "1",              // ürün fiyatın
-      paidPrice: "1",
-      currency: Iyzipay.CURRENCY.TRY,
-      basketId: conversationId,
-      paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
-      callbackUrl,
-
-      buyer: {
-        id: "by1",
-        name: "OANDA",
-        surname: "User",
-        gsmNumber: "+905555555555",
-        email: "noreply@oandaenneagram.com",  // email zorunlu alanı doldurmak için sabit
-        identityNumber: "11111111111",
-        registrationAddress: "Istanbul",
-        ip: req.headers["x-forwarded-for"]?.split(",")[0] || req.socket.remoteAddress || "127.0.0.1",
-        city: "Istanbul",
-        country: "Turkey"
-      },
-
-      shippingAddress: {
-        contactName: "OANDA User",
-        city: "Istanbul",
-        country: "Turkey",
-        address: "Istanbul",
-        zipCode: "34000"
-      },
-
-      billingAddress: {
-        contactName: "OANDA User",
-        city: "Istanbul",
-        country: "Turkey",
-        address: "Istanbul",
-        zipCode: "34000"
-      },
-
-      basketItems: [
-        {
-          id: "enneagram-test",
-          name: "OANDA Enneagram Test",
-          category1: "Digital",
-          itemType: Iyzipay.BASKET_ITEM_TYPE.VIRTUAL,
-          price: "1"
-        }
-      ]
-    };
-
-iyzipay.checkoutFormInitialize.create(request, (err, result) => {
-  // 1) Node-level hata
-  if (err) {
-    return res.status(500).json({
-      error: "iyzico error (node)",
-      detail: String(err)
+    const retrieveResult = await new Promise((resolve, reject) => {
+      iyzipay.checkoutForm.retrieve({ token }, (err, result) => {
+        if (err) return reject(err);
+        resolve(result);
+      });
     });
-  }
 
-  // 2) iyzico response'unda failure
-  if (!result || result.status !== "success") {
-    return res.status(400).json({
-      error: "iyzico error (result)",
-      status: result && result.status,
-      errorCode: result && result.errorCode,
-      errorMessage: result && result.errorMessage,
-      errorGroup: result && result.errorGroup
-    });
-  }
+    const ok =
+      retrieveResult?.status === "success" &&
+      String(retrieveResult?.paymentStatus || "").toUpperCase() === "SUCCESS";
 
-  // 3) success ama beklenen alan yoksa
-  if (!result.paymentPageUrl && !result.checkoutFormContent) {
-    return res.status(500).json({
-      error: "iyzico success ama form yok",
-      keys: Object.keys(result || {})
-    });
-  }
+    if (!ok) return redirect("success=0&err=payment_not_success");
 
-  return res.status(200).json({
-    paymentPageUrl: result.paymentPageUrl || null,
-    checkoutFormContent: result.checkoutFormContent || null
-  });
-});
+    // 3) GAS url kontrol (MUTLAKA .../exec)
+    const GAS_URL = process.env.GAS_WEBAPP_URL;
+    if (!GAS_URL) return redirect("success=1&waiting=1&err=gas_url_missing");
 
+    // 4) Email: iyzico’dan al; boşsa GAS’tan token->email çek
+    let email = String(retrieveResult?.buyer?.email || "").trim();
+
+    // ✅ debugPing (GET)
+    try {
+      const pingUrl =
+        `${GAS_URL}?mode=debugPing` +
+        `&where=callback_enter` +
+        `&paymentToken=${encodeURIComponent(token)}` +
+        `&note=${encodeURIComponent("callback reached")}`;
+      await fetch(pingUrl);
+    } catch (_) {}
+
+    // ✅ Email yoksa token'dan email çek (GET)
+    if (!email) {
+      const getEmailUrl =
+        `${GAS_URL}?mode=getEmailByToken` +
+        `&paymentToken=${encodeURIComponent(token)}` +
+        `&where=callback` +
+        `&note=${encodeURIComponent("getEmailByToken")}`;
+
+      const r = await fetch(getEmailUrl);
+      const j = await r.json().catch(() => ({}));
+      if (j?.ok && j?.email) email = String(j.email).trim();
+    }
+
+    if (!email) return redirect("success=1&waiting=1&err=no_email");
+
+    // ✅ issueCode çağır (GET)
+    const issueUrl =
+      `${GAS_URL}?mode=issueCode` +
+      `&email=${encodeURIComponent(email)}` +
+      `&paymentToken=${encodeURIComponent(token)}` +
+      `&where=callback` +
+      `&note=${encodeURIComponent("issueCode")}`;
+
+    const gasResp = await fetch(issueUrl);
+    const gasJson = await gasResp.json().catch(() => ({}));
+
+    if (gasJson?.ok) {
+      return redirect("success=1&codeSent=1");
+    } else {
+      return redirect("success=1&waiting=1&err=issue_failed");
+    }
   } catch (e) {
-    return res.status(500).json({ error: e.message || String(e) });
+    return redirect("success=1&waiting=1&err=callback_server");
   }
 };
