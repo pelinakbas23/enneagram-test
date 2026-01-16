@@ -1750,3 +1750,7 @@ p, li, span, a, label{
   width: 100%;
   box-sizing: border-box;
 }
+
+.email-field, .intro-field { width: 100%; }
+#email { width: 100%; box-sizing: border-box; }
+

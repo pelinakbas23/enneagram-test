@@ -1,4 +1,4 @@
-const endpoint = "https://script.google.com/macros/s/AKfycbykZWQ-d7ctuLVJjG5s27Aj9FrcBGx_oXMX-QChSUQ/dev";
+const endpoint = "https://script.google.com/macros/s/AKfycbyInE7kxiGq36RnevNePgWKcFYkHf4riReSU9CReoycM-yb4X-Kco8uDFxsBBtUTm5A/exec";
 /* ==========================
    20 SORULUK ENNEAGRAM TESTİ SORULARI
    ========================== */
@@ -306,7 +306,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const nextBtn       = document.getElementById("next-btn");
   const submitBtn     = document.getElementById("submit-btn");
 
-  const accessCodeInput = document.getElementById("access-code");
+  //const accessCodeInput = document.getElementById("access-code");
 
   // Başlangıç görünürlük
   introScreen.style.display = "block";
@@ -429,76 +429,36 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Teste Başla
-// Teste Başla – sunucuya sormadan, sadece basit kontroller
-// Teste Başla – SUNUCUYA KOD DOĞRULAMA SORAR
 startTestBtn.addEventListener("click", () => {
   if (!introConsent.checked) {
     alert("Lütfen bilgilendirme metnini okuduğunuzu onaylayın.");
     return;
   }
 
-  const firstName  = document.getElementById("first-name").value.trim();
-  const lastName   = document.getElementById("last-name").value.trim();
-  const email      = document.getElementById("email").value.trim();
-  const accessCode = accessCodeInput.value.trim();
+  const firstName = document.getElementById("first-name").value.trim();
+  const lastName  = document.getElementById("last-name").value.trim();
 
-  if (!firstName || !lastName || !email) {
-    alert("Lütfen ad, soyad ve e-posta bilgilerini doldurun.");
+  if (!firstName || !lastName) {
+    alert("Lütfen ad ve soyad bilgilerinizi doldurun.");
     return;
   }
 
-  if (!accessCode) {
-    alert("Lütfen size verilen test kodunu girin.");
+  // Token yoksa teste başlatma
+  if (typeof PAYMENT_TOKEN === "undefined" || !PAYMENT_TOKEN) {
+    alert("Teste ödeme sonrası giriş yapabilirsiniz.");
+    window.location.href = "/payment.html";
     return;
   }
 
-  // Format kontrolü
-  const codePattern = /^OANDA-[A-Z0-9]{8}$/i;
-  if (!codePattern.test(accessCode)) {
-    alert("Lütfen geçerli formatta bir test kodu girin (örn: OANDA-5MSSHLU).");
-    return;
-  }
+  introScreen.style.display = "none";
+  testSection.style.display = "block";
+  navigation.style.display  = "flex";
+  resultDiv.style.display   = "none";
 
-  // 🔹 BURADA SUNUCUYA SORUYORUZ: BU KOD GEÇERLİ Mİ?
-  fetch(endpoint, {
-    method: "POST",
-    body: JSON.stringify({
-      mode: "verifyCode",
-      code: accessCode
-    })
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (!data.valid) {
-        if (data.reason === "used") {
-          alert("Bu kod daha önce kullanılmıştır. Lütfen yeni bir kod isteyin.");
-        } else if (data.reason === "not_found") {
-          alert("Bu kod geçerli değil. Lütfen doğru kodu girdiğinizden emin olun.");
-        } else if (data.reason === "empty") {
-          alert("Lütfen bir kod girin.");
-        } else {
-          alert("Kod doğrulanırken bir hata oluştu. Lütfen tekrar deneyin.");
-        }
-        return;
-      }
-
-      // ✅ KOD GEÇERLİ → TESTİ AÇ
-      introScreen.style.display = "none";
-      testSection.style.display = "block";
-      navigation.style.display  = "flex";
-      resultDiv.style.display   = "none";
-
-      currentQuestion = 0;
-      renderQuestion(currentQuestion);
-      
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    })
-    .catch(err => {
-      console.error("Kod doğrulama hatası:", err);
-      alert("Kod doğrulanırken teknik bir sorun oluştu. Lütfen tekrar deneyin.");
-    });
+  currentQuestion = 0;
+  renderQuestion(currentQuestion);
+  window.scrollTo({ top: 0, behavior: "smooth" });
 });
-
 
   // Sonraki
   nextBtn.addEventListener("click", () => {
@@ -548,8 +508,8 @@ submitBtn.addEventListener("click", () => {
 
   const firstName  = document.getElementById("first-name").value.trim();
   const lastName   = document.getElementById("last-name").value.trim();
-  const email      = document.getElementById("email").value.trim();
-  const accessCode = accessCodeInput.value.trim();
+  //const email      = document.getElementById("email").value.trim();
+  //const accessCode = accessCodeInput.value.trim();
 
   // 3) İlk 3 tipi bul
   const scoresWithTypes = scores
@@ -603,26 +563,24 @@ resultDiv.innerHTML = `
   window.scrollTo({ top: 0, behavior: "smooth" });
 
   // 6) Verileri Google Sheets'e gönder (arka planda)
-  fetch(endpoint, {
-    method: "POST",
-    body: JSON.stringify({
-      mode: "saveResult",
-      firstName,
-      lastName,
-      email,
-      code: accessCode,
+ fetch(endpoint, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    mode: "saveResult",
+    paymentToken: PAYMENT_TOKEN,   // 🔴 EN ÖNEMLİ SATIR
+    firstName,
+    lastName,
 
-      // Reliability için ham veri
-      answers,
-      scores,
+    answers,
+    scores,
 
-      // Rapor için ilk 3 tip
-      first:  top3[0].type,
-      second: top3[1].type,
-      third:  top3[2].type
-    })
-  }).catch(err => {
+    first:  top3[0].type,
+    second: top3[1].type,
+    third:  top3[2].type
+  })
+    }).catch(err => {
     console.error("Google Sheet'e yazarken hata:", err);
   });
 });
-}); // DOMContentLoaded'in kapanışı
+}); // DOMContentLoaded kapanışı
