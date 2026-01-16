@@ -1740,3 +1740,13 @@ p, li, span, a, label{
     grid-template-columns: 1fr;
   }
 }
+
+.email-field,
+.intro-field {
+  width: 100%;
+}
+
+.email-input {
+  width: 100%;
+  box-sizing: border-box;
+}
