@@ -36,50 +36,30 @@ module.exports = async (req, res) => {
     });
 
     const ok =
-      result &&
-      result.status === "success" &&
+      result && result.status === "success" &&
       String(result.paymentStatus || "").toUpperCase() === "SUCCESS";
 
     if (!ok) return redirectFail(result?.errorMessage || "payment_not_success");
 
-    // ✅ GAS'tan email çek (asıl kaynak)
-    const GAS_URL    = String(process.env.GAS_WEBAPP_URL || "").trim(); // .../exec
+    // ✅ Email’i GAS’tan çek (asıl kaynak burası)
+    const GAS_URL = String(process.env.GAS_WEBAPP_URL || "").trim();
     const GAS_SECRET = String(process.env.GAS_SECRET || "").trim();
 
     let email = "";
     if (GAS_URL && GAS_SECRET) {
+      const url =
+        `${GAS_URL}?mode=getEmailByToken` +
+        `&paymentToken=${encodeURIComponent(paymentToken)}` +
+        `&secret=${encodeURIComponent(GAS_SECRET)}`;
       try {
-        const r = await fetch(GAS_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            mode: "getEmailByToken",
-            secret: GAS_SECRET,
-            paymentToken
-          })
-        });
+        const r = await fetch(url);
         const j = await r.json().catch(() => ({}));
         if (j && j.ok && j.email) email = String(j.email).trim().toLowerCase();
       } catch (_) {}
     }
 
-    // fallback (iyzico bazen email döndürebilir)
-    if (!email) email = String(result?.buyer?.email || "").trim().toLowerCase();
-
-    // ✅ paid olarak işaretle
-    if (GAS_URL && GAS_SECRET) {
-      try {
-        await fetch(GAS_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            mode: "markPaid",
-            secret: GAS_SECRET,
-            paymentToken
-          })
-        });
-      } catch (_) {}
-    }
+    // Eğer email hâlâ yoksa, burada fail et (yoksa rapor asla gidemez)
+    if (!email) return redirectFail("email_not_found_in_gas");
 
     // ✅ teste yönlendir
     res.statusCode = 302;
@@ -89,4 +69,3 @@ module.exports = async (req, res) => {
     return redirectFail("cb_error");
   }
 };
-

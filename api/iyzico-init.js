@@ -10,19 +10,15 @@ module.exports = async (req, res) => {
     const apiKey = String(process.env.IYZICO_API_KEY || "").trim();
     const secretKey = String(process.env.IYZICO_SECRET_KEY || "").trim();
     const IYZICO_URI = String(process.env.IYZICO_URI || "").trim() || "https://api.iyzipay.com";
-
     if (!apiKey || !secretKey) {
       return res.status(500).json({ error: "IYZICO env eksik", hasApiKey: !!apiKey, hasSecretKey: !!secretKey });
     }
 
     const proto = String(req.headers["x-forwarded-proto"] || "https");
-    const host  = String(req.headers["x-forwarded-host"] || req.headers.host || "");
+    const host = String(req.headers["x-forwarded-host"] || req.headers.host || "");
     const baseFromReq = host ? `${proto}://${host}` : "";
     const PUBLIC_BASE_URL = String(process.env.PUBLIC_BASE_URL || "").trim() || baseFromReq;
-
-    if (!PUBLIC_BASE_URL) {
-      return res.status(500).json({ error: "BASEURL bulunamadı (PUBLIC_BASE_URL ve host boş)" });
-    }
+    if (!PUBLIC_BASE_URL) return res.status(500).json({ error: "BASEURL bulunamadı (PUBLIC_BASE_URL ve host boş)" });
 
     const callbackUrl = `${PUBLIC_BASE_URL}/api/iyzico-callback`;
 
@@ -33,7 +29,7 @@ module.exports = async (req, res) => {
     const Iyzipay = require("iyzipay");
     const iyzipay = new Iyzipay({ apiKey, secretKey, uri: IYZICO_URI });
 
-    const price = "1.00"; // TODO: kendi fiyatın
+    const price = "1.00";
 
     const request = {
       locale: Iyzipay.LOCALE.TR,
@@ -45,7 +41,6 @@ module.exports = async (req, res) => {
       basketId: `B${Date.now()}`,
       paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
       callbackUrl,
-
       buyer: {
         id: `BY_${Date.now()}`,
         name: "OANDA",
@@ -59,10 +54,8 @@ module.exports = async (req, res) => {
         country: "Turkey",
         zipCode: "34000"
       },
-
       shippingAddress: { contactName: "OANDA Enneagram", city: "Istanbul", country: "Turkey", address: "Online", zipCode: "34000" },
       billingAddress:  { contactName: "OANDA Enneagram", city: "Istanbul", country: "Turkey", address: "Online", zipCode: "34000" },
-
       basketItems: [
         { id: "TEST1", name: "OANDA Enneagram Test", category1: "Digital", itemType: Iyzipay.BASKET_ITEM_TYPE.VIRTUAL, price }
       ]
@@ -79,34 +72,25 @@ module.exports = async (req, res) => {
       });
     }
 
-    // ✅ Token'ı yakala (iyzico response'unda genelde "token" olur)
+    // ✅ TOKEN’ı AL (kritik)
     const paymentToken = String(result.token || result.checkoutFormToken || "").trim();
 
-    // ✅ token -> email kaydet (GAS)
-    const GAS_URL    = String(process.env.GAS_WEBAPP_URL || "").trim(); // .../exec
+    // ✅ GAS’a token→email kaydet
+    const GAS_URL = String(process.env.GAS_WEBAPP_URL || "").trim(); // .../exec
     const GAS_SECRET = String(process.env.GAS_SECRET || "").trim();
 
     if (GAS_URL && GAS_SECRET && paymentToken) {
-      try {
-        await fetch(GAS_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            mode: "storeTokenEmail",
-            secret: GAS_SECRET,
-            paymentToken,
-            email
-          })
-        });
-      } catch (_) {
-        // kaydetme başarısız olsa bile ödeme sayfasını açıyoruz
-      }
+      const url =
+        `${GAS_URL}?mode=storeTokenEmail` +
+        `&paymentToken=${encodeURIComponent(paymentToken)}` +
+        `&email=${encodeURIComponent(email)}` +
+        `&secret=${encodeURIComponent(GAS_SECRET)}`;
+      try { await fetch(url); } catch (_) {}
     }
 
     return res.status(200).json({
       paymentPageUrl: result.paymentPageUrl || "",
-      checkoutFormContent: result.checkoutFormContent || "",
-      paymentToken // debug istersen; istersen kaldır
+      checkoutFormContent: result.checkoutFormContent || ""
     });
   } catch (e) {
     return res.status(500).json({ error: "Server error", detail: String(e?.message || e) });

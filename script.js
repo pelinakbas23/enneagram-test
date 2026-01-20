@@ -1,4 +1,4 @@
-const endpoint = "https://script.google.com/macros/s/AKfycbxuz-AqSPu0t8P0tu92zqu0cOeuUoWCp9Ub183djyjmGvv5nRyW0CnfHOXku-YOSEGS/exec";
+const endpoint = "https://script.google.com/macros/s/AKfycbzpKcA3epsQCmERPvwmlO3oRS9r40iwcDA4to3kal8Qzv0zI10luw2bSwUtlk1EMER0/exec";
 /* ==========================
    20 SORULUK ENNEAGRAM TESTİ SORULARI
    ========================== */
@@ -292,7 +292,22 @@ const questions = [
    ========================== */
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Ekranlar
+  // ====== ENDPOINT ======
+  // Senin dosyada endpoint tanımlı olmalı. Yoksa buraya yaz:
+  // const endpoint = "https://script.google.com/macros/s/XXXX/exec";
+
+  // ====== TOKEN ZORUNLU ======
+  const urlParams = new URLSearchParams(window.location.search);
+  const PAYMENT_TOKEN_SAFE =
+    (typeof PAYMENT_TOKEN !== "undefined" ? PAYMENT_TOKEN : (urlParams.get("token") || "").trim());
+
+  if (!PAYMENT_TOKEN_SAFE) {
+    alert("Teste sadece ödeme sonrası giriş yapabilirsiniz.");
+    window.location.href = "/payment.html";
+    return;
+  }
+
+  // ====== DOM ======
   const introScreen  = document.getElementById("intro-screen");
   const startTestBtn = document.getElementById("start-test-btn");
   const introConsent = document.getElementById("intro-consent");
@@ -302,43 +317,41 @@ document.addEventListener("DOMContentLoaded", () => {
   const navigation    = document.getElementById("navigation");
   const resultDiv     = document.getElementById("result");
 
-  const prevBtn       = document.getElementById("prev-btn");
-  const nextBtn       = document.getElementById("next-btn");
-  const submitBtn     = document.getElementById("submit-btn");
+  const prevBtn   = document.getElementById("prev-btn");
+  const nextBtn   = document.getElementById("next-btn");
+  const submitBtn = document.getElementById("submit-btn");
 
-  //const accessCodeInput = document.getElementById("access-code");
-
-  // Başlangıç görünürlük
   introScreen.style.display = "block";
   testSection.style.display = "none";
   navigation.style.display  = "none";
   resultDiv.style.display   = "none";
 
-  // Checkbox → buton aktif/pasif
   introConsent.addEventListener("change", () => {
     startTestBtn.disabled = !introConsent.checked;
   });
 
-  // Test state
+  // ====== STATE ======
   let currentQuestion = 0;
-  const answers = questions.map(() => ({
-    col1: null,
-    col2: null,
-    col3: null
-  }));
+  const answers = questions.map(() => ({ col1: null, col2: null, col3: null }));
+
   function updateProgress(qIndex) {
     const total = questions.length;
     const current = qIndex + 1;
     const percent = Math.round((current / total) * 100);
 
-  document.getElementById("progress-text").textContent =
-    `Soru ${current} / ${total}`;
-  document.getElementById("progress-percent").textContent = `${percent}%`;
-  document.getElementById("progress-fill").style.width = `${percent}%`;
-}
+    const progressText = document.getElementById("progress-text");
+    const progressPercent = document.getElementById("progress-percent");
+    const progressFill = document.getElementById("progress-fill");
+
+    if (progressText) progressText.textContent = `Soru ${current} / ${total}`;
+    if (progressPercent) progressPercent.textContent = `${percent}%`;
+    if (progressFill) progressFill.style.width = `${percent}%`;
+  }
+
   function renderQuestion(qIndex) {
     const q = questions[qIndex];
     updateProgress(qIndex);
+
     testContainer.innerHTML = "";
 
     const div = document.createElement("div");
@@ -368,46 +381,41 @@ document.addEventListener("DOMContentLoaded", () => {
     const saved = answers[qIndex];
 
     q.options.forEach(opt => {
-  const textDiv = document.createElement("div");
-  textDiv.textContent = opt.text;
+      const textDiv = document.createElement("div");
+      textDiv.textContent = opt.text;
 
-  const input1 = document.createElement("input");
-  input1.type = "radio";
-  input1.name = `q${qIndex}_col1`;
-  input1.value = opt.type;
-  if (saved.col1 === opt.type) input1.checked = true;
+      const input1 = document.createElement("input");
+      input1.type = "radio";
+      input1.name = `q${qIndex}_col1`;
+      input1.value = opt.type;
+      if (saved.col1 === opt.type) input1.checked = true;
 
-  const input2 = document.createElement("input");
-  input2.type = "radio";
-  input2.name = `q${qIndex}_col2`;
-  input2.value = opt.type;
-  if (saved.col2 === opt.type) input2.checked = true;
+      const input2 = document.createElement("input");
+      input2.type = "radio";
+      input2.name = `q${qIndex}_col2`;
+      input2.value = opt.type;
+      if (saved.col2 === opt.type) input2.checked = true;
 
-  const input3 = document.createElement("input");
-  input3.type = "radio";
-  input3.name = `q${qIndex}_col3`;
-  input3.value = opt.type;
-  if (saved.col3 === opt.type) input3.checked = true;
+      const input3 = document.createElement("input");
+      input3.type = "radio";
+      input3.name = `q${qIndex}_col3`;
+      input3.value = opt.type;
+      if (saved.col3 === opt.type) input3.checked = true;
 
-  // 🔹 Aynı satırda sadece 1 seçim olsun:
-  const inputsRow = [input1, input2, input3];
-  inputsRow.forEach(input => {
-    input.addEventListener("change", () => {
-      if (!input.checked) return; // unchecked olayında dokunma
-      inputsRow.forEach(other => {
-        if (other !== input) {
-          other.checked = false;
-        }
+      // aynı satırda sadece 1 seçim (col1/col2/col3)
+      const rowInputs = [input1, input2, input3];
+      rowInputs.forEach(input => {
+        input.addEventListener("change", () => {
+          if (!input.checked) return;
+          rowInputs.forEach(other => { if (other !== input) other.checked = false; });
+        });
       });
+
+      optionsDiv.appendChild(textDiv);
+      optionsDiv.appendChild(input1);
+      optionsDiv.appendChild(input2);
+      optionsDiv.appendChild(input3);
     });
-  });
-
-  optionsDiv.appendChild(textDiv);
-  optionsDiv.appendChild(input1);
-  optionsDiv.appendChild(input2);
-  optionsDiv.appendChild(input3);
-});
-
 
     div.appendChild(optionsDiv);
     testContainer.appendChild(div);
@@ -419,63 +427,62 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function saveCurrentAnswers() {
     const qIndex = currentQuestion;
+
     const col1 = document.querySelector(`input[name="q${qIndex}_col1"]:checked`);
     const col2 = document.querySelector(`input[name="q${qIndex}_col2"]:checked`);
     const col3 = document.querySelector(`input[name="q${qIndex}_col3"]:checked`);
 
-    answers[qIndex].col1 = col1 ? parseInt(col1.value) : null;
-    answers[qIndex].col2 = col2 ? parseInt(col2.value) : null;
-    answers[qIndex].col3 = col3 ? parseInt(col3.value) : null;
+    answers[qIndex].col1 = col1 ? parseInt(col1.value, 10) : null;
+    answers[qIndex].col2 = col2 ? parseInt(col2.value, 10) : null;
+    answers[qIndex].col3 = col3 ? parseInt(col3.value, 10) : null;
   }
 
-  // Teste Başla
-startTestBtn.addEventListener("click", () => {
-  if (!introConsent.checked) {
-    alert("Lütfen bilgilendirme metnini okuduğunuzu onaylayın.");
-    return;
-  }
+  // ====== TESTE BAŞLA (TCKN zorunlu) ======
+  startTestBtn.addEventListener("click", () => {
+    if (!introConsent.checked) {
+      alert("Lütfen bilgilendirme metnini okuduğunuzu onaylayın.");
+      return;
+    }
 
-  const firstName = document.getElementById("first-name").value.trim();
-  const lastName  = document.getElementById("last-name").value.trim();
+    const firstName = (document.getElementById("first-name")?.value || "").trim();
+    const lastName  = (document.getElementById("last-name")?.value || "").trim();
+    const tckn      = (document.getElementById("tckn")?.value || "").trim();
 
-  if (!firstName || !lastName) {
-    alert("Lütfen ad ve soyad bilgilerinizi doldurun.");
-    return;
-  }
+    if (!firstName || !lastName) {
+      alert("Lütfen ad ve soyad bilgilerinizi doldurun.");
+      return;
+    }
+    if (!tckn) {
+      alert("TCKN zorunludur.");
+      return;
+    }
+    if (!/^\d{11}$/.test(tckn)) {
+      alert("TCKN 11 haneli olmalı (sadece rakam).");
+      return;
+    }
 
-  // Token yoksa teste başlatma
-  if (typeof PAYMENT_TOKEN === "undefined" || !PAYMENT_TOKEN) {
-    alert("Teste ödeme sonrası giriş yapabilirsiniz.");
-    window.location.href = "/payment.html";
-    return;
-  }
+    introScreen.style.display = "none";
+    testSection.style.display = "block";
+    navigation.style.display  = "flex";
+    resultDiv.style.display   = "none";
 
-  introScreen.style.display = "none";
-  testSection.style.display = "block";
-  navigation.style.display  = "flex";
-  resultDiv.style.display   = "none";
+    currentQuestion = 0;
+    renderQuestion(currentQuestion);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 
-  currentQuestion = 0;
-  renderQuestion(currentQuestion);
-  window.scrollTo({ top: 0, behavior: "smooth" });
-});
-
-  // Sonraki
   nextBtn.addEventListener("click", () => {
     saveCurrentAnswers();
-
     const a = answers[currentQuestion];
     if (!a.col1 || !a.col2 || !a.col3) {
       alert("Bu soru için 1., 2. ve 3. tercihlerini seçmelisiniz.");
       return;
     }
-
     currentQuestion++;
     renderQuestion(currentQuestion);
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
-  // Önceki
   prevBtn.addEventListener("click", () => {
     saveCurrentAnswers();
     if (currentQuestion > 0) {
@@ -485,102 +492,73 @@ startTestBtn.addEventListener("click", () => {
     }
   });
 
-  // SONUÇLARI GÖSTER — FİNAL VERSİYON
-submitBtn.addEventListener("click", () => {
-  saveCurrentAnswers();
+  submitBtn.addEventListener("click", () => {
+    saveCurrentAnswers();
 
-  // 1) Tüm sorular dolu mu?
-  for (let i = 0; i < answers.length; i++) {
-    const a = answers[i];
-    if (!a.col1 || !a.col2 || !a.col3) {
-      alert(`Lütfen Soru ${i + 1} için 1., 2. ve 3. tercihleri seç.`);
-      return;
+    for (let i = 0; i < answers.length; i++) {
+      const a = answers[i];
+      if (!a.col1 || !a.col2 || !a.col3) {
+        alert(`Lütfen Soru ${i + 1} için 1., 2. ve 3. tercihleri seç.`);
+        return;
+      }
     }
-  }
 
-  // 2) Skorları hesapla (1. tercih: 5 puan, 2. tercih: 3 puan, 3. tercih: 1 puan)
-  const scores = Array(9).fill(0);
-  answers.forEach(a => {
-    if (a.col1) scores[a.col1 - 1] += 5;
-    if (a.col2) scores[a.col2 - 1] += 3;
-    if (a.col3) scores[a.col3 - 1] += 1;
-  });
+    const scores = Array(9).fill(0);
+    answers.forEach(a => {
+      scores[a.col1 - 1] += 5;
+      scores[a.col2 - 1] += 3;
+      scores[a.col3 - 1] += 1;
+    });
 
-  const firstName  = document.getElementById("first-name").value.trim();
-  const lastName   = document.getElementById("last-name").value.trim();
-  //const email      = document.getElementById("email").value.trim();
-  //const accessCode = accessCodeInput.value.trim();
+    const scoresWithTypes = scores
+      .map((score, index) => ({ type: index + 1, score }))
+      .sort((a, b) => b.score - a.score);
 
-  // 3) İlk 3 tipi bul
-  const scoresWithTypes = scores
-    .map((score, index) => ({ type: index + 1, score }))
-    .sort((a, b) => b.score - a.score);
+    const top3 = scoresWithTypes.slice(0, 3);
 
-  const top3 = scoresWithTypes.slice(0, 3);
+    const firstName = (document.getElementById("first-name")?.value || "").trim();
+    const lastName  = (document.getElementById("last-name")?.value || "").trim();
+    const tckn      = (document.getElementById("tckn")?.value || "").trim();
 
-  // 4) Test ekranını gizle → sonuç ekranını gösterecek alanı temizle
-  testContainer.innerHTML = "";
-  navigation.style.display = "none";
+    testContainer.innerHTML = "";
+    navigation.style.display = "none";
 
-  // Tüm tiplerin puan listesi
-  const allScoresHtml = scores
-    .map((score, idx) => `<li>Tip ${idx + 1} — Puan: ${score}</li>`)
-    .join("");
+    const top3Html = top3.map(t => `<li>Tip ${t.type} — Puan: ${t.score}</li>`).join("");
+    const allScoresHtml = scores.map((s, i) => `<li>Tip ${i + 1} — Puan: ${s}</li>`).join("");
 
-  const top3Html = top3
-    .map(t => `<li>Tip ${t.type} — Puan: ${t.score}</li>`)
-    .join("");
+    resultDiv.innerHTML = `
+      <h2>Test Sonuçların</h2>
+      <p>${firstName} ${lastName}, testi tamamladığınız için teşekkürler.</p>
 
+      <h3>En Yüksek Puanlı 3 Tip</h3>
+      <ul class="score-list">${top3Html}</ul>
 
- // 5) Sonuç ekranı HTML'i
-resultDiv.innerHTML = `
-  <h2>Test Sonuçların</h2>
-  <p>${firstName} ${lastName}, OANDA Enneagram Testi'ni tamamladığınız için teşekkürler.</p>
+      <h3>Tüm Tip Puanların</h3>
+      <ul class="score-list">${allScoresHtml}</ul>
 
-  <div id="enneagram-wrapper">
-    <img src="Enneagram.png" alt="Enneagram diyagramı" class="enneagram-image" />
-  </div>
+      <p style="margin-top: 16px; font-size: 14px; font-weight: 600;">
+        📩 Detaylı raporunuz birkaç dakika içinde e-posta adresinize gönderilecektir.
+      </p>
+    `;
+    resultDiv.style.display = "block";
+    window.scrollTo({ top: 0, behavior: "smooth" });
 
-  <h3>En Yüksek Puanlı 3 Enneagram Tipiniz</h3>
-  <ul class="score-list">
-    ${top3Html}
-  </ul>
-
-  <h3>Tüm Enneagram Tip Puanlarınız</h3>
-  <ul class="score-list">
-    ${allScoresHtml}
-  </ul>
-
-  <div class="email-info">
-    <p style="margin-top: 20px; font-size: 15px; color: #05435F; font-weight: 600;">
-      📩 Detaylı Enneagram raporunuz birkaç dakika içinde mail adresinize gönderilecektir.
-    </p>
-  </div>
-`;
-
-
-  resultDiv.style.display = "block";
-  window.scrollTo({ top: 0, behavior: "smooth" });
-
-  // 6) Verileri Google Sheets'e gönder (arka planda)
- fetch(endpoint, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    mode: "saveResult",
-    paymentToken: PAYMENT_TOKEN,   // 🔴 EN ÖNEMLİ SATIR
-    firstName,
-    lastName,
-
-    answers,
-    scores,
-
-    first:  top3[0].type,
-    second: top3[1].type,
-    third:  top3[2].type
-  })
-    }).catch(err => {
-    console.error("Google Sheet'e yazarken hata:", err);
+    // ====== GOOGLE SHEETS'e kaydet (email token'dan bulunacak) ======
+    fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        mode: "saveResult",
+        paymentToken: PAYMENT_TOKEN_SAFE,
+        firstName,
+        lastName,
+        tckn,
+        answers,
+        scores,
+        first:  top3[0]?.type || "",
+        second: top3[1]?.type || "",
+        third:  top3[2]?.type || ""
+      })
+    }).catch(err => console.error("Sheet'e yazarken hata:", err));
   });
 });
-}); // DOMContentLoaded kapanışı

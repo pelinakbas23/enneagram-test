@@ -1,21 +1,12 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  ...
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const PAYMENT_TOKEN = (params.get("token") || "").trim();
-    if (!PAYMENT_TOKEN) {
-      // ödeme sonrası gelmediyse payment'e gönder
-      window.location.href = "/payment.html";
-    }
-  </script>
-</head>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>OANDA Enneagram Testi</title>
+
+  <!-- Font Awesome (tek kez) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <!-- Yazı tipi -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -26,7 +17,20 @@
   />
 
   <link rel="stylesheet" href="style_v3.css" />
+
+  <script>
+    // Token opsiyonel: varsa script.js kullanır, yoksa yine test açılabilir.
+    const params = new URLSearchParams(window.location.search);
+    const PAYMENT_TOKEN = (params.get("token") || "").trim();
+
+    if (!PAYMENT_TOKEN) {
+      console.warn("PAYMENT_TOKEN yok. Token olmadan test açıldı.");
+      // Eskiden burada payment.html'e zorla gönderiyordun. KALDIRDIK.
+      // window.location.href = "/payment.html";
+    }
+  </script>
 </head>
+
 <body>
   <div class="main-wrapper">
     <main>
@@ -34,8 +38,7 @@
       <section id="intro-screen" class="intro-card">
         <div class="intro-header-row">
           <img src="enneagram-logo.png" alt="OANDA Enneagram" class="intro-logo" />
-          <div>
-          </div>
+          <div></div>
         </div>
 
         <p class="intro-text">
@@ -60,24 +63,37 @@
           <span>Bilgilendirme metnini okudum ve kabul ediyorum.</span>
         </label>
 
+        <!-- FORM -->
         <div class="intro-form-row">
-  <div class="intro-field">
-    <label for="first-name">Ad</label>
-    <input type="text" id="first-name" placeholder="Adınız" />
-  </div>
-  <div class="intro-field">
-    <label for="last-name">Soyad</label>
-    <input type="text" id="last-name" placeholder="Soyadınız" />
-  </div>
+          <div class="intro-field">
+            <label for="first-name">Ad</label>
+            <input type="text" id="first-name" placeholder="Adınız" />
+          </div>
 
-  <!-- 🔥 BURAYA KOD ALANINI EKLİYORSUN -->
+          <div class="intro-field">
+            <label for="last-name">Soyad</label>
+            <input type="text" id="last-name" placeholder="Soyadınız" />
+          </div>
+
+          <div class="intro-field">
+            <label for="tckn">TCKN</label>
+            <input
+              type="text"
+              id="tckn"
+              placeholder="11 haneli"
+              inputmode="numeric"
+              maxlength="11"
+              autocomplete="off"
+            />
+          </div>
+        </div>
 
         <button id="start-test-btn" class="primary-btn" disabled>
           Teste Başla
         </button>
       </section>
 
-      <!-- TEST + SONUÇ SAYFASI (aynı section içinde) -->
+      <!-- TEST + SONUÇ -->
       <section id="test-section">
         <!-- PROGRESS -->
         <div class="progress-wrap" aria-label="Test ilerleme durumu">
@@ -85,7 +101,13 @@
             <span id="progress-text">Soru 1 / 20</span>
             <span id="progress-percent">0%</span>
           </div>
-          <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div
+            class="progress-bar"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+          >
             <div id="progress-fill" class="progress-fill"></div>
           </div>
         </div>
@@ -104,10 +126,11 @@
     </main>
   </div>
 
-  <footer></footer>
-
+  <!-- JS -->
   <script src="script.js"></script>
-<footer class="site-footer">
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
     <div class="footer-brand">OANDA Enneagram</div>
     <div class="footer-text">Online Enneagram kişilik testi ve raporlama hizmeti.</div>
 
@@ -118,25 +141,26 @@
     </nav>
 
     <div class="footer-contact">
-      <span>E-posta: <a href="mailto:@oandaenneagram@gmail.com">oandaenneagram@gmail.com</a></span>
+      <span>E-posta: <a href="mailto:oandaenneagram@gmail.com">oandaenneagram@gmail.com</a></span>
     </div>
-     <div class="social-links">
-    <a href="https://www.facebook.com/oandapy" target="_blank" aria-label="Facebook">
-      <i class="fa-brands fa-facebook-f"></i>
-    </a>
-    <a href="https://twitter.com/oandapy" target="_blank" aria-label="Twitter / X">
-      <i class="fa-brands fa-x-twitter"></i>
-    </a>
-    <a href="https://www.instagram.com/oandaenneagram" target="_blank" aria-label="Instagram">
-      <i class="fa-brands fa-instagram"></i>
-    </a>
-    <a href="https://www.linkedin.com/company/oandaprojeyonetimi/posts/?feedView=all" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-  <i class="fa-brands fa-linkedin-in"></i>
-</a>
-  </div>
-</div>
+
+    <div class="social-links">
+      <a href="https://www.facebook.com/oandapy" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+        <i class="fa-brands fa-facebook-f"></i>
+      </a>
+      <a href="https://twitter.com/oandapy" target="_blank" rel="noopener noreferrer" aria-label="Twitter / X">
+        <i class="fa-brands fa-x-twitter"></i>
+      </a>
+      <a href="https://www.instagram.com/oandaenneagram" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <i class="fa-brands fa-instagram"></i>
+      </a>
+      <a href="https://www.linkedin.com/company/oandaprojeyonetimi/posts/?feedView=all" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+        <i class="fa-brands fa-linkedin-in"></i>
+      </a>
+    </div>
 
     <div class="footer-small">© 2025 OANDA Enneagram. Tüm hakları saklıdır.</div>
   </footer>
 </body>
 </html>
+
