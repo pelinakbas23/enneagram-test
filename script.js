@@ -1,4 +1,4 @@
-const endpoint = "https://script.google.com/macros/s/AKfycbzdCX-jP8Z9pkcpM40IBYJBnS3mGPh0puKaR5RyyfM_SF4YRnWkwmE1bEVATt0vzRcJ/exec";
+const endpoint = "https://script.google.com/macros/s/AKfycbxu16RB4E9X8FMK5GufFub0U8jQmAaodiOiMu3SAan-CBWPGuykDWKUMIW0uYX9mwcK/exec";
 /* ==========================
    20 SORULUK ENNEAGRAM TESTİ SORULARI
    ========================== */
@@ -515,7 +515,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const allScoresHtml = scores.map((s, i) => `<li>Tip ${i + 1} — Puan: ${s}</li>`).join("");
 
     resultDiv.innerHTML = `
-      <h2>Test Sonuçların</h2>
+      <h2>Test Sonuçlarınız</h2>
       <p>Testi tamamladığınız için teşekkürler.</p>
 
       <h3>En Yüksek Puanlı 3 Tip</h3>
