@@ -29,7 +29,7 @@ module.exports = async (req, res) => {
     const Iyzipay = require("iyzipay");
     const iyzipay = new Iyzipay({ apiKey, secretKey, uri: IYZICO_URI });
 
-    const price = "1.00";
+    const price = "150.00";
 
     const request = {
       locale: Iyzipay.LOCALE.TR,
