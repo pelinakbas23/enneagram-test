@@ -59,7 +59,13 @@ module.exports = async (req, res) => {
     }
 
     // Eğer email hâlâ yoksa, burada fail et (yoksa rapor asla gidemez)
-    if (!email) return redirectFail("email_not_found_in_gas");
+    //if (!email) return redirectFail("email_not_found_in_gas");
+    // email bulamasak bile teste geç
+res.statusCode = 302;
+res.setHeader("Location", "/test_v3.html?token=" + encodeURIComponent(paymentToken));
+res.end();
+return;
+
 
     // ✅ teste yönlendir
     res.statusCode = 302;
