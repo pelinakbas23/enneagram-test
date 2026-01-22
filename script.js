@@ -563,7 +563,8 @@ submitBtn.disabled = true;
 
 fetch(endpoint, {
   method: "POST",
-  headers: { "Content-Type": "application/json" },
+  // ✅ JSON preflight tetiklemesin diye:
+  headers: { "Content-Type": "text/plain;charset=utf-8" },
   body: JSON.stringify({
     mode: "saveResult",
     paymentToken: PAYMENT_TOKEN_SAFE,
@@ -578,7 +579,7 @@ fetch(endpoint, {
     third:  top3[2]?.type || ""
   })
 })
-    .then(r => r.json())
+  .then(r => r.json())
   .then(j => { if (!j.ok) console.error("GAS error:", j); })
   .catch(err => console.error("Sheet'e yazarken hata:", err))
   .finally(() => { submitBtn.disabled = false; });
