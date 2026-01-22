@@ -112,22 +112,21 @@
 </div>
 
 <script>
-  const payBtn = document.getElementById("payBtn");
+  const payBtn  = document.getElementById("payBtn");
   const emailEl = document.getElementById("email");
-  const firstNameEl = document.getElementById("firstName");
-  const lastNameEl  = document.getElementById("lastName");
   const statusEl = document.getElementById("status");
 
   function setStatus(msg){ statusEl.textContent = msg || ""; }
 
   payBtn.addEventListener("click", async () => {
-    const firstName = (firstNameEl.value || "").trim();
-    const lastName  = (lastNameEl.value || "").trim();
-    const email     = (emailEl.value || "").trim();
+    const email = (emailEl.value || "").trim().toLowerCase();
 
-    if (!firstName) { alert("Lütfen adınızı girin."); firstNameEl.focus(); return; }
-    if (!lastName)  { alert("Lütfen soyadınızı girin."); lastNameEl.focus(); return; }
-    if (!email)     { alert("Lütfen e-posta adresinizi girin."); emailEl.focus(); return; }
+    if (!email) { alert("Lütfen e-posta adresinizi girin."); emailEl.focus(); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert("Lütfen geçerli bir e-posta adresi girin.");
+      emailEl.focus();
+      return;
+    }
 
     payBtn.disabled = true;
     payBtn.textContent = "Açılıyor…";
@@ -137,7 +136,7 @@
       const r = await fetch("/api/iyzico-init", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, firstName, lastName })
+        body: JSON.stringify({ email })
       });
 
       const data = await r.json().catch(() => ({}));
@@ -158,6 +157,5 @@
     }
   });
 </script>
-
 </body>
 </html>
