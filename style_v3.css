@@ -1754,3 +1754,25 @@ p, li, span, a, label{
 .email-field, .intro-field { width: 100%; }
 #email { width: 100%; box-sizing: border-box; }
 
+.price-box{
+  margin: 14px 0 18px;
+  padding: 12px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #f9fafb;
+}
+.price-label{
+  font-size: 13px;
+  color: #6b7280;
+}
+.price-value{
+  font-size: 26px;
+  font-weight: 700;
+  color: #123047;
+}
+.price-note{
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
