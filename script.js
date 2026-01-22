@@ -1,4 +1,4 @@
-const endpoint = "https://script.google.com/macros/s/AKfycbzpKcA3epsQCmERPvwmlO3oRS9r40iwcDA4to3kal8Qzv0zI10luw2bSwUtlk1EMER0/exec";
+const endpoint = "https://script.google.com/macros/s/AKfycbzdCX-jP8Z9pkcpM40IBYJBnS3mGPh0puKaR5RyyfM_SF4YRnWkwmE1bEVATt0vzRcJ/exec";
 /* ==========================
    20 SORULUK ENNEAGRAM TESTİ SORULARI
    ========================== */
@@ -292,10 +292,6 @@ const questions = [
    ========================== */
 
 document.addEventListener("DOMContentLoaded", () => {
-  // ====== ENDPOINT ======
-  // Senin dosyada endpoint tanımlı olmalı. Yoksa buraya yaz:
-  // const endpoint = "https://script.google.com/macros/s/XXXX/exec";
-
   // ====== TOKEN ZORUNLU ======
   const urlParams = new URLSearchParams(window.location.search);
   const PAYMENT_TOKEN_SAFE =
@@ -437,23 +433,17 @@ document.addEventListener("DOMContentLoaded", () => {
     answers[qIndex].col3 = col3 ? parseInt(col3.value, 10) : null;
   }
 
-  // ====== TESTE BAŞLA (TCKN zorunlu) ======
+  // ====== TESTE BAŞLA (SADECE TCKN zorunlu) ======
   startTestBtn.addEventListener("click", () => {
     if (!introConsent.checked) {
       alert("Lütfen bilgilendirme metnini okuduğunuzu onaylayın.");
       return;
     }
 
-    const firstName = (document.getElementById("first-name")?.value || "").trim();
-    const lastName  = (document.getElementById("last-name")?.value || "").trim();
-    const tckn      = (document.getElementById("tckn")?.value || "").trim();
+    const tckn = (document.getElementById("tckn")?.value || "").trim();
 
-    if (!firstName || !lastName) {
-      alert("Lütfen ad ve soyad bilgilerinizi doldurun.");
-      return;
-    }
     if (!tckn) {
-      alert("TCKN zorunludur.");
+      alert("Fatura oluşturabilmemiz için TCKN girilmesi zorunludur.");
       return;
     }
     if (!/^\d{11}$/.test(tckn)) {
@@ -516,9 +506,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const top3 = scoresWithTypes.slice(0, 3);
 
-    const firstName = (document.getElementById("first-name")?.value || "").trim();
-    const lastName  = (document.getElementById("last-name")?.value || "").trim();
-    const tckn      = (document.getElementById("tckn")?.value || "").trim();
+    const tckn = (document.getElementById("tckn")?.value || "").trim();
 
     testContainer.innerHTML = "";
     navigation.style.display = "none";
@@ -528,7 +516,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     resultDiv.innerHTML = `
       <h2>Test Sonuçların</h2>
-      <p>${firstName} ${lastName}, testi tamamladığınız için teşekkürler.</p>
+      <p>Testi tamamladığınız için teşekkürler.</p>
 
       <h3>En Yüksek Puanlı 3 Tip</h3>
       <ul class="score-list">${top3Html}</ul>
@@ -550,8 +538,6 @@ document.addEventListener("DOMContentLoaded", () => {
       body: JSON.stringify({
         mode: "saveResult",
         paymentToken: PAYMENT_TOKEN_SAFE,
-        firstName,
-        lastName,
         tckn,
         answers,
         scores,

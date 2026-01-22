@@ -5,28 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>OANDA Enneagram Testi</title>
 
-  <!-- Font Awesome (tek kez) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-  <!-- Yazı tipi -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
     rel="stylesheet"
   />
-
   <link rel="stylesheet" href="style_v3.css" />
 
   <script>
-    // Token opsiyonel: varsa script.js kullanır, yoksa yine test açılabilir.
+    // ✅ PRODUCTION: token ZORUNLU
     const params = new URLSearchParams(window.location.search);
     const PAYMENT_TOKEN = (params.get("token") || "").trim();
 
     if (!PAYMENT_TOKEN) {
-      console.warn("PAYMENT_TOKEN yok. Token olmadan test açıldı.");
-      // Eskiden burada payment.html'e zorla gönderiyordun. KALDIRDIK.
-      // window.location.href = "/payment.html";
+      alert("Teste sadece ödeme sonrası giriş yapabilirsiniz.");
+      window.location.href = "/payment.html";
     }
   </script>
 </head>
@@ -45,17 +40,7 @@
           <strong>OANDA Enneagram Kişilik Testi’ne hoş geldiniz.</strong><br><br>
           Bu test 20 sorudan oluşur ve her soruda 9 farklı ifade yer alır.<br>
           Lütfen her soruda kendinize en uygun bulduğunuz 3 ifadeyi seçin ve bunları
-          1. Tercih, 2. Tercih, 3. Tercih şeklinde önceliklendirin.<br><br>
-          Test yaklaşık 20 dakika sürer.<br><br>
-          Enneagram değerlendirmesinin güvenilir olması için testi dikkat dağıtıcı
-          unsurlardan uzak, sakin ve mümkünse tek başınıza olduğunuz bir ortamda
-          çözmeniz önerilir. Konsantrasyonu veya duygu durumunu etkileyen maddeler
-          (örneğin alkol, bazı ilaçlar vb.) sonuçların geçerliliğini etkileyebilir.
-        </p>
-
-        <p class="intro-text">
-          Lütfen testi başlatmadan önce bilgilendirme metnini okuduğunuzu onaylayın
-          ve iletişim bilgilerinizi girin.
+          1. Tercih, 2. Tercih, 3. Tercih şeklinde önceliklendirin.
         </p>
 
         <label class="intro-consent-row">
@@ -88,26 +73,17 @@
           </div>
         </div>
 
-        <button id="start-test-btn" class="primary-btn" disabled>
-          Teste Başla
-        </button>
+        <button id="start-test-btn" class="primary-btn" disabled>Teste Başla</button>
       </section>
 
       <!-- TEST + SONUÇ -->
       <section id="test-section">
-        <!-- PROGRESS -->
         <div class="progress-wrap" aria-label="Test ilerleme durumu">
           <div class="progress-top">
             <span id="progress-text">Soru 1 / 20</span>
             <span id="progress-percent">0%</span>
           </div>
-          <div
-            class="progress-bar"
-            role="progressbar"
-            aria-valuemin="0"
-            aria-valuemax="100"
-            aria-valuenow="0"
-          >
+          <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
             <div id="progress-fill" class="progress-fill"></div>
           </div>
         </div>
@@ -120,45 +96,20 @@
           <button id="submit-btn" class="nav-btn">Sonuçları Göster</button>
         </div>
 
-        <!-- Sonuçlar burada gösterilecek, başta gizli -->
         <div id="result" class="result-card" style="display:none;"></div>
       </section>
     </main>
   </div>
 
-  <!-- JS -->
   <script src="script.js"></script>
 
-  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="footer-brand">OANDA Enneagram</div>
-    <div class="footer-text">Online Enneagram kişilik testi ve raporlama hizmeti.</div>
-
     <nav class="footer-links" aria-label="Yasal bağlantılar">
       <a href="privacy_v3.html">Gizlilik Politikası</a>
       <a href="refund_v3.html">İptal &amp; İade Şartları</a>
       <a href="terms_v3.html">Kullanım Koşulları</a>
     </nav>
-
-    <div class="footer-contact">
-      <span>E-posta: <a href="mailto:oandaenneagram@gmail.com">oandaenneagram@gmail.com</a></span>
-    </div>
-
-    <div class="social-links">
-      <a href="https://www.facebook.com/oandapy" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-        <i class="fa-brands fa-facebook-f"></i>
-      </a>
-      <a href="https://twitter.com/oandapy" target="_blank" rel="noopener noreferrer" aria-label="Twitter / X">
-        <i class="fa-brands fa-x-twitter"></i>
-      </a>
-      <a href="https://www.instagram.com/oandaenneagram" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-        <i class="fa-brands fa-instagram"></i>
-      </a>
-      <a href="https://www.linkedin.com/company/oandaprojeyonetimi/posts/?feedView=all" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-        <i class="fa-brands fa-linkedin-in"></i>
-      </a>
-    </div>
-
     <div class="footer-small">© 2025 OANDA Enneagram. Tüm hakları saklıdır.</div>
   </footer>
 </body>
