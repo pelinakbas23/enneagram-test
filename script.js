@@ -1,4 +1,4 @@
-const endpoint = "https://script.google.com/macros/s/AKfycbzwlxg2nAMTFcPfPkJwZyLPBheWYRQdNj2UCoys2ec_yE2ZQcspdJJwDdZHvXP1H7Ku/exec";
+const endpoint = "https://script.google.com/macros/s/AKfycbzc8xsiDX4QAJ-5aP7Ke5VgFCt38kbjyMuIrMocNeltnkSLWNg5QF7I9Dl_H3-gPmgg/exec";
 /* ==========================
    20 SORULUK ENNEAGRAM TESTİ SORULARI
    ========================== */
@@ -434,32 +434,54 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ====== TESTE BAŞLA (SADECE TCKN zorunlu) ======
-  startTestBtn.addEventListener("click", () => {
-    if (!introConsent.checked) {
-      alert("Lütfen bilgilendirme metnini okuduğunuzu onaylayın.");
-      return;
-    }
+  // ====== TESTE BAŞLA (Ad+Soyad+Email+TCKN zorunlu) ======
+startTestBtn.addEventListener("click", () => {
+  if (!introConsent.checked) {
+    alert("Lütfen bilgilendirme metnini okuduğunuzu onaylayın.");
+    return;
+  }
 
-    const tckn = (document.getElementById("tckn")?.value || "").trim();
+  const firstName = (document.getElementById("first-name")?.value || "").trim();
+  const lastName  = (document.getElementById("last-name")?.value || "").trim();
+  const email     = (document.getElementById("email")?.value || "").trim().toLowerCase();
+  const tckn      = (document.getElementById("tckn")?.value || "").trim();
 
-    if (!tckn) {
-      alert("Fatura oluşturabilmemiz için TCKN girilmesi zorunludur.");
-      return;
-    }
-    if (!/^\d{11}$/.test(tckn)) {
-      alert("TCKN 11 haneli olmalı (sadece rakam).");
-      return;
-    }
+  if (!firstName || firstName.length < 2) {
+    alert("Lütfen adınızı girin.");
+    return;
+  }
+  if (!lastName || lastName.length < 2) {
+    alert("Lütfen soyadınızı girin.");
+    return;
+  }
+  if (!email) {
+    alert("Lütfen e-posta adresinizi girin.");
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    alert("Lütfen geçerli bir e-posta adresi girin.");
+    return;
+  }
 
-    introScreen.style.display = "none";
-    testSection.style.display = "block";
-    navigation.style.display  = "flex";
-    resultDiv.style.display   = "none";
+  if (!tckn) {
+    alert("Fatura oluşturabilmemiz için TCKN girilmesi zorunludur.");
+    return;
+  }
+  if (!/^\d{11}$/.test(tckn)) {
+    alert("TCKN 11 haneli olmalı (sadece rakam).");
+    return;
+  }
 
-    currentQuestion = 0;
-    renderQuestion(currentQuestion);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
+  introScreen.style.display = "none";
+  testSection.style.display = "block";
+  navigation.style.display  = "flex";
+  resultDiv.style.display   = "none";
+
+  currentQuestion = 0;
+  renderQuestion(currentQuestion);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
 
   nextBtn.addEventListener("click", () => {
     saveCurrentAnswers();
@@ -532,19 +554,34 @@ document.addEventListener("DOMContentLoaded", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
 
     // ====== GOOGLE SHEETS'e kaydet (email token'dan bulunacak) ======
-    fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        mode: "saveResult",
-        paymentToken: PAYMENT_TOKEN_SAFE,
-        tckn,
-        answers,
-        scores,
-        first:  top3[0]?.type || "",
-        second: top3[1]?.type || "",
-        third:  top3[2]?.type || ""
-      })
-    }).catch(err => console.error("Sheet'e yazarken hata:", err));
-  });
-});
+    
+const firstName = (document.getElementById("first-name")?.value || "").trim();
+const lastName  = (document.getElementById("last-name")?.value || "").trim();
+const email     = (document.getElementById("email")?.value || "").trim().toLowerCase();
+
+submitBtn.disabled = true;
+
+fetch(endpoint, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    mode: "saveResult",
+    paymentToken: PAYMENT_TOKEN_SAFE,
+    firstName,
+    lastName,
+    email,
+    tckn,
+    answers,
+    scores,
+    first:  top3[0]?.type || "",
+    second: top3[1]?.type || "",
+    third:  top3[2]?.type || ""
+  })
+})
+    .then(r => r.json())
+  .then(j => { if (!j.ok) console.error("GAS error:", j); })
+  .catch(err => console.error("Sheet'e yazarken hata:", err))
+  .finally(() => { submitBtn.disabled = false; });
+
+  }); // ✅ submitBtn.addEventListener kapanışı
+});   // ✅ DOMContentLoaded kapanışı
