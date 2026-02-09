@@ -545,18 +545,16 @@ fetch(endpoint, {
   // ✅ JSON preflight tetiklemesin diye:
   headers: { "Content-Type": "text/plain;charset=utf-8" },
   body: JSON.stringify({
-    mode: "saveResult",
-    paymentToken: PAYMENT_TOKEN_SAFE,
-    firstName,
-    lastName,
-    email,
-    tckn,
-    answers,
-    scores,
-    first:  top3[0]?.type || "",
-    second: top3[1]?.type || "",
-    third:  top3[2]?.type || ""
-  })
+  mode: "saveResult",
+  firstName,
+  lastName,
+  email,
+  answers,
+  scores,
+  first:  top3[0]?.type || "",
+  second: top3[1]?.type || "",
+  third:  top3[2]?.type || ""
+})
 })
   .then(r => r.json())
   .then(j => { if (!j.ok) console.error("GAS error:", j); })
