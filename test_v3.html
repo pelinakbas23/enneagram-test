@@ -24,17 +24,7 @@
     .invoice-note b{ color:#123047; }
   </style>
 
-  <script>
-    // ✅ PRODUCTION: token ZORUNLU
-    const params = new URLSearchParams(window.location.search);
-    const PAYMENT_TOKEN = (params.get("token") || "").trim();
 
-    if (!PAYMENT_TOKEN) {
-      alert("Teste sadece ödeme sonrası giriş yapabilirsiniz.");
-      window.location.href = "/payment.html";
-    }
-  </script>
-</head>
 
 <body>
   <div class="main-wrapper">
@@ -90,31 +80,6 @@
               autocomplete="email"
               inputmode="email"
             />
-            <div class="invoice-note">
-              <b>Not:</b> Test sonucunuz ve e-Arşiv faturanız bu e-posta adresine gönderilecektir.
-            </div>
-          </div>
-
-          <div class="intro-field">
-            <label for="tckn">TCKN (e-Arşiv fatura için zorunlu)</label>
-            <input
-              type="text"
-              id="tckn"
-              placeholder="11 haneli TCKN"
-              inputmode="numeric"
-              maxlength="11"
-              pattern="\d{11}"
-              title="TCKN 11 haneli olmalı"
-              autocomplete="off"
-            />
-            <div class="invoice-note">
-              <b>Not:</b> TCKN yalnızca <b>fatura düzenlemek</b> amacıyla alınır.
-              Test sonucunuzun hesaplanmasıyla ilgili değildir.
-            </div>
-          </div>
-
-        </div>
-
         <button id="start-test-btn" class="primary-btn" disabled>Teste Başla</button>
       </section>
 
@@ -149,35 +114,24 @@
       v = (v || "").trim();
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
     }
-    function isValidTckn(v) {
-      v = (v || "").trim();
-      return /^\d{11}$/.test(v);
-    }
-
+    
     function updateStartButtonState() {
       const consent = document.getElementById("intro-consent")?.checked;
 
       const fn = (document.getElementById("first-name")?.value || "").trim();
       const ln = (document.getElementById("last-name")?.value || "").trim();
       const em = (document.getElementById("email")?.value || "").trim();
-      const tc = (document.getElementById("tckn")?.value || "").trim();
 
       const ok =
         !!consent &&
         fn.length >= 2 &&
         ln.length >= 2 &&
-        isValidEmail(em) &&
-        isValidTckn(tc);
+        isValidEmail(em)
 
       const btn = document.getElementById("start-test-btn");
       if (btn) btn.disabled = !ok;
     }
 
-    document.addEventListener("input", (e) => {
-      if (["first-name","last-name","email","tckn"].includes(e.target?.id)) {
-        updateStartButtonState();
-      }
-    });
     document.addEventListener("change", (e) => {
       if (e.target?.id === "intro-consent") updateStartButtonState();
     });

@@ -293,15 +293,6 @@ const questions = [
 
 document.addEventListener("DOMContentLoaded", () => {
   // ====== TOKEN ZORUNLU ======
-  const urlParams = new URLSearchParams(window.location.search);
-  const PAYMENT_TOKEN_SAFE =
-    (typeof PAYMENT_TOKEN !== "undefined" ? PAYMENT_TOKEN : (urlParams.get("token") || "").trim());
-
-  if (!PAYMENT_TOKEN_SAFE) {
-    alert("Teste sadece ödeme sonrası giriş yapabilirsiniz.");
-    window.location.href = "/payment.html";
-    return;
-  }
 
   // ====== DOM ======
   const introScreen  = document.getElementById("intro-screen");
