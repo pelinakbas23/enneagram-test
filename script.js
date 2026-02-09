@@ -557,9 +557,14 @@ fetch(endpoint, {
 })
 })
   .then(r => r.json())
-  .then(j => { if (!j.ok) console.error("GAS error:", j); })
-  .catch(err => console.error("Sheet'e yazarken hata:", err))
-  .finally(() => { submitBtn.disabled = false; });
+  .then(j => {
+  if (!j.ok) {
+    console.error("GAS error JSON:", j);
+    alert("GAS hata: " + (j.error || "bilinmeyen") + (j.detail ? ("\n" + j.detail) : ""));
+  } else {
+    console.log("GAS ok:", j);
+  }
+})
 
-  }); // ✅ submitBtn.addEventListener kapanışı
 });   // ✅ DOMContentLoaded kapanışı
+})
