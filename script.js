@@ -435,7 +435,6 @@ startTestBtn.addEventListener("click", () => {
   const firstName = (document.getElementById("first-name")?.value || "").trim();
   const lastName  = (document.getElementById("last-name")?.value || "").trim();
   const email     = (document.getElementById("email")?.value || "").trim().toLowerCase();
-  const tckn      = (document.getElementById("tckn")?.value || "").trim();
 
   if (!firstName || firstName.length < 2) {
     alert("Lütfen adınızı girin.");
@@ -451,15 +450,6 @@ startTestBtn.addEventListener("click", () => {
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     alert("Lütfen geçerli bir e-posta adresi girin.");
-    return;
-  }
-
-  if (!tckn) {
-    alert("Fatura oluşturabilmemiz için TCKN girilmesi zorunludur.");
-    return;
-  }
-  if (!/^\d{11}$/.test(tckn)) {
-    alert("TCKN 11 haneli olmalı (sadece rakam).");
     return;
   }
 
@@ -518,8 +508,6 @@ startTestBtn.addEventListener("click", () => {
       .sort((a, b) => b.score - a.score);
 
     const top3 = scoresWithTypes.slice(0, 3);
-
-    const tckn = (document.getElementById("tckn")?.value || "").trim();
 
     testContainer.innerHTML = "";
     navigation.style.display = "none";

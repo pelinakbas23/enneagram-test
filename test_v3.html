@@ -110,34 +110,41 @@
 
   <!-- ✅ Start butonu aktif/pasif kontrolü -->
   <script>
-    function isValidEmail(v) {
-      v = (v || "").trim();
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  function isValidEmail(v) {
+    v = (v || "").trim();
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  }
+
+  function updateStartButtonState() {
+    const consent = document.getElementById("intro-consent")?.checked;
+
+    const fn = (document.getElementById("first-name")?.value || "").trim();
+    const ln = (document.getElementById("last-name")?.value || "").trim();
+    const em = (document.getElementById("email")?.value || "").trim();
+
+    const ok =
+      !!consent &&
+      fn.length >= 2 &&
+      ln.length >= 2 &&
+      isValidEmail(em);
+
+    const btn = document.getElementById("start-test-btn");
+    if (btn) btn.disabled = !ok;
+  }
+
+  document.addEventListener("input", (e) => {
+    if (["first-name","last-name","email"].includes(e.target?.id)) {
+      updateStartButtonState();
     }
-    
-    function updateStartButtonState() {
-      const consent = document.getElementById("intro-consent")?.checked;
+  });
 
-      const fn = (document.getElementById("first-name")?.value || "").trim();
-      const ln = (document.getElementById("last-name")?.value || "").trim();
-      const em = (document.getElementById("email")?.value || "").trim();
+  document.addEventListener("change", (e) => {
+    if (e.target?.id === "intro-consent") updateStartButtonState();
+  });
 
-      const ok =
-        !!consent &&
-        fn.length >= 2 &&
-        ln.length >= 2 &&
-        isValidEmail(em)
+  document.addEventListener("DOMContentLoaded", updateStartButtonState);
+</script>
 
-      const btn = document.getElementById("start-test-btn");
-      if (btn) btn.disabled = !ok;
-    }
-
-    document.addEventListener("change", (e) => {
-      if (e.target?.id === "intro-consent") updateStartButtonState();
-    });
-
-    document.addEventListener("DOMContentLoaded", updateStartButtonState);
-  </script>
 
   <script src="script.js"></script>
 
