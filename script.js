@@ -586,3 +586,4 @@ fetch(endpoint, {
 
   }); // ✅ submitBtn.addEventListener kapanışı
 });   // ✅ DOMContentLoaded kapanışı
+
