@@ -42,11 +42,10 @@
  <li><i class="fa-solid fa-file-lines"></i> <span><strong>Testi tamamladıktan sonra, </strong>sonuçlarına göre hazırlanan kişisel OANDA Enneagram Kişilik Testi raporu e-postana hemen gönderilir. </span></li>
  </ul>
 
- <div class="landing-actions" style="margin-top:16px;">
- <a class="btn-primary" href="payment.html">Teste Başla</a>
- </div>
- </div>
- </div>
+ <div class="landing-actions" style="margin-top:16px; display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
+  <a class="btn-primary" href="payment.html">Teste Başla</a>
+
+</div>
  <section class="enneagram-intro">
 
  <h2 class="landing-h2 enneagram-title">
@@ -456,7 +455,7 @@ kendilerini daha net görmelerine yardımcı olmak için geliştirdik.
  </nav>
 
  <div class="footer-contact">
- <span>E-posta: <a href="mailto:oandaenneagram@gmail.com">oandaenneagram@gmail.com</a></span>
+ <span>E-posta: <a href="/cdn-cgi/l/email-protection#82ede3ece6e3e7ecece7e3e5f0e3efc2e5efe3ebeeace1edef"><span class="__cf_email__" data-cfemail="7a151b141e1b1f14141f1b1d081b173a1d171b131654191517">[email&#160;protected]</span></a></span>
  </div>
 
  <div class="social-links">
@@ -468,7 +467,10 @@ kendilerini daha net görmelerine yardımcı olmak için geliştirdik.
 
  <div class="footer-small">© 2026 OANDA Enneagram. Tüm hakları saklıdır.</div>
  </footer>
- <script>
+
+ <script src="//code.tidio.co/nrojdufualsqrnuhw9egxgbl6lc4lowo.js" async></script>
+ 
+ <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ------------------------------
  CAROUSEL (güvenli)
 ------------------------------ */
@@ -703,17 +705,4 @@ updatePreview();
  return r.json();
  })
  .then((d) => {
- items = d.data || [];
- idx = 0;
- render();
- startAuto();
- })
- .catch((e) => {
- console.error("Testimonials fetch error:", e);
- quoteEl.textContent = "Yorumlar şu an yüklenemedi.";
- whoEl.textContent = "—";
- countEl.textContent = "";
- });
- 
-})();
-</script>
+ items
