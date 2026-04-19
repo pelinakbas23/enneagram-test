@@ -1,34 +1,187 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-26SKL6XK12"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-26SKL6XK12');
+  </script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OANDA Enneagram Testi</title>
+  <title>OANDA Enneagram • Test</title>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
-  <link rel="stylesheet" href="style_v3.css" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <style>
-    .invoice-note{
-      margin-top: 10px;
-      font-size: 13px;
-      color: #4b5563;
-      line-height: 1.4;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0f2235;
+      --navy-mid: #1a3a55;
+      --gold: #c9a96e;
+      --gold-light: #e8d5b0;
+      --cream: #faf7f2;
+      --cream-dark: #f0ebe1;
+      --text: #1a2b3c;
+      --text-muted: #5a7080;
+      --white: #ffffff;
+      --radius: 12px;
     }
-    .invoice-note b{ color:#123047; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+    .site-header {
+      background: var(--navy);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-logo { display: flex; align-items: center; gap: 12px; }
+    .header-logo img { height: 32px;  }
+    .header-logo-text { font-family: 'DM Serif Display', serif; color: var(--white); font-size: 17px; }
+
+    /* MAIN */
+    main { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 40px 24px 64px; }
+
+    /* INTRO CARD */
+    #intro-screen {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 40px;
+      width: 100%;
+      max-width: 560px;
+      box-shadow: 0 2px 24px rgba(15,34,53,0.08);
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .intro-logo-row {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 28px; padding-bottom: 24px;
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+    }
+    .intro-logo-row img { height: 36px; }
+    .intro-logo-name { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--navy); }
+
+    .intro-kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .intro-title { font-family: 'DM Serif Display', serif; font-size: 24px; color: var(--navy); margin-bottom: 14px; }
+    .intro-desc { font-size: 14px; color: var(--text-muted); line-height: 1.75; margin-bottom: 24px; }
+
+    /* CONSENT */
+    .consent-row {
+      display: flex; align-items: flex-start; gap: 10px;
+      background: var(--cream); border-radius: 8px;
+      padding: 14px 16px; margin-bottom: 24px; cursor: pointer;
+    }
+    .consent-row input[type="checkbox"] { margin-top: 2px; accent-color: var(--navy); flex-shrink: 0; }
+    .consent-row span { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+    /* FORM */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .form-field { display: flex; flex-direction: column; gap: 6px; }
+    .form-field.full { grid-column: 1 / -1; }
+    .form-label { font-size: 12px; font-weight: 600; color: var(--navy); }
+    .form-input {
+      padding: 11px 14px; border: 1.5px solid rgba(0,0,0,0.12);
+      border-radius: 8px; font-family: 'DM Sans', sans-serif;
+      font-size: 14px; color: var(--text); background: var(--white);
+      transition: border-color 0.2s;
+    }
+    .form-input:focus { outline: none; border-color: var(--navy); }
+    .form-hint { font-size: 11px; color: var(--text-muted); line-height: 1.5; margin-top: 4px; }
+
+    /* START BUTTON */
+    .btn-start {
+      width: 100%; padding: 15px;
+      background: var(--gold); color: var(--navy);
+      font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 15px;
+      border: none; border-radius: 10px; cursor: pointer;
+      transition: background 0.2s, transform 0.15s; margin-top: 8px;
+    }
+    .btn-start:hover:not(:disabled) { background: var(--gold-light); transform: translateY(-1px); }
+    .btn-start:disabled { background: #ddd; color: #999; cursor: not-allowed; }
+
+    /* TEST SECTION */
+    #test-section { width: 100%; max-width: 680px; }
+
+    .progress-wrap {
+      background: var(--white); border-radius: var(--radius);
+      padding: 16px 20px; margin-bottom: 20px;
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 1px 8px rgba(15,34,53,0.05);
+    }
+    .progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .progress-top span { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+    .progress-bar {
+      height: 6px; background: var(--cream-dark); border-radius: 3px; overflow: hidden;
+    }
+    .progress-fill { height: 100%; background: var(--gold); border-radius: 3px; transition: width 0.3s ease; width: 0%; }
+
+    #test-container {
+      background: var(--white); border-radius: var(--radius);
+      padding: 28px; margin-bottom: 16px;
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 1px 8px rgba(15,34,53,0.05);
+    }
+
+    /* Navigation */
+    #navigation {
+      display: flex; gap: 10px; justify-content: flex-end; margin-bottom: 20px;
+    }
+    .nav-btn {
+      padding: 11px 22px; border-radius: 8px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: background 0.2s, color 0.2s;
+      border: 1.5px solid rgba(0,0,0,0.12); background: var(--white); color: var(--text);
+    }
+    .nav-btn:hover { background: var(--cream-dark); }
+    #submit-btn { background: var(--navy); color: var(--white); border-color: var(--navy); }
+    #submit-btn:hover { background: var(--navy-mid); }
+
+    /* Result */
+    .result-card {
+      background: var(--white); border-radius: var(--radius);
+      padding: 32px; border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 2px 16px rgba(15,34,53,0.08);
+    }
+
+    /* FOOTER */
+    .site-footer { background: var(--navy); padding: 20px 32px; text-align: center; margin-top: auto; }
+    .footer-brand { font-family: 'DM Serif Display', serif; color: var(--white); font-size: 16px; margin-bottom: 10px; }
+    .footer-links { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
+    .footer-links a { font-size: 12px; color: rgba(255,255,255,0.4); text-decoration: none; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-small { font-size: 12px; color: rgba(255,255,255,0.25); }
+
+    @media (max-width: 560px) {
+      #intro-screen { padding: 28px 20px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-field.full { grid-column: 1; }
+      .site-header { padding: 14px 20px; }
+      .header-logo-text { display: none; }
+      #navigation { justify-content: stretch; }
+      .nav-btn { flex: 1; text-align: center; }
+    }
   </style>
 
   <script>
-    // ✅ PRODUCTION: token ZORUNLU
     const params = new URLSearchParams(window.location.search);
     const PAYMENT_TOKEN = (params.get("token") || "").trim();
-
     if (!PAYMENT_TOKEN) {
       alert("Teste sadece ödeme sonrası giriş yapabilirsiniz.");
       window.location.href = "/payment.html";
@@ -37,165 +190,120 @@
 </head>
 
 <body>
-  <div class="main-wrapper">
-    <main>
-      <!-- GİRİŞ EKRANI -->
-      <section id="intro-screen" class="intro-card">
-        <div class="intro-header-row">
-          <img src="enneagram-logo.png" alt="OANDA Enneagram" class="intro-logo" />
-          <div></div>
-        </div>
 
-        <p class="intro-text">
-          <strong>OANDA Enneagram Kişilik Testi’ne hoş geldiniz.</strong><br><br>
-          Bu test 20 sorudan oluşur ve her soruda 9 farklı ifade yer alır.<br>
-          Lütfen her soruda kendinize en uygun bulduğunuz 3 ifadeyi seçin ve bunları
-          1. Tercih, 2. Tercih, 3. Tercih şeklinde önceliklendirin.
-        </p>
-
-        <label class="intro-consent-row">
-          <input type="checkbox" id="intro-consent" />
-          <span>Bilgilendirme metnini okudum ve kabul ediyorum.</span>
-        </label>
-
-        <!-- FORM -->
-        <div class="intro-form-row">
-
-          <div class="intro-field">
-            <label for="first-name">Ad</label>
-            <input
-              type="text"
-              id="first-name"
-              placeholder="Adınız"
-              autocomplete="given-name"
-            />
-          </div>
-
-          <div class="intro-field">
-            <label for="last-name">Soyad</label>
-            <input
-              type="text"
-              id="last-name"
-              placeholder="Soyadınız"
-              autocomplete="family-name"
-            />
-          </div>
-
-          <div class="intro-field">
-            <label for="email">E-posta</label>
-            <input
-              type="email"
-              id="email"
-              placeholder="ornek@mail.com"
-              autocomplete="email"
-              inputmode="email"
-            />
-            <div class="invoice-note">
-              <b>Not:</b> Test sonucunuz ve e-Arşiv faturanız bu e-posta adresine gönderilecektir.
-            </div>
-          </div>
-
-          <div class="intro-field">
-            <label for="tckn">TCKN (e-Arşiv fatura için zorunlu)</label>
-            <input
-              type="text"
-              id="tckn"
-              placeholder="11 haneli TCKN"
-              inputmode="numeric"
-              maxlength="11"
-              pattern="\d{11}"
-              title="TCKN 11 haneli olmalı"
-              autocomplete="off"
-            />
-            <div class="invoice-note">
-              <b>Not:</b> TCKN yalnızca <b>fatura düzenlemek</b> amacıyla alınır.
-              Test sonucunuzun hesaplanmasıyla ilgili değildir.
-            </div>
-          </div>
-
-        </div>
-
-        <button id="start-test-btn" class="primary-btn" disabled>Teste Başla</button>
-      </section>
-
-      <!-- TEST + SONUÇ -->
-      <section id="test-section">
-        <div class="progress-wrap" aria-label="Test ilerleme durumu">
-          <div class="progress-top">
-            <span id="progress-text">Soru 1 / 20</span>
-            <span id="progress-percent">0%</span>
-          </div>
-          <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-            <div id="progress-fill" class="progress-fill"></div>
-          </div>
-        </div>
-
-        <div id="test-container"></div>
-
-        <div id="navigation">
-          <button id="prev-btn" class="nav-btn">Önceki</button>
-          <button id="next-btn" class="nav-btn">Sonraki</button>
-          <button id="submit-btn" class="nav-btn">Sonuçları Göster</button>
-        </div>
-
-        <div id="result" class="result-card" style="display:none;"></div>
-      </section>
-    </main>
+<header class="site-header">
+  <div class="header-logo"><span class="header-logo-text">OANDA Enneagram Kişilik Testi</span>
+    
+    
   </div>
+</header>
 
-  <!-- ✅ Start butonu aktif/pasif kontrolü -->
-  <script>
-    function isValidEmail(v) {
-      v = (v || "").trim();
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-    }
-    function isValidTckn(v) {
-      v = (v || "").trim();
-      return /^\d{11}$/.test(v);
-    }
+<main>
 
-    function updateStartButtonState() {
-      const consent = document.getElementById("intro-consent")?.checked;
+  <!-- GİRİŞ EKRANI -->
+  <section id="intro-screen">
+    <div class="intro-logo-row">
+      
+      
+    </div>
 
-      const fn = (document.getElementById("first-name")?.value || "").trim();
-      const ln = (document.getElementById("last-name")?.value || "").trim();
-      const em = (document.getElementById("email")?.value || "").trim();
-      const tc = (document.getElementById("tckn")?.value || "").trim();
+    <div class="intro-kicker">Kişilik Testi</div>
+    <h1 class="intro-title">Teste Hoş Geldiniz</h1>
+    <p class="intro-desc">
+      Bu test 20 sorudan oluşur ve her soruda 9 farklı ifade yer alır.
+      Her soruda kendinize en uygun 3 ifadeyi seçin ve bunları
+      1. Tercih, 2. Tercih, 3. Tercih şeklinde önceliklendirin.
+    </p>
 
-      const ok =
-        !!consent &&
-        fn.length >= 2 &&
-        ln.length >= 2 &&
-        isValidEmail(em) &&
-        isValidTckn(tc);
+    <label class="consent-row" for="intro-consent">
+      <input type="checkbox" id="intro-consent" />
+      <span>Bilgilendirme metnini okudum ve kabul ediyorum.</span>
+    </label>
 
-      const btn = document.getElementById("start-test-btn");
-      if (btn) btn.disabled = !ok;
-    }
+    <div class="form-grid">
+      <div class="form-field">
+        <label class="form-label" for="first-name">Ad</label>
+        <input class="form-input" type="text" id="first-name" placeholder="Adınız" autocomplete="given-name" />
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="last-name">Soyad</label>
+        <input class="form-input" type="text" id="last-name" placeholder="Soyadınız" autocomplete="family-name" />
+      </div>
+      <div class="form-field full">
+        <label class="form-label" for="email">E-posta</label>
+        <input class="form-input" type="email" id="email" placeholder="ornek@mail.com" autocomplete="email" inputmode="email" />
+        <span class="form-hint">Test sonucunuz ve e-Arşiv faturanız bu adrese gönderilecektir.</span>
+      </div>
+      <div class="form-field full">
+        <label class="form-label" for="tckn">TCKN <span style="font-weight:400; color:var(--text-muted);">(e-Arşiv fatura için zorunlu)</span></label>
+        <input class="form-input" type="text" id="tckn" placeholder="11 haneli TCKN" inputmode="numeric" maxlength="11" pattern="\d{11}" autocomplete="off" />
+        <span class="form-hint">TCKN yalnızca fatura düzenlemek amacıyla alınır. Test sonucunuzla ilgili değildir.</span>
+      </div>
+    </div>
 
-    document.addEventListener("input", (e) => {
-      if (["first-name","last-name","email","tckn"].includes(e.target?.id)) {
-        updateStartButtonState();
-      }
-    });
-    document.addEventListener("change", (e) => {
-      if (e.target?.id === "intro-consent") updateStartButtonState();
-    });
+    <button id="start-test-btn" class="btn-start" disabled>Teste Başla →</button>
+  </section>
 
-    document.addEventListener("DOMContentLoaded", updateStartButtonState);
-  </script>
+  <!-- TEST + SONUÇ -->
+  <section id="test-section" style="display:none;">
+    <div class="progress-wrap" aria-label="Test ilerleme durumu">
+      <div class="progress-top">
+        <span id="progress-text">Soru 1 / 20</span>
+        <span id="progress-percent">0%</span>
+      </div>
+      <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div id="progress-fill" class="progress-fill"></div>
+      </div>
+    </div>
 
-  <script src="script.js"></script>
+    <div id="test-container"></div>
 
-  <footer class="site-footer">
-    <div class="footer-brand">OANDA Enneagram</div>
-    <nav class="footer-links" aria-label="Yasal bağlantılar">
-      <a href="privacy_v3.html">Gizlilik Politikası</a>
-      <a href="refund_v3.html">İptal &amp; İade Şartları</a>
-      <a href="terms_v3.html">Kullanım Koşulları</a>
-    </nav>
-    <div class="footer-small">© 2026 OANDA Enneagram. Tüm hakları saklıdır.</div>
-  </footer>
+    <div id="navigation">
+      <button id="prev-btn" class="nav-btn">← Önceki</button>
+      <button id="next-btn" class="nav-btn">Sonraki →</button>
+      <button id="submit-btn" class="nav-btn">Sonuçları Göster</button>
+    </div>
+
+    <div id="result" class="result-card" style="display:none;"></div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-brand">OANDA Enneagram</div>
+  <nav class="footer-links">
+    <a href="privacy_v3.html">Gizlilik Politikası</a>
+    <a href="refund_v3.html">İptal & İade Şartları</a>
+    <a href="terms_v3.html">Kullanım Koşulları</a>
+  </nav>
+  <div class="footer-small">© 2026 OANDA Enneagram. Tüm hakları saklıdır.</div>
+</footer>
+
+<script>
+  function isValidEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((v || "").trim()); }
+  function isValidTckn(v) { return /^\d{11}$/.test((v || "").trim()); }
+
+  function updateStartButtonState() {
+    const consent = document.getElementById("intro-consent")?.checked;
+    const fn = (document.getElementById("first-name")?.value || "").trim();
+    const ln = (document.getElementById("last-name")?.value || "").trim();
+    const em = (document.getElementById("email")?.value || "").trim();
+    const tc = (document.getElementById("tckn")?.value || "").trim();
+    const ok = !!consent && fn.length >= 2 && ln.length >= 2 && isValidEmail(em) && isValidTckn(tc);
+    const btn = document.getElementById("start-test-btn");
+    if (btn) btn.disabled = !ok;
+  }
+
+  document.addEventListener("input", (e) => {
+    if (["first-name","last-name","email","tckn"].includes(e.target?.id)) updateStartButtonState();
+  });
+  document.addEventListener("change", (e) => {
+    if (e.target?.id === "intro-consent") updateStartButtonState();
+  });
+  document.addEventListener("DOMContentLoaded", updateStartButtonState);
+</script>
+
+<script src="script.js"></script>
+
 </body>
 </html>
-

@@ -1,137 +1,270 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-26SKL6XK12"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-26SKL6XK12');
+  </script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OANDA Enneagram • Ödeme ve Teste Giriş</title>
+  <title>OANDA Enneagram • Ödeme</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
-  <link rel="stylesheet" href="style_v3.css" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
-    .page-title{
-      margin: 10px 0 14px;
-      font-size: 34px;
-      line-height: 1.15;
-      font-weight: 700;
-      color: #123047;
-      letter-spacing: -0.02em;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0f2235;
+      --navy-mid: #1a3a55;
+      --gold: #c9a96e;
+      --gold-light: #e8d5b0;
+      --cream: #faf7f2;
+      --cream-dark: #f0ebe1;
+      --text: #1a2b3c;
+      --text-muted: #5a7080;
+      --white: #ffffff;
+      --radius: 12px;
+      --green: #2d7a4f;
     }
-    .landing-block .landing-h2{
-      font-size: 18px;
-      font-weight: 600;
-      margin: 0 0 10px 0;
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
-    .landing-steps{ margin-top: 0; }
-    .landing-actions{ margin-top: 14px; }
-    .status-line{
-      margin-top: 10px;
-      font-size: 13px;
-      color: #4b5563;
+
+    /* HEADER */
+    .site-header {
+      background: var(--navy);
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-    .status-line b{ color:#123047; }
-    .email-field{ margin-top: 12px; max-width: 520px; }
-    .email-field .intro-field{ width: 100%; max-width: 520px; }
-    .payment-band img{ display:block; width:100%; height:auto; }
+    .header-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .header-logo img { height: 44px;  }
+    .header-logo-text { font-family: "DM Serif Display", serif; color: var(--white); font-size: 17px; letter-spacing: 0.01em; }
+    .header-back { font-size: 13px; color: rgba(255,255,255,0.55); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
+    .header-back:hover { color: var(--gold); }
+
+    /* MAIN */
+    .page-body {
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 48px 24px 64px;
+      gap: 32px;
+    }
+
+    /* PAYMENT CARD */
+    .payment-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 40px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 2px 24px rgba(15,34,53,0.08);
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .card-header { margin-bottom: 28px; padding-bottom: 24px; border-bottom: 1px solid rgba(0,0,0,0.07); }
+    .card-kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    .card-title { font-family: 'DM Serif Display', serif; font-size: 26px; color: var(--navy); line-height: 1.2; margin-bottom: 6px; }
+    .card-sub { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+    /* PRICE */
+    .price-row {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--cream); border-radius: var(--radius);
+      padding: 16px 20px; margin-bottom: 24px;
+    }
+    .price-row-left { font-size: 14px; color: var(--text-muted); }
+    .price-row-left strong { display: block; font-size: 15px; color: var(--navy); font-weight: 600; }
+    .price-amount { font-family: 'DM Serif Display', serif; font-size: 32px; color: var(--navy); }
+
+    /* STEPS */
+    .steps { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+    .step { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--text-muted); }
+    .step-num { width: 24px; height: 24px; border-radius: 50%; background: var(--navy); color: var(--white); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+    /* FORM */
+    .form-section { margin-bottom: 20px; }
+    .form-label { display: block; font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+    .form-input {
+      width: 100%; padding: 13px 16px;
+      border: 1.5px solid rgba(0,0,0,0.12); border-radius: 10px;
+      font-family: 'DM Sans', sans-serif; font-size: 15px;
+      color: var(--text); background: var(--white); transition: border-color 0.2s;
+    }
+    .form-input:focus { outline: none; border-color: var(--navy); }
+    .form-hint { font-size: 12px; color: var(--text-muted); margin-top: 6px; line-height: 1.5; }
+
+    /* BUTTON */
+    .btn-pay {
+      width: 100%; padding: 16px;
+      background: var(--gold); color: var(--navy);
+      font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 16px;
+      border: none; border-radius: 10px; cursor: pointer;
+      transition: background 0.2s, transform 0.15s; margin-bottom: 14px;
+    }
+    .btn-pay:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .btn-pay:disabled { background: #ccc; color: #888; cursor: not-allowed; transform: none; }
+
+    .security-note { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
+    .security-note i { color: var(--green); }
+    .status-line { font-size: 13px; color: var(--text-muted); text-align: center; min-height: 20px; margin-top: 8px; }
+
+    .payment-logos { border-top: 1px solid rgba(0,0,0,0.07); padding-top: 20px; text-align: center; }
+    .payment-logos img { max-width: 220px; opacity: 0.55; }
+
+    /* SIDEBAR */
+    .sidebar { width: 100%; max-width: 300px; display: flex; flex-direction: column; gap: 16px; padding-top: 8px; }
+    .sidebar-card { background: var(--white); border-radius: var(--radius); padding: 20px; border: 1px solid rgba(0,0,0,0.06); }
+    .sidebar-card h3 { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .sidebar-card h3 i { color: var(--gold); font-size: 14px; }
+    .sidebar-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .sidebar-list li { font-size: 13px; color: var(--text-muted); line-height: 1.5; display: flex; align-items: flex-start; gap: 8px; }
+    .sidebar-list li::before { content: ''; width: 5px; height: 5px; background: var(--gold); border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+    .refund-note { font-size: 12px; color: var(--text-muted); line-height: 1.6; padding-top: 12px; border-top: 1px solid rgba(0,0,0,0.06); margin-top: 12px; }
+
+    /* FOOTER */
+    .site-footer { background: var(--navy); padding: 24px 32px; text-align: center; }
+    .footer-links { display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 10px; }
+    .footer-links a { font-size: 12px; color: rgba(255,255,255,0.4); text-decoration: none; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-small { font-size: 12px; color: rgba(255,255,255,0.25); }
+
+    /* RESPONSIVE */
+    @media (max-width: 780px) {
+      .page-body { flex-direction: column; align-items: center; padding: 32px 16px 48px; }
+      .sidebar { max-width: 480px; }
+      .payment-card { padding: 28px 24px; }
+    }
+    @media (max-width: 480px) {
+      .site-header { padding: 14px 20px; }
+      .header-logo-text { display: none; }
+    }
   </style>
 </head>
 
 <body>
-<div class="main-wrapper">
-<section class="intro-card landing-card">
 
-  <div class="intro-header-row">
-    <img src="enneagram-logo.png" alt="ENNEAGRAM" class="intro-logo" onerror="this.style.display='none'"/>
-    <div>
-      <div class="intro-title">OANDA ENNEAGRAM</div>
-      <div class="intro-subtitle">KİŞİLİK TESTİ VE SONUÇ RAPORU</div>
+<!-- HEADER -->
+<header class="site-header">
+  <a href="index.html" class="header-logo">
+    
+    
+  </a>
+  <a href="index.html" class="header-back">
+    <i class="fa-solid fa-arrow-left"></i> Ana sayfaya dön
+  </a>
+</header>
+
+<!-- MAIN -->
+<div class="page-body">
+
+  <!-- ÖDEME KARTI -->
+  <div class="payment-card">
+    <div class="card-header">
+      <div class="card-kicker">Enneagram Kişilik Testi</div>
+      <h1 class="card-title">Ödeme ve Teste Giriş</h1>
+      <p class="card-sub">E-posta adresini gir, ödemeyi tamamla — test hemen başlasın.</p>
+    </div>
+
+    <div class="price-row">
+      <div class="price-row-left">
+        <strong>OANDA Enneagram Testi</strong>
+        Tek seferlik ödeme • Kişisel rapor dahil
+      </div>
+      <div class="price-amount">150 TL</div>
+    </div>
+
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div>E-posta adresini gir</div>
+      <div class="step"><div class="step-num">2</div>iyzico ile güvenli ödeme yap</div>
+      <div class="step"><div class="step-num">3</div>20 dakikada testi tamamla, rapor e-postana gelsin</div>
+    </div>
+
+    <div class="form-section">
+      <label class="form-label" for="email">E-posta adresin</label>
+      <input class="form-input" id="email" type="email" placeholder="ornek@mail.com" autocomplete="email" inputmode="email" />
+      <p class="form-hint">Test sonuç raporu bu adrese gönderilecek. Spam klasörünü de kontrol etmeyi unutma.</p>
+    </div>
+
+    <button class="btn-pay" id="payBtn" type="button">Ödemeye Geç →</button>
+    <div class="status-line" id="status"></div>
+
+    <div class="security-note">
+      <i class="fa-solid fa-shield-halved"></i>
+      Ödemen iyzico altyapısıyla şifrelenerek işlenir. Kart bilgilerin saklanmaz.
+    </div>
+
+    <div class="payment-logos">
+      <img src="logo_band_colored@1X.png" alt="iyzico Visa MasterCard American Express Troy" onerror="this.style.display='none'" />
     </div>
   </div>
 
-  <h1 class="page-title">Ödeme ve Teste Giriş</h1>
-
-  <div class="landing-grid">
-
-    <!-- SOL -->
-    <div class="landing-block">
-      <h2 class="landing-h2">Ödeme nasıl yapılır?</h2>
-
-      <ol class="landing-steps">
-  <li>Ödemeyi iyzico üzerinden güvenle tamamlayın.</li>
-  <li>Ödeme sonrası otomatik olarak teste yönlendirilirsiniz.</li>
-  <li>Testi tamamladığınızda <b>kişisel raporunuz e-posta adresinize gönderilir.</b></li>
-</ol>
-
-<div class="landing-note">
-  <b>Not:</b> Rapor birkaç dakika içinde e-posta adresinize ulaşır. Spam/Junk klasörünü kontrol etmeyi unutmayın.
-</div>
-<div class="price-box">
-  <div class="price-label">Test Ücreti</div>
-  <div class="price-value">150 TL</div>
-  <div class="price-note">Tek seferlik ödeme • Kişisel sonuç raporu dahil</div>
-</div>
-
-      <!-- EMAIL -->
-      <div class="email-field">
-        <div class="intro-field">
-          <label for="email">
-            E-posta
-          </label>
-          <input id="email" type="email" placeholder="ornek@mail.com" autocomplete="email" />
-        </div>
-      </div>
-
-      <div class="landing-actions">
-        <button class="btn-primary" id="payBtn" type="button">
-          Ödemeye Geç (iyzico)
-        </button>
-      </div>
-
-      <div class="status-line" id="status"></div>
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-card">
+      <h3><i class="fa-solid fa-file-lines"></i> Raporda ne var?</h3>
+      <ul class="sidebar-list">
+        <li>Temel motivasyonların ve iç dinamiklerin</li>
+        <li>Stres altındaki otomatik tepkilerin</li>
+        <li>İlişkilerde nasıl algılandığın</li>
+        <li>Güçlü yönlerin ve zorlanma eğilimlerin</li>
+        <li>Günlük hayatta uygulanabilir öneriler</li>
+      </ul>
     </div>
-
-    <!-- SAĞ -->
-    <div class="landing-block">
-      <h2 class="landing-h2">Ödeme yöntemleri</h2>
-
-      <div class="payment-band">
-        <img src="logo_band_colored@1X.png"
-             alt="iyzico • Visa • MasterCard • American Express • Troy"
-             onerror="this.style.display='none'" />
+    <div class="sidebar-card">
+      <h3><i class="fa-solid fa-circle-check"></i> Nasıl çalışır?</h3>
+      <ul class="sidebar-list">
+        <li>20 sorudan oluşur, ortalama 20 dakika</li>
+        <li>Her soruda 9 ifadeden 3'ünü seçersin</li>
+        <li>Rapor testi bitirince e-postana gönderilir</li>
+        <li>En yüksek puanı aldığın 3 tip detaylı açıklanır</li>
+      </ul>
+      <div class="refund-note">
+        Kod kullanılmadan iade talebinde bulunulabilir. Detaylar için <a href="refund_v3.html" style="color:var(--navy);">İptal & İade Şartları</a>.
       </div>
-
-      <p class="landing-muted" style="margin-top:10px;">
-        Ödemeler iyzico altyapısı ile güvenli şekilde alınır.
-      </p>
     </div>
-
   </div>
 
-</section>
 </div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <nav class="footer-links">
+    <a href="privacy_v3.html">Gizlilik Politikası</a>
+    <a href="refund_v3.html">İptal & İade Şartları</a>
+    <a href="terms_v3.html">Kullanım Koşulları</a>
+  </nav>
+  <div class="footer-small">© 2026 OANDA Enneagram. Tüm hakları saklıdır.</div>
+</footer>
 
 <script>
-  const payBtn  = document.getElementById("payBtn");
-  const emailEl = document.getElementById("email");
+  const payBtn   = document.getElementById("payBtn");
+  const emailEl  = document.getElementById("email");
   const statusEl = document.getElementById("status");
 
-  function setStatus(msg){ statusEl.textContent = msg || ""; }
+  function setStatus(msg) { statusEl.textContent = msg || ""; }
 
   payBtn.addEventListener("click", async () => {
     const email = (emailEl.value || "").trim().toLowerCase();
-
     if (!email) { alert("Lütfen e-posta adresinizi girin."); emailEl.focus(); return; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      alert("Lütfen geçerli bir e-posta adresi girin.");
-      emailEl.focus();
-      return;
-    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert("Lütfen geçerli bir e-posta adresi girin."); emailEl.focus(); return; }
 
     payBtn.disabled = true;
     payBtn.textContent = "Açılıyor…";
@@ -143,24 +276,21 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email })
       });
-
       const data = await r.json().catch(() => ({}));
       if (!r.ok) throw new Error(data.error || "Ödeme başlatılamadı.");
-
-      if (data.paymentPageUrl) {
-        window.location.href = data.paymentPageUrl;
-        return;
-      }
-
+      if (data.paymentPageUrl) { window.location.href = data.paymentPageUrl; return; }
       throw new Error("paymentPageUrl bulunamadı.");
     } catch (err) {
       alert("Bir hata oldu: " + (err.message || err));
       setStatus("");
     } finally {
       payBtn.disabled = false;
-      payBtn.textContent = "Ödemeye Geç (iyzico)";
+      payBtn.textContent = "Ödemeye Geç →";
     }
   });
+
+  emailEl.addEventListener("keydown", e => { if (e.key === "Enter") payBtn.click(); });
 </script>
+
 </body>
 </html>

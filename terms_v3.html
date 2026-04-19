@@ -1,78 +1,106 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-26SKL6XK12"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-26SKL6XK12');
+  </script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kullanım Koşulları • OANDA Enneagram</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
-  <link rel="stylesheet" href="style_v3.css" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #0f2235; --gold: #c9a96e; --gold-light: #e8d5b0;
+      --cream: #faf7f2; --cream-dark: #f0ebe1;
+      --text: #1a2b3c; --text-muted: #5a7080; --white: #ffffff; --radius: 12px;
+    }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+    .site-header { background: var(--navy); padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
+    .header-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .header-logo img { height: 44px;  }
+    .header-logo-text { font-family: "DM Serif Display", serif; color: var(--white); font-size: 17px; letter-spacing: 0.01em; }
+    .header-back { font-size: 13px; color: rgba(255,255,255,0.55); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
+    .header-back:hover { color: var(--gold); }
+    .page-body { flex: 1; max-width: 720px; margin: 0 auto; padding: 56px 24px 72px; width: 100%; }
+    .page-kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+    .page-title { font-family: 'DM Serif Display', serif; font-size: clamp(28px, 4vw, 40px); color: var(--navy); margin-bottom: 32px; line-height: 1.2; }
+    .legal-content { background: var(--white); border-radius: var(--radius); padding: 36px 40px; border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 2px 16px rgba(15,34,53,0.06); }
+    .legal-content p { font-size: 15px; color: var(--text-muted); line-height: 1.8; margin-bottom: 16px; }
+    .legal-content h2 { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--navy); margin: 28px 0 12px; }
+    .legal-content h2:first-child { margin-top: 0; }
+    .legal-content ul { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    .legal-content ul li { font-size: 15px; color: var(--text-muted); line-height: 1.7; display: flex; align-items: flex-start; gap: 10px; }
+    .legal-content ul li::before { content: ''; width: 5px; height: 5px; background: var(--gold); border-radius: 50%; flex-shrink: 0; margin-top: 8px; }
+    .legal-content a { color: var(--navy); }
+    .site-footer { background: var(--navy); padding: 24px 32px; text-align: center; margin-top: auto; }
+    .footer-links { display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 10px; }
+    .footer-links a { font-size: 12px; color: rgba(255,255,255,0.4); text-decoration: none; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-contact { font-size: 12px; color: rgba(255,255,255,0.35); margin-bottom: 10px; }
+    .footer-contact a { color: rgba(255,255,255,0.4); text-decoration: none; }
+    .social-links { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 16px; }
+    .social-links a { width: 32px; height: 32px; background: rgba(255,255,255,0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.45); font-size: 13px; text-decoration: none; transition: background 0.2s; }
+    .social-links a:hover { background: rgba(255,255,255,0.15); color: var(--white); }
+    .footer-small { font-size: 12px; color: rgba(255,255,255,0.25); }
+    @media (max-width: 480px) { .site-header { padding: 14px 20px; } .header-logo-text { display: none; } .legal-content { padding: 24px 20px; } }
+  </style>
 </head>
 <body>
-  <div class="main-wrapper">
-    <main>
-      <section class="intro-card">
-        <div class="intro-header-row">
-          <img src="enneagram-logo.png" alt="OANDA Enneagram" class="intro-logo" />
-          <div>
-            <h1 class="intro-title">Kullanım Koşulları</h1>
-            <p class="intro-subtitle"><a href="index.html">Ana sayfaya dön</a></p>
-          </div>
-        </div>
 
-        <div class="legal-content">
-          
-<p>Bu web sitesini kullanarak aşağıdaki koşulları kabul etmiş olursunuz.</p>
+<header class="site-header">
+  <a href="index.html" class="header-logo">
+    
+    
+  </a>
+  <a href="index.html" class="header-back"><i class="fa-solid fa-arrow-left"></i> Ana sayfaya dön</a>
+</header>
 
-<h2>Hizmet kullanımı</h2>
-<ul>
-  <li>Test, satın alma sonrası e‑posta ile gönderilen kodla erişilir.</li>
-  <li>Kod kişiye özeldir ve paylaşılmamalıdır.</li>
-  <li>Test sonuçları kişisel gelişim amaçlıdır; tıbbi/psikiyatrik tanı yerine geçmez.</li>
-</ul>
+<div class="page-body">
+  <div class="page-kicker">Yasal</div>
+  <h1 class="page-title">Kullanım Koşulları</h1>
 
-<h2>Fikri mülkiyet</h2>
-<p>Bu sitedeki içerikler, sorular, rapor formatı ve tasarımlar OANDA Enneagram’a aittir. İzinsiz kopyalanamaz.</p>
+  <div class="legal-content">
+    <p>Bu web sitesini kullanarak aşağıdaki koşulları kabul etmiş olursunuz.</p>
 
-        </div>
-      </section>
-    </main>
-    <footer class="site-footer">
-    <div class="footer-brand">OANDA Enneagram</div>
-    <div class="footer-text">Online Enneagram kişilik testi ve raporlama hizmeti.</div>
+    <h2>Hizmet kullanımı</h2>
+    <ul>
+      <li>Test, satın alma sonrası e‑posta ile gönderilen kodla erişilir.</li>
+      <li>Kod kişiye özeldir ve paylaşılmamalıdır.</li>
+      <li>Test sonuçları kişisel gelişim amaçlıdır; tıbbi/psikiyatrik tanı yerine geçmez.</li>
+    </ul>
 
-    <nav class="footer-links" aria-label="Yasal bağlantılar">
-      <a href="privacy_v3.html">Gizlilik Politikası</a>
-      <a href="refund_v3.html">İptal &amp; İade Şartları</a>
-      <a href="terms_v3.html">Kullanım Koşulları</a>
-    </nav>
-
-    <div class="footer-contact">
-      <span>E-posta: <a href="mailto:@oandaenneagram@gmail.com">oandaenneagram@gmail.com</a></span>
-    </div>
-     <div class="social-links">
-    <a href="https://www.facebook.com/oandapy" target="_blank" aria-label="Facebook">
-      <i class="fa-brands fa-facebook-f"></i>
-    </a>
-    <a href="https://twitter.com/oandapy" target="_blank" aria-label="Twitter / X">
-      <i class="fa-brands fa-x-twitter"></i>
-    </a>
-    <a href="https://www.instagram.com/oandaenneagram" target="_blank" aria-label="Instagram">
-      <i class="fa-brands fa-instagram"></i>
-    </a>
-    <a href="https://www.linkedin.com/company/oandaprojeyonetimi/posts/?feedView=all" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-  <i class="fa-brands fa-linkedin-in"></i>
-</a>
+    <h2>Fikri mülkiyet</h2>
+    <p>Bu sitedeki içerikler, sorular, rapor formatı ve tasarımlar OANDA Enneagram'a aittir. İzinsiz kopyalanamaz.</p>
   </div>
 </div>
 
-    <div class="footer-small">© 2026 OANDA Enneagram. Tüm hakları saklıdır.</div>
-  </footer>
+<footer class="site-footer">
+  <nav class="footer-links">
+    <a href="privacy_v3.html">Gizlilik Politikası</a>
+    <a href="refund_v3.html">İptal & İade Şartları</a>
+    <a href="terms_v3.html">Kullanım Koşulları</a>
+  </nav>
+  <div class="footer-contact"><a href="mailto:oandaenneagram@gmail.com">oandaenneagram@gmail.com</a></div>
+  <div class="social-links">
+    <a href="https://www.facebook.com/oandapy" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+    <a href="https://twitter.com/oandapy" target="_blank" aria-label="Twitter / X"><i class="fa-brands fa-x-twitter"></i></a>
+    <a href="https://www.instagram.com/oandaenneagram" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+    <a href="https://www.linkedin.com/company/oandaprojeyonetimi/posts/?feedView=all" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+  </div>
+  <div class="footer-small">© 2026 OANDA Enneagram. Tüm hakları saklıdır.</div>
+</footer>
+
 </body>
 </html>
-
