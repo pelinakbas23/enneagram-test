@@ -369,11 +369,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const optionsDiv = document.createElement("div");
     optionsDiv.classList.add("options");
-    optionsDiv.style.display = "grid";
-    optionsDiv.style.gridTemplateColumns = "2fr 1fr 1fr 1fr";
-    optionsDiv.style.alignItems = "center";
-    optionsDiv.style.rowGap = "8px";
-
     const saved = answers[qIndex];
 
     q.options.forEach(opt => {
@@ -586,4 +581,3 @@ fetch(endpoint, {
 
   }); // ✅ submitBtn.addEventListener kapanışı
 });   // ✅ DOMContentLoaded kapanışı
-

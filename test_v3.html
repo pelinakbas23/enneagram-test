@@ -177,6 +177,46 @@
       #navigation { justify-content: stretch; }
       .nav-btn { flex: 1; text-align: center; }
     }
+
+    /* TEST GRID - MOBİL UYUMLU */
+    .options {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      align-items: center;
+      row-gap: 12px;
+      column-gap: 8px;
+    }
+
+    .options input[type="radio"] {
+      justify-self: center;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    .question-header {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .question-header .col-text { text-align: left; }
+    .question-header .col-pref { text-align: center; }
+
+    @media (max-width: 560px) {
+      .options {
+        grid-template-columns: 2.5fr 1fr 1fr 1fr;
+        column-gap: 4px;
+      }
+      .question-header {
+        grid-template-columns: 2.5fr 1fr 1fr 1fr;
+        font-size: 11px;
+      }
+    }
   </style>
 
   <script>
