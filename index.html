@@ -55,12 +55,18 @@
     .header-logo { display: flex; align-items: center; gap: 12px; }
     .header-logo img { height: 44px;  }
     .header-logo-text { font-family: "DM Serif Display", serif; color: var(--white); font-size: 17px; letter-spacing: 0.01em; }
-    .header-cta {
-      background: var(--gold); color: var(--navy); font-weight: 600;
-      font-size: 14px; padding: 10px 22px; border-radius: 6px;
-      text-decoration: none; transition: background 0.2s;
+    .header-nav { display: flex; align-items: center; gap: 16px; }
+    .header-link {
+      color: rgba(255,255,255,0.72); font-size: 14px; font-weight: 500;
+      text-decoration: none; transition: color 0.2s; padding: 8px 4px;
     }
-    .header-cta:hover { background: var(--gold-light); }
+    .header-link:hover { color: var(--gold); }
+    .header-cta {
+      background: var(--white); color: var(--navy); font-weight: 600;
+      font-size: 14px; padding: 9px 20px; border-radius: 6px;
+      border: none; text-decoration: none; transition: background 0.2s;
+    }
+    .header-cta:hover { background: rgba(255,255,255,0.85); }
 
     /* HERO */
     .hero {
@@ -266,7 +272,7 @@
     
     
   </div>
-  <a href="payment.html" class="header-cta">Teste Başla →</a>
+  <a href="#gorusler" class="header-cta">Görüşleriniz</a>
 </header>
 
 <!-- HERO -->
@@ -422,7 +428,7 @@
 <div class="divider"></div>
 
 <!-- YORUMLAR -->
-<section class="testimonials-section">
+<section class="testimonials-section" id="gorusler">
   <div class="section">
     <div class="section-label">Görüşler</div>
     <h2 class="section-title">Testi tamamlayanlar ne diyor?</h2>
