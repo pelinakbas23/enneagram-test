@@ -127,6 +127,52 @@
     .section-body { font-size: 16px; color: var(--text-muted); line-height: 1.75; max-width: 620px; }
     .divider { height: 1px; background: rgba(0,0,0,0.07); max-width: 860px; margin: 0 auto; }
 
+    .hero-report-box {
+      display: inline-flex; flex-direction: column; align-items: flex-start;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(201,169,110,0.25);
+      border-radius: 12px; padding: 18px 24px; margin-top: 32px;
+      max-width: 520px; width: 100%; text-align: left;
+    }
+    .hero-report-box-title {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .hero-report-items {
+      display: flex; flex-wrap: wrap; gap: 8px; list-style: none;
+    }
+    .hero-report-items li {
+      background: rgba(201,169,110,0.1); border: 1px solid rgba(201,169,110,0.2);
+      border-radius: 20px; padding: 5px 13px;
+      font-size: 12px; color: rgba(255,255,255,0.75); line-height: 1.4;
+    }
+
+    /* ADIMLAR */
+    .steps-section { background: var(--cream-dark); border-top: 1px solid rgba(0,0,0,0.06); }
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0; margin-top: 40px; position: relative;
+    }
+    .steps-grid::before {
+      content: '';
+      position: absolute;
+      top: 32px; left: calc(16.66% + 16px); right: calc(16.66% + 16px);
+      height: 2px; background: var(--gold); opacity: 0.3;
+      z-index: 0;
+    }
+    .step-item { text-align: center; padding: 0 24px; position: relative; }
+    .step-num {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: var(--navy); color: var(--gold);
+      font-family: 'DM Serif Display', serif; font-size: 24px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px; position: relative; z-index: 1;
+      border: 3px solid var(--gold); box-shadow: 0 0 0 6px var(--cream-dark);
+    }
+    .step-title { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .step-desc { font-size: 13px; color: var(--text-muted); line-height: 1.65; }
+    .step-icon { font-size: 11px; color: var(--gold); margin-bottom: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+
     /* BEFORE / AFTER */
     .ba-section { background: var(--navy); padding: 72px 24px; }
     .ba-grid {
@@ -260,6 +306,8 @@
       .trust-grid { grid-template-columns: 1fr; }
       .about-grid { grid-template-columns: 1fr; gap: 24px; }
       .section { padding: 48px 20px; }
+      .steps-grid { grid-template-columns: 1fr; gap: 32px; }
+      .steps-grid::before { display: none; }
     }
   </style>
 </head>
@@ -268,11 +316,7 @@
 
 <!-- HEADER -->
 <header class="site-header">
-  <div class="header-logo"><span class="header-logo-text">OANDA Enneagram Kişilik Testi</span>
-    
-    
-  </div>
-  <a href="#gorusler" class="header-cta">Görüşleriniz</a>
+  <div class="header-logo"><span class="header-logo-text">OANDA Enneagram Kişilik Testi</span></div>
 </header>
 
 <!-- HERO -->
@@ -282,13 +326,174 @@
   <p class="hero-sub">
     Stres anındaki otomatik tepkilerini, ilişki döngülerini ve iş hayatındaki motivasyonlarını daha net gör.
   </p>
+
+  <div class="hero-trust" style="margin-bottom: 28px;">
+    <span class="trust-item"><i class="fa-solid fa-lock"></i> iyzico ile güvenli ödeme</span>
+    <span class="trust-item"><i class="fa-solid fa-pencil"></i> Kendinle ilgili soruları yanıtlayacağın test ~20 dakika sürer</span>
+    <span class="trust-item"><i class="fa-solid fa-envelope"></i> Cevaplarına göre hazırlanan kişilik raporu hemen e-postana gönderilir</span>
+  </div>
+
   <a href="payment.html" class="btn-primary">Teste Başla — 150 TL</a>
-  <div class="hero-trust">
-    <span class="trust-item"><i class="fa-solid fa-bolt"></i> Ortalama 20 dakika</span>
-    <span class="trust-item"><i class="fa-solid fa-lock"></i> Güvenli ödeme (iyzico)</span>
-    <span class="trust-item"><i class="fa-solid fa-envelope"></i> Rapor anında e-postana</span>
+
+  <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin-top:20px;">
+    <span style="color:var(--gold); font-size:15px; letter-spacing:2px;">★★★★★</span>
+    <span style="font-size:14px; color:rgba(255,255,255,0.85); font-weight:600;">100'den fazla kişi testi tamamladı</span>
+  </div>
+
+  <div class="t-slider" style="margin-top:20px; max-width:560px; margin-left:auto; margin-right:auto;">
+    <button class="t-nav t-prev-2" type="button" aria-label="Önceki">‹</button>
+    <div class="t-card" style="background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.1); min-height:0; padding:16px 20px;">
+      <div class="t-quote" id="t-quote-2" style="color:rgba(255,255,255,0.82); font-size:13px; line-height:1.6; margin-bottom:8px;">Yükleniyor…</div>
+      <div class="t-who" id="t-who-2" style="font-size:12px;"></div>
+      <div class="t-meta"><span id="t-count-2"></span></div>
+    </div>
+    <button class="t-nav t-next-2" type="button" aria-label="Sonraki">›</button>
+  </div>
+
+  <div style="max-width:560px; margin: 16px auto 0; background:rgba(255,255,255,0.06); border:1px solid rgba(201,169,110,0.25); border-radius:10px; padding:14px 18px; text-align:left;">
+    <div style="font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); margin-bottom:10px;">📄 Raporda ne var?</div>
+    <div style="display:flex; flex-wrap:wrap; gap:7px;">
+      <span style="background:rgba(201,169,110,0.12); border:1px solid rgba(201,169,110,0.2); border-radius:20px; padding:4px 11px; font-size:12px; color:rgba(255,255,255,0.75);">Stres anında neden farklı biri gibi davranıyorsun</span>
+      <span style="background:rgba(201,169,110,0.12); border:1px solid rgba(201,169,110,0.2); border-radius:20px; padding:4px 11px; font-size:12px; color:rgba(255,255,255,0.75);">Seni en çok ne yoruyor, ne şarj ediyor</span>
+      <span style="background:rgba(201,169,110,0.12); border:1px solid rgba(201,169,110,0.2); border-radius:20px; padding:4px 11px; font-size:12px; color:rgba(255,255,255,0.75);">İlişkilerde neden hep aynı döngüye giriyorsun</span>
+      <span style="background:rgba(201,169,110,0.12); border:1px solid rgba(201,169,110,0.2); border-radius:20px; padding:4px 11px; font-size:12px; color:rgba(255,255,255,0.75);">İçindeki o sesin nereden geldiği</span>
+      <span style="background:rgba(201,169,110,0.12); border:1px solid rgba(201,169,110,0.2); border-radius:20px; padding:4px 11px; font-size:12px; color:rgba(255,255,255,0.75);">7 günlük kişisel gelişim planı</span>
+      <span style="background:rgba(201,169,110,0.12); border:1px solid rgba(201,169,110,0.2); border-radius:20px; padding:4px 11px; font-size:12px; color:rgba(255,255,255,0.75);">Sana en uygun iş ve yaşam alanları</span>
+    </div>
+    <a href="#ornek-rapor" style="display:inline-block; margin-top:12px; font-size:13px; color:var(--gold); text-decoration:none; font-weight:600;">Örnek raporu gör →</a>
   </div>
 </section>
+
+<!-- RAPOR - HERO ALTI -->
+<section class="report-section">
+  <div class="section">
+    <div class="section-label">Raporda ne var?</div>
+    <h2 class="section-title">Sana özel hazırlanan rapor</h2>
+    <p class="section-body">
+      Testi bitirdiğinde, en yüksek puanı aldığın 3 Enneagram tipi için detaylı bir rapor e-postana gönderilir. Bu rapor yalnızca bir sonuç listesi değil; kendini daha net anlaman için hazırlanmış bir rehberdir.
+    </p>
+    <ul class="report-list">
+      <li>Seni harekete geçiren temel motivasyonlar ve tekrar eden iç dinamikler</li>
+      <li>Güçlü yönlerin ve zorlandığında ortaya çıkan eğilimler</li>
+      <li>İlişkilerde nasıl algılandığın — iletişim ve çatışma anlarındaki otomatik tepkilerin</li>
+      <li>Stres altındayken verdiğin tepkiler ve rahatladığında ortaya çıkan yönlerin</li>
+      <li>İş ve günlük yaşamda bu özelliklerin davranışlarına nasıl yansıdığı</li>
+      <li>Günlük hayatta uygulayabileceğin somut farkındalıklar ve öneriler</li>
+    </ul>
+    <div class="report-note">
+      Bu rapor sana "şöyle birisin" demez. Neden böyle davrandığını ve hangi anlarda otomatikleştiğini görmene yardımcı olur.
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ÖRNEK RAPOR MOCKUP -->
+<section id="ornek-rapor" style="background: var(--cream-dark);">
+  <div class="section">
+    <div class="section-label">Rapor örneği</div>
+    <h2 class="section-title">Rapor böyle görünüyor</h2>
+    <p class="section-body" style="margin-bottom: 32px;">Aşağıdaki içerik, gerçek rapor yapısından alınmış bir örnektir. Senin raporun cevaplarına göre kişisel olarak hazırlanır.</p>
+
+    <div style="background: #fff; border-radius: 12px; overflow: hidden; max-width: 520px; border: 0.5px solid rgba(0,0,0,0.12); box-shadow: 0 2px 16px rgba(0,0,0,0.06); font-family: Georgia, serif;">
+
+      <div style="background:#0f2235; padding:22px 26px 18px;">
+        <div style="font-family:sans-serif; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:#c9a96e; margin-bottom:12px; font-weight:600;">OANDA Enneagram · Kişilik Raporu</div>
+        <div style="font-size:20px; color:#fff; margin-bottom:3px; font-weight:normal;">Enneagram Kişilik Testi Sonuçları</div>
+        <div style="font-size:12px; color:rgba(255,255,255,0.4); font-family:sans-serif;">Kişiye özel · 3 tip için detaylı rapor</div>
+      </div>
+
+      <div style="padding:16px 26px; border-bottom:1px solid #f0ebe1;">
+        <div style="font-family:sans-serif; font-size:10px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:#c9a96e; margin-bottom:10px;">Sizin Sonuçlarınız</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="display:flex; align-items:baseline; gap:10px;">
+            <span style="font-family:sans-serif; font-size:11px; color:#5a7080; width:80px; flex-shrink:0;">En yüksek puanınız</span>
+            <div><div style="font-size:15px; color:#0f2235;">Tip 1 · Mükemmellik Odaklı</div><div style="font-family:sans-serif; font-size:11px; color:#5a7080; margin-top:1px;">Temel tipiniz</div></div>
+          </div>
+          <div style="display:flex; align-items:baseline; gap:10px;">
+            <span style="font-family:sans-serif; font-size:11px; color:#5a7080; width:80px; flex-shrink:0;">İkinci en yüksek</span>
+            <div style="font-size:14px; color:#3a4a5a;">Tip 6 · Sadakat Odaklı</div>
+          </div>
+          <div style="display:flex; align-items:baseline; gap:10px;">
+            <span style="font-family:sans-serif; font-size:11px; color:#5a7080; width:80px; flex-shrink:0;">Üçüncü en yüksek</span>
+            <div style="font-size:13px; color:#5a7080;">Tip 3 · Başarı Odaklı</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:16px 26px; border-bottom:1px solid #f0ebe1;">
+        <div style="font-family:sans-serif; font-size:13px; font-weight:700; color:#0f2235; background:#faf7f2; border-left:3px solid #c9a96e; padding:8px 12px; margin-bottom:12px; border-radius:0 6px 6px 0;">Tip 1 · Mükemmellik Odaklı</div>
+        <div style="font-family:sans-serif; font-size:10px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:#c9a96e; margin-bottom:8px;">Genel Tanım</div>
+        <p style="font-size:13px; color:#3a4a5a; line-height:1.75; margin:0;">Dünyayı daha iyi bir yer haline getirmek istiyorsun ve bunun için yüksek standartlar belirliyorsun. Doğruluk, adalet ve düzen senin için soyut kavramlar değil; günlük hayatında hissedilen, neredeyse fiziksel bir ihtiyaç…</p>
+      </div>
+
+      <div style="padding:16px 26px; border-bottom:1px solid #f0ebe1;">
+        <div style="font-family:sans-serif; font-size:10px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:#c9a96e; margin-bottom:8px;">İç Çatışmaların</div>
+        <div style="border-left:3px solid #c9a96e; padding:10px 14px; background:#faf7f2;">
+          <p style="font-size:13px; color:#3a4a5a; line-height:1.7; margin:0; font-style:italic;">"Bu yeterince iyi değil." — Bitirdiğin bir işe baktığında aklın otomatik olarak eksiklere gider, ne kadar uğraştığına değil.</p>
+        </div>
+      </div>
+
+      <div style="padding:16px 26px; border-bottom:1px solid #f0ebe1;">
+        <div style="font-family:sans-serif; font-size:10px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:#c9a96e; margin-bottom:8px;">Motivasyon ve İç Dinamikler</div>
+        <ul style="margin:0; padding-left:16px;">
+          <li style="font-size:12px; color:#5a7080; line-height:1.7; font-family:sans-serif;">Temel motivasyon: Haklı çıkmak, idealleriyle tutarlı yaşamak</li>
+          <li style="font-size:12px; color:#5a7080; line-height:1.7; font-family:sans-serif;">Temel korku: Yanlış, kusurlu ya da kötü biri olmak</li>
+          <li style="font-size:12px; color:#5a7080; line-height:1.7; font-family:sans-serif;">Temel arzu: İyi, bütünlük sahibi ve dengeli bir insan olmak</li>
+        </ul>
+      </div>
+
+      <div style="padding:16px 26px; border-bottom:1px solid #f0ebe1;">
+        <div style="font-family:sans-serif; font-size:10px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:#c9a96e; margin-bottom:8px;">7 Günlük Kişisel Gelişim Planı</div>
+        <div style="display:flex; gap:10px; align-items:flex-start; margin-bottom:8px;"><span style="font-family:sans-serif; font-size:10px; font-weight:700; color:#c9a96e; background:#faf7f2; border:1px solid #e8d5b0; border-radius:4px; padding:3px 7px; flex-shrink:0;">1. Gün</span><span style="font-size:12px; color:#3a4a5a; line-height:1.6; font-family:sans-serif;">Yeterince iyi — Bitirdiğin bir işi düzeltmeden bırak.</span></div>
+        <div style="display:flex; gap:10px; align-items:flex-start; margin-bottom:8px;"><span style="font-family:sans-serif; font-size:10px; font-weight:700; color:#c9a96e; background:#faf7f2; border:1px solid #e8d5b0; border-radius:4px; padding:3px 7px; flex-shrink:0;">2. Gün</span><span style="font-size:12px; color:#3a4a5a; line-height:1.6; font-family:sans-serif;">Kendine izin ver — Sadece keyif aldığın için bir şey yap.</span></div>
+        <div style="display:flex; gap:10px; align-items:flex-start; margin-bottom:4px;"><span style="font-family:sans-serif; font-size:10px; font-weight:700; color:#c9a96e; background:#faf7f2; border:1px solid #e8d5b0; border-radius:4px; padding:3px 7px; flex-shrink:0;">3. Gün</span><span style="font-size:12px; color:#3a4a5a; line-height:1.6; font-family:sans-serif;">Eleştiriyi fark et — Eleştirmek istediğinde dur ve sor: kime ne kazandırır?</span></div>
+        <div style="font-family:sans-serif; font-size:11px; color:#c9a96e; margin-top:6px;">+ 4 gün daha devam ediyor…</div>
+      </div>
+
+      <div style="background:#0f2235; padding:10px 26px; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-family:sans-serif; font-size:10px; color:rgba(255,255,255,0.3);">oandaenneagram.com · © 2026</span>
+        <span style="font-family:sans-serif; font-size:10px; color:#c9a96e;">Kişiye özel rapor</span>
+      </div>
+    </div>
+
+    <div style="margin-top: 28px; text-align: center;">
+      <a href="payment.html" class="btn-primary">Teste Başla — 150 TL</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- NASIL ÇALIŞIR: 3 ADIM -->
+<section class="steps-section">
+  <div class="section">
+    <div class="section-label">Nasıl çalışır?</div>
+    <h2 class="section-title">3 adımda kişilik raporun hazır</h2>
+    <div class="steps-grid">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-icon"><i class="fa-solid fa-lock"></i> Güvenli ödeme</div>
+        <div class="step-title">iyzico ile güvenle öde</div>
+        <div class="step-desc">Visa, Mastercard, Troy veya American Express ile tek seferlik 150 TL ödeme yap. Bilgilerin şifrelenerek korunur.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-icon"><i class="fa-solid fa-pencil"></i> ~20 dakika</div>
+        <div class="step-title">Test sorularını cevapla</div>
+        <div class="step-desc">Sana özel hazırlanmış sorulara içtenlikle cevap ver. Ortalama 20 dakika sürüyor, istediğin yerden yapabilirsin.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-icon"><i class="fa-solid fa-envelope-open-text"></i> Anında</div>
+        <div class="step-title">Raporun e-postana gelsin</div>
+        <div class="step-desc">Cevaplarına özel hazırlanan kişilik raporu hemen e-posta adresine gönderilir. Kayıt veya hesap gerekmez.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
 
 <!-- BEFORE / AFTER -->
 <section class="ba-section">
@@ -312,30 +517,6 @@
         <div class="ba-item after">Tetiklenme anını daha erken fark edip tepkiyi otomatikleşmeden durdurabiliyorsun.</div>
         <div class="ba-item after">Enerjini neyin düşürdüğünü ve neyin toparladığını daha bilinçli okuyabiliyorsun.</div>
       </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- RAPOR -->
-<section class="report-section">
-  <div class="section">
-    <div class="section-label">Raporda ne var?</div>
-    <h2 class="section-title">Sana özel hazırlanan rapor</h2>
-    <p class="section-body">
-      Testi bitirdiğinde, en yüksek puanı aldığın 3 Enneagram tipi için detaylı bir rapor e-postana gönderilir. Bu rapor yalnızca bir sonuç listesi değil; kendini daha net anlaman için hazırlanmış bir rehberdir.
-    </p>
-    <ul class="report-list">
-      <li>Seni harekete geçiren temel motivasyonlar ve tekrar eden iç dinamikler</li>
-      <li>Güçlü yönlerin ve zorlandığında ortaya çıkan eğilimler</li>
-      <li>İlişkilerde nasıl algılandığın — iletişim ve çatışma anlarındaki otomatik tepkilerin</li>
-      <li>Stres altındayken verdiğin tepkiler ve rahatladığında ortaya çıkan yönlerin</li>
-      <li>İş ve günlük yaşamda bu özelliklerin davranışlarına nasıl yansıdığı</li>
-      <li>Günlük hayatta uygulayabileceğin somut farkındalıklar ve öneriler</li>
-    </ul>
-    <div class="report-note">
-      Bu rapor sana "şöyle birisin" demez. Neden böyle davrandığını ve hangi anlarda otomatikleştiğini görmene yardımcı olur.
     </div>
   </div>
 </section>
@@ -517,6 +698,53 @@
 <script src="//code.tidio.co/nrojdufualsqrnuhw9egxgbl6lc4lowo.js" async></script>
 
 <script>
+/* HERO TESTİMONİALS */
+(() => {
+  const quoteEl = document.getElementById("t-quote-2");
+  const whoEl   = document.getElementById("t-who-2");
+  const countEl = document.getElementById("t-count-2");
+  const nextBtn = document.querySelector(".t-next-2");
+  const prevBtn = document.querySelector(".t-prev-2");
+  if (!quoteEl || !whoEl) return;
+
+  const ENDPOINT = "https://oiimwpfcxaecnnsdqzsq.supabase.co/functions/v1/testimonials";
+  let items = [], idx = 0, timer = null;
+
+  function toInitials(name) {
+    const cleaned = (name || "").trim().replace(/\s+/g, " ");
+    if (!cleaned) return "Anonim";
+    return cleaned.split(" ").filter(Boolean).slice(0, 3).map(p => p[0].toUpperCase() + ".").join(" ");
+  }
+
+  function render() {
+    if (!items.length) {
+      quoteEl.textContent = "Henüz yayınlanmış yorum yok.";
+      whoEl.textContent = "—"; if(countEl) countEl.textContent = "";
+      if(prevBtn) prevBtn.style.display = "none";
+      if(nextBtn) nextBtn.style.display = "none";
+      return;
+    }
+    if(prevBtn) prevBtn.style.display = "";
+    if(nextBtn) nextBtn.style.display = "";
+    const it = items[idx];
+    quoteEl.textContent = `"${it.comment || ""}"`;
+    whoEl.textContent = `— ${toInitials(it.name)}`;
+    if(countEl) countEl.textContent = items.length > 1 ? `${idx + 1} / ${items.length}` : "";
+  }
+
+  function next() { if (!items.length) return; idx = (idx + 1) % items.length; render(); }
+  function prev() { if (!items.length) return; idx = (idx - 1 + items.length) % items.length; render(); }
+  function startAuto() { if (timer) clearInterval(timer); timer = setInterval(next, 6000); }
+
+  if(nextBtn) nextBtn.addEventListener("click", () => { next(); startAuto(); });
+  if(prevBtn) prevBtn.addEventListener("click", () => { prev(); startAuto(); });
+
+  fetch(ENDPOINT)
+    .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+    .then(d => { items = Array.isArray(d) ? d : (d.data || []); render(); if (items.length > 1) startAuto(); })
+    .catch(() => { quoteEl.textContent = "Yorumlar yüklenemedi."; whoEl.textContent = "—"; });
+})();
+
 /* FEEDBACK */
 (() => {
   const nameEl    = document.getElementById("fb-name");
@@ -609,7 +837,9 @@
 
   fetch(ENDPOINT)
     .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
-    .then(d => { items = Array.isArray(d) ? d : (d.data || []); render(); if (items.length > 1) startAuto(); })
+    .then(d => {
+      items = Array.isArray(d) ? d : (d.data || []); render(); if (items.length > 1) startAuto();
+    })
     .catch(() => { quoteEl.textContent = "Yorumlar yüklenemedi."; whoEl.textContent = "—"; });
 })();
 </script>
