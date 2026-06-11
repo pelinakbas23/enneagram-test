@@ -61,6 +61,7 @@
       text-decoration: none; transition: color 0.2s; padding: 8px 4px;
     }
     .header-link:hover { color: var(--gold); }
+    .header-link.active { color: var(--gold); }
     .header-cta {
       background: var(--white); color: var(--navy); font-weight: 600;
       font-size: 14px; padding: 9px 20px; border-radius: 6px;
@@ -309,6 +310,21 @@
       .steps-grid { grid-template-columns: 1fr; gap: 32px; }
       .steps-grid::before { display: none; }
     }
+
+    /* ENNEAGRAM KISA BÖLÜM */
+    .enneagram-types { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 32px; }
+    .enneagram-type-card { background: var(--cream-dark); border: 1px solid rgba(0,0,0,0.06); border-radius: var(--radius); padding: 16px 14px; }
+    .enneagram-type-card strong { display:block; color: var(--navy); font-size: 14px; margin-bottom: 4px; }
+    .enneagram-type-card span { display:block; color: var(--text-muted); font-size: 12px; line-height: 1.45; }
+    .inline-cta-note { font-size: 13px; color: rgba(255,255,255,0.55); margin-top: 14px; }
+
+    @media (max-width: 680px) {
+      .enneagram-types { grid-template-columns: 1fr; }
+      .header-nav { gap: 10px; }
+      .header-link { font-size: 13px; }
+      .header-cta { display:none; }
+    }
+
   </style>
 </head>
 
@@ -317,7 +333,15 @@
 <!-- HEADER -->
 <header class="site-header">
   <div class="header-logo"><span class="header-logo-text">OANDA Enneagram Kişilik Testi</span></div>
+  <nav class="header-nav">
+    <a href="index.html" class="header-link active">Ana Sayfa</a>
+    <a href="enneagram-hakkinda.html" class="header-link">Enneagram Hakkında</a>
+    <a href="psikologdan-notlar.html" class="header-link">Psikologdan Notlar</a>
+    <a href="kaynaklar.html" class="header-link">Kaynaklar</a>
+    <a href="payment.html" class="header-cta">Teste Başla</a>
+  </nav>
 </header>
+
 
 <!-- HERO -->
 <section class="hero">
@@ -340,7 +364,7 @@
 
   <div style="display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap;">
     <a href="payment.html" class="btn-primary">Teste Başla — 150 TL</a>
-    <a href="cocuk-testi.html" style="display:inline-block; background:transparent; border:1.5px solid rgba(201,169,110,0.6); color:var(--gold); font-family:'DM Sans',sans-serif; font-weight:600; font-size:15px; padding:13px 24px; border-radius:8px; text-decoration:none; transition:background 0.2s;" onmouseover="this.style.background='rgba(201,169,110,0.1)'" onmouseout="this.style.background='transparent'">🌱 Çocuğum için Teste Başla — Ücretsiz</a>
+    <a href="cocuk-testi.html" style="display:inline-block; background:transparent; border:1.5px solid rgba(201,169,110,0.6); color:var(--gold); font-family:'DM Sans',sans-serif; font-weight:600; font-size:15px; padding:13px 24px; border-radius:8px; text-decoration:none; transition:background 0.2s;" onmouseover="this.style.background='rgba(201,169,110,0.1)'" onmouseout="this.style.background='transparent'">🌱 Çocuğum için Teste Başla </a>
   </div>
 
   <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin-top:20px;">
@@ -372,30 +396,124 @@
   </div>
 </section>
 
-<!-- RAPOR - HERO ALTI -->
-<section class="report-section">
+
+
+<div class="divider"></div>
+
+<!-- ENNEAGRAM NEDİR? -->
+<section id="enneagram-nedir" style="background: var(--white);">
   <div class="section">
-    <div class="section-label">Raporda ne var?</div>
-    <h2 class="section-title">Sana özel hazırlanan rapor</h2>
+    <div class="section-label">Enneagram Nedir?</div>
+    <h2 class="section-title">Kendini anlamak için bir harita</h2>
     <p class="section-body">
-      Testi bitirdiğinde, en yüksek puanı aldığın 3 Enneagram tipi için detaylı bir rapor e-postana gönderilir. Bu rapor yalnızca bir sonuç listesi değil; kendini daha net anlaman için hazırlanmış bir rehberdir.
+      Enneagram, insanların davranışlarının altında yatan motivasyonları açıklayan 9 kişilik örüntüsünden oluşan bir sistemdir.
+      Aynı olay karşısında insanların neden farklı tepkiler verdiğini, ilişkilerde neden benzer döngülere girdiğini ve stres altında neden değiştiğini anlamaya yardımcı olur.
     </p>
-    <ul class="report-list">
-      <li>Seni harekete geçiren temel motivasyonlar ve tekrar eden iç dinamikler</li>
-      <li>Güçlü yönlerin ve zorlandığında ortaya çıkan eğilimler</li>
-      <li>İlişkilerde nasıl algılandığın — iletişim ve çatışma anlarındaki otomatik tepkilerin</li>
-      <li>Stres altındayken verdiğin tepkiler ve rahatladığında ortaya çıkan yönlerin</li>
-      <li>İş ve günlük yaşamda bu özelliklerin davranışlarına nasıl yansıdığı</li>
-      <li>Günlük hayatta uygulayabileceğin somut farkındalıklar ve öneriler</li>
-    </ul>
-    <div class="report-note">
-      Bu rapor sana "şöyle birisin" demez. Neden böyle davrandığını ve hangi anlarda otomatikleştiğini görmene yardımcı olur.
+    <p class="section-body" style="margin-top:14px;">
+      OANDA Enneagram Testi, hangi örüntülerin sende daha baskın olduğunu görmeni ve bu örüntülerin ilişkilerine, iş hayatına ve günlük tepkilerine nasıl yansıdığını fark etmeni sağlar.
+    </p>
+
+    <div class="enneagram-types">
+      <div class="enneagram-type-card"><strong>Tip 1</strong><span>Mükemmellik ve doğruluk odaklı</span></div>
+      <div class="enneagram-type-card"><strong>Tip 2</strong><span>Yardım, bağ kurma ve değer görme odaklı</span></div>
+      <div class="enneagram-type-card"><strong>Tip 3</strong><span>Başarı, görünürlük ve etki odaklı</span></div>
+      <div class="enneagram-type-card"><strong>Tip 4</strong><span>Özgünlük, anlam ve derinlik odaklı</span></div>
+      <div class="enneagram-type-card"><strong>Tip 5</strong><span>Bilgi, gözlem ve yeterlilik odaklı</span></div>
+      <div class="enneagram-type-card"><strong>Tip 6</strong><span>Güven, hazırlık ve sadakat odaklı</span></div>
+      <div class="enneagram-type-card"><strong>Tip 7</strong><span>Özgürlük, seçenek ve deneyim odaklı</span></div>
+      <div class="enneagram-type-card"><strong>Tip 8</strong><span>Güç, sınır ve kontrol odaklı</span></div>
+      <div class="enneagram-type-card"><strong>Tip 9</strong><span>Uyum, huzur ve denge odaklı</span></div>
+    </div>
+
+    <div style="margin-top:28px;">
+      <a href="enneagram-hakkinda.html" class="btn-secondary" style="text-decoration:none; display:inline-block;">Enneagram hakkında daha fazla bilgi →</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+<!-- FAYDALAR -->
+<section style="background: var(--cream);">
+  <div class="section">
+    <div class="section-label">Ne kazanırsın?</div>
+    <h2 class="section-title">Bu test sana ne kazandırır?</h2>
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <div class="benefit-icon"><i class="fa-solid fa-spa"></i></div>
+        <h3>Daha az stres</h3>
+        <p>Zorlandığında neden öyle tepki verdiğini fark etmek, stresi yönetmeyi kolaylaştırır.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon"><i class="fa-solid fa-heart"></i></div>
+        <h3>Daha doyumlu ilişkiler</h3>
+        <p>Çatışma noktalarını ve beklentileri daha iyi okursun.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon"><i class="fa-solid fa-compass"></i></div>
+        <h3>Yönünü bulma</h3>
+        <p>Gerçek ihtiyacınla alışkanlık tepkini ayırt etmeyi öğrenirsin.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon"><i class="fa-solid fa-people-arrows"></i></div>
+        <h3>Çevreni daha iyi anlama</h3>
+        <p>İnsanların motivasyonunu çözdükçe iletişim daha akıcı olur.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon"><i class="fa-solid fa-briefcase"></i></div>
+        <h3>İşini daha iyi anlama</h3>
+        <p>İş ortamında seni ne motive ediyor, ne yoruyor — daha net görürsün.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon"><i class="fa-solid fa-couch"></i></div>
+        <h3>Daha konforlu bir yaşam</h3>
+        <p>Tetikleyicilerini netleştirdikçe günlük hayat daha hafif hissettirir.</p>
+      </div>
     </div>
   </div>
 </section>
 
 <div class="divider"></div>
 
+
+
+<div class="divider"></div>
+
+<!-- GÜVENİLİRLİK -->
+<section style="background: var(--cream);">
+  <div class="section">
+    <div class="section-label">Neden güvenilir?</div>
+    <h2 class="section-title">Bu test neden güvenilir?</h2>
+    <div class="trust-grid">
+      <div class="trust-card">
+        <h3>Akademik ekip</h3>
+        <p>Test, Prof. Dr. Murat Günaydın ve Uzm. Psk. Pelin Akbaş iş birliğiyle hazırlanmıştır.</p>
+      </div>
+      <div class="trust-card">
+        <h3>Kapsamlı ölçek</h3>
+        <p>180 soruluk yapı, tek bir soruya değil; tekrar eden örüntülere bakarak daha anlamlı bir değerlendirme sunar.</p>
+      </div>
+      <div class="trust-card">
+        <h3>Detaylı kişilik raporu</h3>
+        <p>En yüksek 3 Enneagram tipin için motivasyon, stres tepkileri, ilişki dinamikleri ve gelişim önerileri yer alır.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div class="divider"></div>
+
+<!-- CTA #1 -->
+<section class="cta-section">
+  <h2 class="section-title" style="color:var(--white); margin-bottom:12px;">Kendini daha yakından tanımaya hazır mısın?</h2>
+  <p class="section-body" style="color:rgba(255,255,255,0.6); margin:0 auto 28px;">
+    20 dakikalık testi tamamla, kişiye özel Enneagram raporun hemen e-postana gelsin.
+  </p>
+  <a href="payment.html" class="btn-primary">Teste Başla — 150 TL</a>
+  <div class="inline-cta-note">Tek seferlik ödeme • Kişisel rapor dahil • iyzico ile güvenli ödeme</div>
+</section>
+
+<div class="divider"></div>
 <!-- ÖRNEK RAPOR MOCKUP -->
 <section id="ornek-rapor" style="background: var(--cream-dark);">
   <div class="section">
@@ -473,149 +591,8 @@
 
 <div class="divider"></div>
 
-<!-- NASIL ÇALIŞIR: 3 ADIM -->
-<section class="steps-section">
-  <div class="section">
-    <div class="section-label">Nasıl çalışır?</div>
-    <h2 class="section-title">3 adımda kişilik raporun hazır</h2>
-    <div class="steps-grid">
-      <div class="step-item">
-        <div class="step-num">1</div>
-        <div class="step-icon"><i class="fa-solid fa-lock"></i> Güvenli ödeme</div>
-        <div class="step-title">iyzico ile güvenle öde</div>
-        <div class="step-desc">Tek seferlik 150 TL ödeme yap. Bilgilerin şifrelenerek korunur.</div>
-      </div>
-      <div class="step-item">
-        <div class="step-num">2</div>
-        <div class="step-icon"><i class="fa-solid fa-pencil"></i> ~20 dakika</div>
-        <div class="step-title">Test sorularını cevapla</div>
-        <div class="step-desc">Sana özel hazırlanmış sorulara içtenlikle cevap ver. Ortalama 20 dakika sürüyor, istediğin yerden yapabilirsin.</div>
-      </div>
-      <div class="step-item">
-        <div class="step-num">3</div>
-        <div class="step-icon"><i class="fa-solid fa-envelope-open-text"></i> Anında</div>
-        <div class="step-title">Raporun e-postana gelsin</div>
-        <div class="step-desc">Cevaplarına özel hazırlanan kişilik raporu hemen e-posta adresine gönderilir. Kayıt veya hesap gerekmez.</div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <div class="divider"></div>
-
-<!-- BEFORE / AFTER -->
-<section class="ba-section">
-  <div style="max-width:860px; margin:0 auto; text-align:center; padding:0 24px;">
-    <div class="section-label">Bu test ne değiştirir?</div>
-    <h2 class="section-title" style="color:var(--white);">Testi tamamlayanlar ne fark ediyor?</h2>
-  </div>
-  <div class="ba-grid">
-    <div>
-      <div class="ba-col-head before">Önce</div>
-      <div class="ba-items">
-        <div class="ba-item before">Stresliyken verdiğin tepkileri çoğu zaman ancak sonradan anlamlandırıyordun.</div>
-        <div class="ba-item before">Aynı ilişkisel döngülere giriyor, "neden yine böyle oldu?" diye düşünüyordun.</div>
-        <div class="ba-item before">Günlük hayatta neden yorulduğunu ve neyin seni tetiklediğini netleştiremiyordun.</div>
-      </div>
-    </div>
-    <div>
-      <div class="ba-col-head after">Sonra</div>
-      <div class="ba-items">
-        <div class="ba-item after">Hangi anda hangi iç ihtiyacının devreye girdiğini daha erken fark edebiliyorsun.</div>
-        <div class="ba-item after">Tetiklenme anını daha erken fark edip tepkiyi otomatikleşmeden durdurabiliyorsun.</div>
-        <div class="ba-item after">Enerjini neyin düşürdüğünü ve neyin toparladığını daha bilinçli okuyabiliyorsun.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- FAYDALAR -->
-<section style="background: var(--cream);">
-  <div class="section">
-    <div class="section-label">Ne kazanırsın?</div>
-    <h2 class="section-title">Bu test sana ne kazandırır?</h2>
-    <div class="benefits-grid">
-      <div class="benefit-card">
-        <div class="benefit-icon"><i class="fa-solid fa-spa"></i></div>
-        <h3>Daha az stres</h3>
-        <p>Zorlandığında neden öyle tepki verdiğini fark etmek, stresi yönetmeyi kolaylaştırır.</p>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon"><i class="fa-solid fa-heart"></i></div>
-        <h3>Daha doyumlu ilişkiler</h3>
-        <p>Çatışma noktalarını ve beklentileri daha iyi okursun.</p>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon"><i class="fa-solid fa-compass"></i></div>
-        <h3>Yönünü bulma</h3>
-        <p>Gerçek ihtiyacınla alışkanlık tepkini ayırt etmeyi öğrenirsin.</p>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon"><i class="fa-solid fa-people-arrows"></i></div>
-        <h3>Çevreni daha iyi anlama</h3>
-        <p>İnsanların motivasyonunu çözdükçe iletişim daha akıcı olur.</p>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon"><i class="fa-solid fa-briefcase"></i></div>
-        <h3>İşini daha iyi anlama</h3>
-        <p>İş ortamında seni ne motive ediyor, ne yoruyor — daha net görürsün.</p>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon"><i class="fa-solid fa-couch"></i></div>
-        <h3>Daha konforlu bir yaşam</h3>
-        <p>Tetikleyicilerini netleştirdikçe günlük hayat daha hafif hissettirir.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- FİYAT + CTA -->
-<section class="cta-section">
-  <div class="price-badge">
-    <span class="price-label">Test Ücreti</span>
-    <span class="price-value">150 TL</span>
-    <span class="price-note">Tek seferlik ödeme • Kişisel rapor dahil</span>
-  </div>
-  <h2 class="section-title" style="color:var(--white); margin-bottom:12px;">Hazır mısın?</h2>
-  <p class="section-body" style="color:rgba(255,255,255,0.6); margin:0 auto 32px;">
-    Ödemeyi iyzico üzerinden güvenle tamamla, 20 dakikada testi bitir, raporun hemen e-postana gelsin.
-  </p>
-  <a href="payment.html" class="btn-primary">Teste Başla →</a>
-  <div class="payment-logos">
-    <img src="logo_band_colored@1X.png" alt="iyzico Visa MasterCard American Express Troy" onerror="this.style.display='none'" />
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- GÜVENİLİRLİK -->
-<section style="background: var(--cream);">
-  <div class="section">
-    <div class="section-label">Neden güvenilir?</div>
-    <h2 class="section-title">Bu test neden güvenilir?</h2>
-    <div class="trust-grid">
-      <div class="trust-card">
-        <h3>Bilimsel temelli</h3>
-        <p>Test, akademik bilgi ve psikoloji literatürü temel alınarak, anlamlı bir ölçüm mantığıyla oluşturulmuştur.</p>
-      </div>
-      <div class="trust-card">
-        <h3>Yorum değil, farkındalık</h3>
-        <p>Amaç seni bir tipe hapsetmek değil; otomatik eğilimlerini daha net görmene yardımcı olmaktır.</p>
-      </div>
-      <div class="trust-card">
-        <h3>Sonuç odaklı</h3>
-        <p>Rapor, günlük hayatta kullanabileceğin somut farkındalıklar ve öneriler içerir.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
 <!-- YORUMLAR -->
 <section class="testimonials-section" id="gorusler">
   <div class="section">
@@ -635,26 +612,20 @@
 
 <div class="divider"></div>
 
-<!-- KİMİZ -->
-<section style="background: var(--white);">
-  <div class="section">
-    <div class="section-label">Biz kimiz?</div>
-    <h2 class="section-title">OANDA Enneagram ekibi</h2>
-    <div class="about-grid">
-      <div class="about-text">
-        <p>OANDA Enneagram Testi, Prof. Dr. Murat Günaydın ve Uzm. Psk. Pelin Akbaş iş birliğiyle oluşturuldu.</p>
-        <p>Bu testi insanları sınıflamak için değil; kendilerini daha net görmelerine yardımcı olmak için geliştirdik.</p>
-      </div>
-      <div class="conviction">
-        <p><strong>Biz bu teste inanıyoruz.</strong><br><br>
-        Çünkü aynı döngülerin içinde takılı kalmanın ne kadar yorucu olabileceğini biliyoruz. Bu yüzden bu testi "iyi hissettirmek" için değil; hayatındaki tekrar eden döngüleri fark etmen için tasarladık.</p>
-      </div>
-    </div>
-  </div>
-</section>
+
 
 <div class="divider"></div>
 
+<!-- CTA #2 -->
+<section class="cta-section">
+  <h2 class="section-title" style="color:var(--white); margin-bottom:12px;">Sen de kişilik raporunu al</h2>
+  <p class="section-body" style="color:rgba(255,255,255,0.6); margin:0 auto 28px;">
+    En yüksek 3 Enneagram tipini ve tekrar eden davranış döngülerini daha net gör.
+  </p>
+  <a href="payment.html" class="btn-primary">Teste Başla — 150 TL</a>
+</section>
+
+<div class="divider"></div>
 <!-- YORUM FORMU -->
 <section style="background: var(--cream);">
   <div class="section">
@@ -682,13 +653,6 @@
   </div>
 </section>
 
-<!--
-  ============================================================
-  BU BLOĞU index.html'e ekleyin.
-  Nereye? Footer'dan hemen ÖNCE, yani:
-  <footer class="site-footer"> satırının üstüne yapıştırın.
-  ============================================================
--->
 
 <!-- ÇOCUK TESTİ TANITIM BÖLÜMÜ -->
 <section style="background: var(--cream-dark); border-top: 1px solid rgba(0,0,0,0.06);">
@@ -716,7 +680,7 @@
         <p>Hem sizin hem çocuğunuzun tipini bilerek ebeveynlik tarzınızı bilinçli şekillendirin.</p>
       </div>
     </div>
-    <a href="cocuk-testi.html" class="btn-primary">Çocuğum için teste başla — Ücretsiz</a>
+    <a href="cocuk-testi.html" class="btn-primary">Çocuğum için teste başla </a>
   </div>
 </section>
 <!-- /ÇOCUK TESTİ TANITIM BÖLÜMÜ -->

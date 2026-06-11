@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enneagram Hakkında • OANDA Enneagram</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0f2235;
+      --navy-mid: #1a3a55;
+      --gold: #c9a96e;
+      --gold-light: #e8d5b0;
+      --cream: #ffffff;
+      --cream-dark: #f5f5f3;
+      --text: #1a2b3c;
+      --text-muted: #5a7080;
+      --white: #ffffff;
+      --radius: 12px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #ffffff;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* HEADER */
+    .site-header {
+      background: var(--navy);
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .header-logo-text { font-family: "DM Serif Display", serif; color: var(--white); font-size: 17px; letter-spacing: 0.01em; }
+    .header-nav { display: flex; align-items: center; gap: 16px; }
+    .header-link {
+      color: rgba(255,255,255,0.72); font-size: 14px; font-weight: 500;
+      text-decoration: none; transition: color 0.2s; padding: 8px 4px;
+    }
+    .header-link:hover { color: var(--gold); }
+    .header-link.active { color: var(--gold); }
+    .header-cta {
+      background: var(--white); color: var(--navy); font-weight: 600;
+      font-size: 14px; padding: 9px 20px; border-radius: 6px;
+      border: none; text-decoration: none; transition: background 0.2s;
+    }
+    .header-cta:hover { background: rgba(255,255,255,0.85); }
+
+    /* PAGE HERO */
+    .page-hero {
+      background: var(--navy);
+      padding: 64px 32px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(201,169,110,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .page-kicker {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 20px;
+    }
+    .page-hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(30px, 5vw, 48px);
+      color: var(--white); line-height: 1.2;
+      max-width: 640px; margin: 0 auto 16px;
+    }
+    .page-hero h1 em { font-style: italic; color: var(--gold); }
+    .page-hero-sub {
+      font-size: 16px; color: rgba(255,255,255,0.65);
+      max-width: 500px; margin: 0 auto; line-height: 1.75;
+    }
+
+    /* INNER NAV (konu linkleri) */
+    .topic-nav {
+      background: var(--cream-dark);
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .topic-nav a {
+      font-size: 13px; font-weight: 500; color: var(--text-muted);
+      text-decoration: none; padding: 14px 18px;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap; transition: color 0.2s, border-color 0.2s;
+    }
+    .topic-nav a:hover { color: var(--navy); border-color: var(--gold); }
+    .topic-nav a.active { color: var(--navy); border-color: var(--gold); font-weight: 600; }
+
+    /* LAYOUT */
+    .content-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 64px 24px;
+    }
+
+    /* SECTION BAŞLIKLARI */
+    .section-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(24px, 3.5vw, 34px);
+      color: var(--navy); line-height: 1.2; margin-bottom: 14px;
+    }
+    .section-body {
+      font-size: 15px; color: var(--text-muted); line-height: 1.8; max-width: 640px;
+      margin-bottom: 24px;
+    }
+
+    .divider { height: 1px; background: rgba(0,0,0,0.07); max-width: 860px; margin: 0 auto; }
+
+    /* MAKALE KARTLARI */
+    .article-block {
+      padding: 40px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+    }
+    .article-block:last-child { border-bottom: none; }
+
+    /* QUOTE / VURGU KUTUSU */
+    .pull-quote {
+      background: var(--navy);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      margin: 28px 0;
+    }
+    .pull-quote p {
+      font-family: 'DM Serif Display', serif;
+      font-size: 18px;
+      color: var(--white);
+      line-height: 1.65;
+      font-style: italic;
+    }
+    .pull-quote p em { color: var(--gold); font-style: normal; }
+
+    /* NOTE KUTUSU */
+    .note-box {
+      padding: 16px 20px;
+      background: var(--cream-dark);
+      border-left: 3px solid var(--gold);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: 14px;
+      color: var(--text-muted);
+      margin: 20px 0;
+      line-height: 1.7;
+    }
+
+    /* 9 TİP GRID */
+    .types-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 28px;
+    }
+    .type-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 20px 18px;
+      border: 1px solid rgba(0,0,0,0.07);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .type-card:hover {
+      border-color: rgba(201,169,110,0.4);
+      box-shadow: 0 4px 16px rgba(15,34,53,0.06);
+    }
+    .type-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 28px;
+      color: var(--gold);
+      margin-bottom: 4px;
+      line-height: 1;
+    }
+    .type-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+    .type-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* FAQ */
+    .faq-section { background: var(--cream-dark); }
+    .faq-wrap { max-width: 860px; margin: 0 auto; padding: 64px 24px; }
+    .faq-list { display: flex; flex-direction: column; gap: 8px; margin-top: 32px; }
+    .faq-item {
+      background: var(--white);
+      border: 1px solid rgba(0,0,0,0.07);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .faq-q {
+      width: 100%; background: none; border: none;
+      padding: 18px 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      cursor: pointer; text-align: left;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px; font-weight: 600; color: var(--navy);
+      gap: 16px;
+    }
+    .faq-q:hover { background: var(--cream-dark); }
+    .faq-q i {
+      color: var(--gold); font-size: 14px;
+      flex-shrink: 0; transition: transform 0.25s;
+    }
+    .faq-item.open .faq-q i { transform: rotate(180deg); }
+    .faq-a {
+      display: none;
+      padding: 0 20px 18px;
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.8;
+      border-top: 1px solid rgba(0,0,0,0.06);
+    }
+    .faq-item.open .faq-a { display: block; padding-top: 14px; }
+
+    /* CTA BANT */
+    .cta-band {
+      background: var(--navy);
+      padding: 56px 24px;
+      text-align: center;
+    }
+    .cta-band h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(24px, 3.5vw, 36px);
+      color: var(--white);
+      margin-bottom: 14px;
+      line-height: 1.3;
+    }
+    .cta-band h2 em { color: var(--gold); font-style: italic; }
+    .cta-band p { font-size: 15px; color: rgba(255,255,255,0.6); margin-bottom: 28px; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+    .btn-primary {
+      background: var(--gold); color: var(--navy);
+      font-weight: 700; font-size: 16px; padding: 15px 36px;
+      border-radius: 8px; text-decoration: none;
+      transition: background 0.2s, transform 0.15s; display: inline-block;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+    /* FOOTER */
+    .site-footer { background: var(--navy); padding: 40px 32px; text-align: center; }
+    .footer-brand { font-family: 'DM Serif Display', serif; color: var(--white); font-size: 20px; margin-bottom: 6px; }
+    .footer-text { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
+    .footer-links { display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 16px; }
+    .footer-links a { font-size: 13px; color: rgba(255,255,255,0.5); text-decoration: none; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-contact { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+    .footer-contact a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    .social-links { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 20px; }
+    .social-links a { width: 36px; height: 36px; background: rgba(255,255,255,0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.5); font-size: 14px; text-decoration: none; transition: background 0.2s; }
+    .social-links a:hover { background: rgba(255,255,255,0.15); color: var(--white); }
+    .footer-small { font-size: 12px; color: rgba(255,255,255,0.25); }
+
+    /* RESPONSIVE */
+    @media (max-width: 680px) {
+      .site-header { padding: 14px 20px; }
+      .header-logo-text { display: none; }
+      .types-grid { grid-template-columns: 1fr 1fr; }
+      .content-wrap { padding: 48px 20px; }
+      .page-hero { padding: 52px 20px 60px; }
+      .pull-quote { padding: 22px 22px; }
+      .pull-quote p { font-size: 16px; }
+    }
+    @media (max-width: 420px) {
+      .types-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <a href="index.html" class="header-logo">
+    <span class="header-logo-text">OANDA Enneagram Kişilik Testi</span>
+  </a>
+  <nav class="header-nav">
+    <a href="index.html" class="header-link">Ana Sayfa</a>
+    <a href="enneagram-hakkinda.html" class="header-link active">Enneagram Hakkında</a>
+    <a href="psikologdan-notlar.html" class="header-link">Psikologdan Notlar</a>
+    <a href="kaynaklar.html" class="header-link">Kaynaklar</a>
+    <a href="payment.html" class="header-cta">Teste Başla</a>
+  </nav>
+</header>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="page-kicker">Bilgi Merkezi</div>
+  <h1>Enneagram <em>nedir</em> ve ne işe yarar?</h1>
+  <p class="page-hero-sub">Kendinizi ve çevrenizdeki insanları daha derinden anlamak için başlangıç rehberi.</p>
+</section>
+
+<!-- KONU NAVİGASYONU -->
+<nav class="topic-nav" aria-label="Konu başlıkları">
+  <a href="#nedir" class="active">Nedir?</a>
+  <a href="#dokuz-tip">9 Tip</a>
+  <a href="#nasil-calisir">Nasıl Çalışır?</a>
+  <a href="#ne-degildir">Ne Değildir?</a>
+  <a href="#sss">Sık Sorulanlar</a>
+</nav>
+
+<!-- MAKALE 1: ENNEAGRam NEDİR -->
+<section id="nedir">
+  <div class="content-wrap">
+    <div class="article-block">
+      <p class="section-label">Temel Kavram</p>
+      <h2 class="section-title">Enneagram nedir?</h2>
+      <p class="section-body">
+        Enneagram, insanın kişilik yapısını dokuz farklı tip üzerinden inceleyen bir öz-bilgi sistemidir. Kelime olarak Yunanca'da "dokuz" anlamına gelen <em>ennea</em> ve "yazı" anlamına gelen <em>gramma</em> sözcüklerinden gelir.
+      </p>
+      <p class="section-body">
+        Yalnızca bir kişilik testi değildir. Çoğu kişilik modeli size "ne yaptığınızı" anlatır; Enneagram ise "neden öyle davrandığınızı" gösterir. Motivasyonlarınızı, derin korkularınızı ve tekrar eden ilişki kalıplarınızı açık hale getirir.
+      </p>
+
+      <div class="pull-quote">
+        <p>Enneagram, davranışlarınızı değil; o davranışların arkasındaki <em>otomatik programı</em> görmenizi sağlar.</p>
+      </div>
+
+      <p class="section-body">
+        Sistem, kökleri Sümer ve Mısır'a uzanan kadim bilgelik geleneklerine dayanır. 20. yüzyılda Bolivyalı mistik Oscar Ichazo ve psikiyatrist Claudio Naranjo tarafından modern psikoloji ile birleştirilmiştir. Bugün dünyanın önde gelen iş okulları, terapistler ve liderlik gelişim programları tarafından yaygın olarak kullanılmaktadır.
+      </p>
+
+      <div class="note-box">
+        <strong>Nereden bakarsanız bakın:</strong> Enneagram bir etiket sistemi değildir. Amacı sizi bir kutuya koymak değil, kendinizle daha dürüst bir ilişki kurmanıza zemin hazırlamaktır.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MAKALE 2: 9 TİP -->
+<section id="dokuz-tip" style="background: var(--cream-dark);">
+  <div class="content-wrap">
+    <div class="article-block" style="border-bottom: none;">
+      <p class="section-label">Tipler</p>
+      <h2 class="section-title">Dokuz tip, dokuz farklı dünya görüşü</h2>
+      <p class="section-body">
+        Her tip, insanın gerçekliği algılama ve ona tepki verme biçimini yansıtır. Hiçbir tip diğerinden üstün ya da aşağı değildir; her birinin kendine özgü güçlü yönleri ve kör noktaları vardır.
+      </p>
+
+      <div class="types-grid">
+        <div class="type-card">
+          <div class="type-num">1</div>
+          <div class="type-name">Mükemmeliyetçi</div>
+          <div class="type-desc">Doğru olanı yapmak için yoğun bir içsel baskı hisseder. Detaycı, ilkeli ve kendine karşı en sert eleştirmendir.</div>
+        </div>
+        <div class="type-card">
+          <div class="type-num">2</div>
+          <div class="type-name">Yardımsever</div>
+          <div class="type-desc">Sevgi ve bağlılık için başkalarının ihtiyaçlarını öne koyar. Sıcak, empatik ama kendi ihtiyaçlarını ifade etmekte zorlanır.</div>
+        </div>
+        <div class="type-card">
+          <div class="type-num">3</div>
+          <div class="type-name">Başarı Odaklı</div>
+          <div class="type-desc">Tanınmak ve değerli görünmek için hedeflerine odaklanır. Enerjik, uyumlu ve sonuç odaklıdır.</div>
+        </div>
+        <div class="type-card">
+          <div class="type-num">4</div>
+          <div class="type-name">Bireyci</div>
+          <div class="type-desc">Kimliğini derinlemesine hissetmek ve benzersiz olmak ister. Yaratıcı, duyarlı ama sıklıkla eksiklik hissiyle boğuşur.</div>
+        </div>
+        <div class="type-card">
+          <div class="type-num">5</div>
+          <div class="type-name">Gözlemci</div>
+          <div class="type-desc">Anlayarak güvende hissetmeyi ister. Analitik, bağımsız ve enerji tasarrufu konusunda son derece dikkatlidir.</div>
+        </div>
+        <div class="type-card">
+          <div class="type-num">6</div>
+          <div class="type-name">Sadık Şüpheci</div>
+          <div class="type-desc">Güvenli ve desteklenmiş hissetmek için sürekli olası tehditleri değerlendirir. Bağlılık odaklı ve güvenilirdir.</div>
+        </div>
+        <div class="type-card">
+          <div class="type-num">7</div>
+          <div class="type-name">Maceracı</div>
+          <div class="type-desc">Acı ve sıkıntıdan kaçınmak için olasılıklarla dolu bir hayat sürmek ister. Neşeli, hızlı düşünen ve çoğulcudur.</div>
+        </div>
+        <div class="type-card">
+          <div class="type-num">8</div>
+          <div class="type-name">Meydan Okuyucu</div>
+          <div class="type-desc">Kontrol ve güç üzerinden kendini ifade eder. Kararlı, koruyucu ve doğrudan bir iletişim tarzı vardır.</div>
+        </div>
+        <div class="type-card">
+          <div class="type-num">9</div>
+          <div class="type-name">Barışçı</div>
+          <div class="type-desc">İç ve dış uyumu korumak için çatışmadan kaçınır. Hoşgörülü, sabırlı ama kendi önceliklerini geri plana iter.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MAKALE 3: NASIL ÇALIŞIR -->
+<section id="nasil-calisir">
+  <div class="content-wrap">
+    <div class="article-block">
+      <p class="section-label">Derinlemesine Bakış</p>
+      <h2 class="section-title">Enneagram nasıl çalışır?</h2>
+      <p class="section-body">
+        Enneagram'ın temelinde her tipin bir temel korkusu ve bu korkuyu yatıştırmak için geliştirdiği bir temel stratejisi yatar. Bu strateji çocukluktan bu yana işe yarayan bir hayatta kalma mekanizmasıdır — ama yetişkinlikte çoğu zaman bizi sınırlandıran bir otomatik pilota dönüşür.
+      </p>
+      <p class="section-body">
+        Örneğin Tip 1, "yanlış ve kusurlu" olma korkusunu taşır; bu korkuyla başa çıkmak için her şeyi doğru yapmaya çabalar. Tip 7 ise acı ve yoksunluk korkusunu yeni deneyimler ve seçenekler arayışıyla bastırır.
+      </p>
+
+      <div class="pull-quote">
+        <p>Her tipin bir <em>kör noktası</em> vardır — yani farkında olmadan yaptığı ama başkalarının açıkça gördüğü bir şey. Enneagram bu kör noktayı görünür kılar.</p>
+      </div>
+
+      <p class="section-body">
+        Sistem aynı zamanda dinamiktir: stres altında ve güvende hissettiğinizde farklı tiplerin özelliklerini gösterirsiniz. Bu "ok yönleri" olarak adlandırılır. Örneğin stres altındaki bir Tip 9, Tip 6'nın kaygılı ve huzursuz yönlerine kayabilir. Bu bilgi, kriz anlarında kendinizi daha hızlı tanımanıza yardımcı olur.
+      </p>
+
+      <div class="note-box">
+        <strong>Kanatlar:</strong> Her tipin iki komşusu (kanatları) da kişiliğinizi renklendirir. Tip 4 iseniz Tip 3 ya da Tip 5 özelliklerini de taşıyor olabilirsiniz. Bu nüanslar sonuçların kişiden kişiye neden farklı hissettirdiğini açıklar.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MAKALE 4: NE DEĞİLDİR -->
+<section id="ne-degildir" style="background: var(--cream-dark);">
+  <div class="content-wrap">
+    <div class="article-block" style="border-bottom: none;">
+      <p class="section-label">Yanılgılar</p>
+      <h2 class="section-title">Enneagram ne değildir?</h2>
+      <p class="section-body">
+        Enneagram'a dair yaygın birkaç yanlış anlama, sistemin derinliğini gözden kaçırmaya neden olabilir.
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 8px;">
+        <div style="background: var(--white); border-radius: var(--radius); padding: 20px 22px; border: 1px solid rgba(0,0,0,0.07);">
+          <p style="font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 6px;">❌ "Enneagram beni bir kutuya koyuyor"</p>
+          <p style="font-size: 14px; color: var(--text-muted); line-height: 1.7;">Aksine, Enneagram'ın amacı sizi tanımlamak değil, davranışlarınızın ardındaki motivasyonu anlamanızı sağlamaktır. Tipler bir etiket değil, bir başlangıç noktasıdır.</p>
+        </div>
+        <div style="background: var(--white); border-radius: var(--radius); padding: 20px 22px; border: 1px solid rgba(0,0,0,0.07);">
+          <p style="font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 6px;">❌ "Test sonucum değişebilir, o zaman güvenilir değil"</p>
+          <p style="font-size: 14px; color: var(--text-muted); line-height: 1.7;">Temel tipiniz sabittir; ancak ruh haliniz, test sırasındaki yorgunluğunuz veya bulunduğunuz yaşam dönemi sonuçları geçici olarak etkileyebilir. Bu nedenle sonuçlar bir uzman eşliğinde değerlendirildiğinde çok daha net hale gelir.</p>
+        </div>
+        <div style="background: var(--white); border-radius: var(--radius); padding: 20px 22px; border: 1px solid rgba(0,0,0,0.07);">
+          <p style="font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 6px;">❌ "Bazı tipler daha iyi, bazıları daha kötü"</p>
+          <p style="font-size: 14px; color: var(--text-muted); line-height: 1.7;">Her tipin hem güçlü yönleri hem de gelişim alanları vardır. Hiçbir tip üstün değildir; önemli olan tipinizi bilip bilinçli bir seçimle hareket edebilmektir.</p>
+        </div>
+        <div style="background: var(--white); border-radius: var(--radius); padding: 20px 22px; border: 1px solid rgba(0,0,0,0.07);">
+          <p style="font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 6px;">❌ "MBTI ile aynı şey"</p>
+          <p style="font-size: 14px; color: var(--text-muted); line-height: 1.7;">MBTI davranış tercihlerinizi ölçerken Enneagram temel motivasyonlarınıza ve korkularınıza odaklanır. Birbirini tamamlayan ama farklı şeyleri ölçen iki ayrı sistemdir.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SSS -->
+<section class="faq-section" id="sss">
+  <div class="faq-wrap">
+    <p class="section-label">Sık Sorulanlar</p>
+    <h2 class="section-title">Aklınızdaki sorular</h2>
+
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Enneagram tipim hiç değişir mi?
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="faq-a">Temel tipiniz yaşam boyunca sabit kalır. Ancak sağlıklı dönemlerde ve stres altında farklı tiplerin özelliklerini gösterebilirsiniz — bunlara "entegrasyon" ve "stres yönleri" denir. Bunun yanı sıra yıllar içinde kişisel gelişiminizle birlikte tipinizin en sağlıklı özelliklerini daha tutarlı sergilemeye başlayabilirsiniz.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Testte birden fazla tipte yüksek puan aldım, bu ne anlama geliyor?
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="faq-a">Bu oldukça yaygındır. Her insanın bir temel tipi vardır; komşu tipler (kanatlar) kişiliğinizi renklendirir. OANDA Enneagram raporu bu nedenle en yüksek puan aldığınız 3 tipin detaylı analizini içerir; böylece hangi tipin size en çok "dokunduğunu" kendiniz değerlendirebilirsiniz.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Enneagramı ilişkilerde nasıl kullanabilirim?
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="faq-a">Partnerinizin, arkadaşınızın ya da aile üyenizin tipini bilmek, anlaşmazlık anlarında neden o tepkiyi verdiklerini anlamanıza yardımcı olur. Örneğin Tip 2 ile çatışırken onun ihtiyaç duyduğu takdirin neden bu kadar kritik olduğunu anlamak, iletişimi kökten değiştirebilir. Enneagram empatiyi bilgi üzerine kurar.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          İş hayatında ve ekip yönetiminde işe yarıyor mu?
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="faq-a">Evet. Birçok Fortune 500 şirketi ve liderlik gelişim programı Enneagram'ı aktif olarak kullanmaktadır. Farklı tiplerin stres ve baskı altında nasıl davrandığını, neyin onları motive ettiğini ve hangi iletişim tarzının işe yaradığını bilmek, yöneticilere ve takım liderlerine ciddi bir avantaj sağlar.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Enneagram bilimsel midir?
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="faq-a">Enneagram, psikolojik araştırmalarda incelenen ve geçerliliğine dair artan sayıda akademik çalışmanın bulunduğu bir modeldir. Psikoterapistler, koçlar ve organizasyon gelişim uzmanları tarafından yaygın biçimde kullanılmaktadır. OANDA Enneagram testi, Prof. Dr. Murat Günaydın ve Uzm. Psk. Pelin Akbaş iş birliğiyle bilimsel bir çerçevede geliştirilmiştir.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Testi tamamladıktan sonra raporumu ne zaman alırım?
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="faq-a">Test tamamlandıktan hemen sonra, cevaplarınıza göre hazırlanan kişisel rapor e-posta adresinize gönderilir. Genellikle birkaç dakika içinde ulaşır; gelen kutunuzda göremiyorsanız spam klasörünü kontrol etmenizi öneririz.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANT -->
+<section class="cta-band">
+  <h2>Kendi tipinizi <em>keşfetmeye</em> hazır mısınız?</h2>
+  <p>~20 dakikalık test; ardından size özel hazırlanan detaylı rapor hemen e-postanıza gelir.</p>
+  <a href="payment.html" class="btn-primary">Teste Başla — 150 TL</a>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-brand">OANDA Enneagram</div>
+  <div class="footer-text">Enneagram kişilik testi ve raporlama hizmeti.</div>
+  <nav class="footer-links">
+    <a href="privacy_v3.html">Gizlilik Politikası</a>
+    <a href="refund_v3.html">İptal &amp; İade Şartları</a>
+    <a href="terms_v3.html">Kullanım Koşulları</a>
+  </nav>
+  <div class="footer-contact">
+    E-posta: <a href="mailto:oandaenneagram@gmail.com">oandaenneagram@gmail.com</a>
+  </div>
+  <div class="social-links">
+    <a href="https://www.facebook.com/oandapy" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+    <a href="https://twitter.com/oandapy" target="_blank" aria-label="Twitter / X"><i class="fa-brands fa-x-twitter"></i></a>
+    <a href="https://www.instagram.com/oandaenneagram" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+    <a href="https://www.linkedin.com/company/oandaprojeyonetimi/posts/?feedView=all" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+  </div>
+  <div class="footer-small">© 2026 OANDA Enneagram. Tüm hakları saklıdır.</div>
+</footer>
+
+<script>
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+/* Aktif konu linkini scroll'a göre güncelle */
+const sections = ['nedir','dokuz-tip','nasil-calisir','ne-degildir','sss'];
+const navLinks = document.querySelectorAll('.topic-nav a');
+
+function updateNav() {
+  let current = sections[0];
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && window.scrollY >= el.offsetTop - 120) current = id;
+  });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+}
+window.addEventListener('scroll', updateNav, { passive: true });
+</script>
+
+</body>
+</html>

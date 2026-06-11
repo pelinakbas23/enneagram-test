@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-26SKL6XK12"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-26SKL6XK12');
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Psikologdan Notlar • OANDA Enneagram</title>
+  <meta name="description" content="Uzm. Psk. Pelin Akbaş'tan ilişkiler, kaygı, stres, iş hayatı ve Enneagram üzerine psikolojik notlar." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0f2235;
+      --navy-mid: #1a3a55;
+      --gold: #c9a96e;
+      --gold-light: #e8d5b0;
+      --cream: #ffffff;
+      --cream-dark: #f5f5f3;
+      --text: #1a2b3c;
+      --text-muted: #5a7080;
+      --white: #ffffff;
+      --radius: 12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #ffffff;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; }
+
+    .site-header {
+      background: var(--navy);
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .header-logo-text {
+      font-family: "DM Serif Display", serif;
+      color: var(--white);
+      font-size: 17px;
+      letter-spacing: 0.01em;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .header-link {
+      color: rgba(255,255,255,0.72);
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.2s;
+      padding: 8px 4px;
+    }
+
+    .header-link:hover,
+    .header-link.active {
+      color: var(--gold);
+    }
+
+    .header-cta {
+      background: var(--white);
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 14px;
+      padding: 9px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .header-cta:hover {
+      background: rgba(255,255,255,0.85);
+      transform: translateY(-1px);
+    }
+
+    .hero {
+      background: var(--navy);
+      padding: 82px 32px 84px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(201,169,110,0.16) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 820px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-kicker,
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(38px, 6vw, 64px);
+      color: var(--white);
+      line-height: 1.12;
+      margin: 0 auto 20px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      color: rgba(255,255,255,0.72);
+      max-width: 640px;
+      margin: 0 auto 34px;
+      line-height: 1.75;
+    }
+
+    .author-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(201,169,110,0.25);
+      color: rgba(255,255,255,0.82);
+      border-radius: 999px;
+      padding: 9px 16px;
+      font-size: 13px;
+      margin-bottom: 28px;
+    }
+
+    .author-pill i { color: var(--gold); }
+
+    .btn-primary {
+      background: var(--gold);
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 16px;
+      padding: 15px 34px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      display: inline-block;
+      border: 1.5px solid rgba(201,169,110,0.6);
+      color: var(--gold);
+      font-weight: 700;
+      font-size: 15px;
+      padding: 13px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .btn-outline:hover { background: rgba(201,169,110,0.1); }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .section {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 68px 24px;
+    }
+
+    .section.narrow { max-width: 860px; }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(28px, 4vw, 42px);
+      color: var(--navy);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .section-body {
+      font-size: 16px;
+      color: var(--text-muted);
+      line-height: 1.8;
+      max-width: 720px;
+    }
+
+    .bio-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr;
+      gap: 28px;
+      align-items: start;
+      margin-top: 30px;
+    }
+
+    .bio-text {
+      color: var(--text-muted);
+      font-size: 16px;
+      line-height: 1.85;
+    }
+
+    .bio-text p + p { margin-top: 15px; }
+
+    .bio-card {
+      background: var(--cream-dark);
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: var(--radius);
+      padding: 24px 22px;
+      position: sticky;
+      top: 92px;
+    }
+
+    .bio-card h3 {
+      font-family: 'DM Serif Display', serif;
+      color: var(--navy);
+      font-size: 24px;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    .bio-card ul {
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .bio-card li {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.55;
+      display: flex;
+      gap: 9px;
+      align-items: flex-start;
+    }
+
+    .bio-card li::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 8px;
+    }
+
+    .disclaimer {
+      background: #faf7f2;
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 18px 20px;
+      margin-top: 22px;
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    .category-nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 34px;
+    }
+
+    .category-nav a {
+      text-decoration: none;
+      background: var(--white);
+      border: 1px solid rgba(0,0,0,0.08);
+      color: var(--navy);
+      border-radius: 999px;
+      padding: 9px 15px;
+      font-size: 13px;
+      font-weight: 700;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .category-nav a:hover {
+      border-color: var(--gold);
+      background: #faf7f2;
+    }
+
+    .notes-section {
+      background: var(--cream-dark);
+      border-top: 1px solid rgba(0,0,0,0.06);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .category-block { margin-top: 42px; }
+    .category-block:first-child { margin-top: 0; }
+
+    .category-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      padding-bottom: 12px;
+    }
+
+    .category-title {
+      font-family: 'DM Serif Display', serif;
+      color: var(--navy);
+      font-size: 30px;
+      line-height: 1.2;
+    }
+
+    .category-tag {
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .notes-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .note-card {
+      background: var(--white);
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: var(--radius);
+      padding: 24px 22px;
+      box-shadow: 0 2px 14px rgba(0,0,0,0.03);
+    }
+
+    .note-card h3 {
+      font-family: 'DM Serif Display', serif;
+      color: var(--navy);
+      font-size: 24px;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+
+    .note-answer {
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.78;
+      margin-bottom: 16px;
+    }
+
+    .note-answer p + p { margin-top: 12px; }
+
+    .note-mini-title {
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin: 18px 0 8px;
+    }
+
+    .note-list {
+      list-style: none;
+      display: grid;
+      gap: 7px;
+    }
+
+    .note-list li {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.55;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .note-list li::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 8px;
+    }
+
+    .cta-section {
+      background: var(--navy);
+      padding: 68px 24px;
+      text-align: center;
+    }
+
+    .cta-section .section-title {
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .cta-section p {
+      color: rgba(255,255,255,0.65);
+      max-width: 620px;
+      margin: 0 auto 28px;
+      font-size: 16px;
+      line-height: 1.75;
+    }
+
+    .site-footer {
+      background: var(--navy);
+      padding: 40px 32px;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .footer-brand {
+      font-family: 'DM Serif Display', serif;
+      color: var(--white);
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+
+    .footer-text {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 20px;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+    }
+
+    .footer-links a:hover { color: var(--gold); }
+
+    .footer-contact {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 16px;
+    }
+
+    .footer-contact a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+    }
+
+    .social-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .social-links a {
+      width: 36px;
+      height: 36px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.5);
+      font-size: 14px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .social-links a:hover {
+      background: rgba(255,255,255,0.15);
+      color: var(--white);
+    }
+
+    .footer-small {
+      font-size: 12px;
+      color: rgba(255,255,255,0.25);
+    }
+
+    @media (max-width: 760px) {
+      .site-header {
+        padding: 14px 18px;
+        align-items: flex-start;
+      }
+
+      .header-logo-text { font-size: 16px; }
+
+      .header-nav { gap: 8px; }
+
+      .header-link {
+        font-size: 13px;
+        padding: 6px 2px;
+      }
+
+      .header-cta {
+        font-size: 13px;
+        padding: 8px 12px;
+      }
+
+      .hero { padding: 58px 20px 62px; }
+
+      .section { padding: 52px 20px; }
+
+      .bio-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .bio-card { position: static; }
+
+      .intro-psk-grid {
+        grid-template-columns: 1fr !important;
+      }
+
+      .notes-grid { grid-template-columns: 1fr; }
+
+      .category-head { display: block; }
+
+      .category-tag {
+        display: block;
+        margin-top: 6px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .site-header {
+        position: static;
+        flex-direction: column;
+      }
+
+      .header-nav { justify-content: flex-start; }
+
+      .hero-actions { flex-direction: column; }
+
+      .btn-primary,
+      .btn-outline {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <a href="index.html" class="header-logo">
+    <span class="header-logo-text">OANDA Enneagram</span>
+  </a>
+
+  <nav class="header-nav">
+    <a href="index.html" class="header-link">Ana Sayfa</a>
+    <a href="enneagram-hakkinda.html" class="header-link">Enneagram Hakkında</a>
+    <a href="psikologdan-notlar.html" class="header-link active">Psikologdan Notlar</a>
+    <a href="kaynaklar.html" class="header-link">Kaynaklar</a>
+    <a href="payment.html" class="header-cta">Teste Başla</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-kicker">Psikologdan Notlar</div>
+    <h1>Günlük hayattaki döngülerini<br><em>biraz daha yakından oku.</em></h1>
+    <p class="hero-sub">
+      İlişkiler, stres, kaygı, iş hayatı ve kendini anlama üzerine psikolojik notlar.
+      Enneagram burada bir etiket değil; davranışlarının arkasındaki motivasyonları fark etmek için bir harita.
+    </p>
+
+    <div class="author-pill">
+      <i class="fa-solid fa-user-pen"></i>
+      Uzm. Psk. Pelin Akbaş'ın notlarıyla
+    </div>
+
+    <div class="hero-actions">
+      <a href="#notlar" class="btn-primary">Notları Oku</a>
+      <a href="payment.html" class="btn-outline">Kendi Tipini Öğren</a>
+    </div>
+  </div>
+</section>
+
+<section style="background: var(--white);">
+  <div class="section narrow">
+    <div style="display: grid; grid-template-columns: 1.4fr 0.8fr; gap: 28px; align-items: start;" class="intro-psk-grid">
+
+      <div>
+        <div class="section-label">Bu sayfa ne için?</div>
+        <h2 class="section-title">Kendini tanımak bazen tek bir soruyla başlar.</h2>
+        <p class="section-body">
+          Bazen "Neden böyle hissediyorum?" ya da "Neden hep aynı tepkiyi veriyorum?" diye düşünürüz.
+          Bu bölümdeki notları, bu sorulara psikolojik bir çerçeveden ve Enneagram perspektifinden bakmak için hazırladık.
+        </p>
+
+        <div class="intro-box">
+          <strong>Not:</strong> Buradaki yazılar tanı, terapi veya klinik değerlendirme yerine geçmez.
+          Ama kendini daha iyi gözlemlemek, tekrar eden davranış kalıplarını fark etmek ve kendi iç motivasyonlarını anlamak için iyi bir başlangıç olabilir.
+        </div>
+
+        <div class="category-nav">
+          <a href="#iliskiler">İlişkiler</a>
+          <a href="#kaygi-stres">Kaygı ve Stres</a>
+          <a href="#is-kariyer">İş ve Kariyer</a>
+        </div>
+      </div>
+
+      <aside class="bio-card" style="position: sticky; top: 92px;">
+        <h3>Uzm. Psk. Pelin Akbaş</h3>
+        <p>
+          Sabancı Üniversitesi Psikoloji Bölümü'nden mezun olduktan sonra,
+          Vrije Universiteit Amsterdam'da Bilişsel Nöropsikoloji yüksek lisansımı tamamladım.
+        </p>
+        <p style="margin-top:12px;">
+          Şimdi ise insan davranışlarını, kişilik farklılıklarını ve Enneagramı daha iyi anlamaya yönelik çalışmalar yürütüyor ve kişilik testleri üzerine çalışıyorum.
+        </p>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+<section class="notes-section" id="notlar">
+  <div class="section">
+
+    <div class="category-block" id="iliskiler">
+      <div class="category-head">
+        <h2 class="category-title">İlişkiler</h2>
+        <span class="category-tag">4 Not</span>
+      </div>
+
+      <div class="notes-grid">
+        <article class="note-card">
+          <h3>Neden hep aynı ilişkileri yaşıyorum?</h3>
+          <div class="note-answer">
+            <p>
+              Çoğu zaman aynı ilişki döngülerine girmemizin nedeni yalnızca "yanlış insanları seçmek" değildir.
+              Bazen tanıdık gelen duygulara, tanıdık gelen rollere ve çocukluktan beri bildiğimiz ilişki biçimlerine çekiliriz.
+            </p>
+            <p>
+              Enneagram bu noktada, ilişkilerde hangi ihtiyacımızın bizi yönettiğini fark ettirir:
+              sevilme ihtiyacı mı, güvende hissetme ihtiyacı mı, kontrolü kaybetmeme ihtiyacı mı?
+            </p>
+          </div>
+
+          <div class="note-mini-title">Kendine sor</div>
+          <ul class="note-list">
+            <li>Bir ilişkide en çok neyi kaybetmekten korkuyorum?</li>
+            <li>Benzer tartışmalar hangi konularda tekrar ediyor?</li>
+            <li>Sevilmek için kendimden ne kadar vazgeçiyorum?</li>
+          </ul>
+        </article>
+
+        <article class="note-card">
+          <h3>İnsanlar neden beni yanlış anlıyor?</h3>
+          <div class="note-answer">
+            <p>
+              Bazen niyetimizle dışarıdan görünen davranışımız aynı mesajı vermez.
+              Yardım etmeye çalışırken kontrolcü, sınır koymaya çalışırken soğuk, başarılı olmaya çalışırken uzak görünebiliriz.
+            </p>
+            <p>
+              Enneagram, kişinin yalnızca ne yaptığını değil, bunu hangi iç motivasyonla yaptığını anlamaya çalışır.
+              Bu farkındalık iletişimde daha açık ve yumuşak olmayı kolaylaştırır.
+            </p>
+          </div>
+
+          <div class="note-mini-title">Kendine sor</div>
+          <ul class="note-list">
+            <li>İnsanlar beni en çok hangi konuda yanlış anlıyor?</li>
+            <li>Ben o anda aslında ne anlatmaya çalışıyorum?</li>
+            <li>Duygumu doğrudan söylemek yerine hangi davranışla gösteriyorum?</li>
+          </ul>
+        </article>
+
+        <article class="note-card">
+          <h3>Neden hayır demekte zorlanıyorum?</h3>
+          <div class="note-answer">
+            <p>
+              Hayır demekte zorlanmak çoğu zaman nezaketle ilgili değildir; reddedilme, sevilmeme, çatışma çıkarma
+              ya da "bencil görünme" korkusuyla ilişkili olabilir.
+            </p>
+            <p>
+              Bazı Enneagram tipleri ilişkide bağını korumak için kendi ihtiyacını geri plana atabilir.
+              Fakat sürekli evet demek, zamanla kırgınlık ve tükenmişlik yaratır.
+            </p>
+          </div>
+
+          <div class="note-mini-title">Kendine sor</div>
+          <ul class="note-list">
+            <li>Hayır dersem karşımdaki kişinin ne düşüneceğinden korkuyorum?</li>
+            <li>Evet dediğim şeylerin kaçını gerçekten istiyorum?</li>
+            <li>Sınır koymadığımda içimde hangi duygu birikiyor?</li>
+          </ul>
+        </article>
+
+        <article class="note-card">
+          <h3>Sürekli onay beklemek normal mi?</h3>
+          <div class="note-answer">
+            <p>
+              Hepimiz zaman zaman görülmek, takdir edilmek ve onaylanmak isteriz. Bu insani bir ihtiyaçtır.
+              Fakat değer duygumuz tamamen dışarıdan gelen onaya bağlandığında, iç dengemiz başkalarının tepkilerine teslim olur.
+            </p>
+            <p>
+              Enneagram, kişinin onayı neden aradığını anlamaya yardımcı olur:
+              başarılı görünmek için mi, sevilmek için mi, doğru yaptığından emin olmak için mi?
+            </p>
+          </div>
+
+          <div class="note-mini-title">Kendine sor</div>
+          <ul class="note-list">
+            <li>Onay alamadığımda kendimle ilgili neye inanıyorum?</li>
+            <li>Takdir edilmediğimde hemen değersiz mi hissediyorum?</li>
+            <li>Bir şeyi gerçekten istediğim için mi, beğenilmek için mi yapıyorum?</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+
+    <div class="category-block" id="kaygi-stres">
+      <div class="category-head">
+        <h2 class="category-title">Kaygı ve Stres</h2>
+        <span class="category-tag">4 Not</span>
+      </div>
+
+      <div class="notes-grid">
+        <article class="note-card">
+          <h3>Stres altında neden farklı birine dönüşüyorum?</h3>
+          <div class="note-answer">
+            <p>
+              Stres anında beynimiz güvenli ve tanıdık tepkilere yönelir. Bu yüzden normalde sakin olan biri kontrolcü,
+              uyumlu biri öfkeli, güçlü görünen biri içine kapanmış hale gelebilir.
+            </p>
+            <p>
+              Enneagramın en faydalı taraflarından biri, kişinin stres altındaki otomatik tepkilerini göstermesidir.
+              Bu tepkileri fark etmek, onları değiştirebilmenin ilk adımıdır.
+            </p>
+          </div>
+
+          <div class="note-mini-title">Kendine sor</div>
+          <ul class="note-list">
+            <li>Stresliyken en çok hangi davranışım değişiyor?</li>
+            <li>O an aslında hangi ihtiyacım karşılanmıyor?</li>
+            <li>Stres geçince hangi davranışımdan pişman oluyorum?</li>
+          </ul>
+        </article>
+
+        <article class="note-card">
+          <h3>Kaygı herkeste aynı mı yaşanır?</h3>
+          <div class="note-answer">
+            <p>
+              Kaygı tek bir şekilde görünmez. Bazı kişiler kaygılandığında her ihtimali düşünür,
+              bazıları kontrol etmeye başlar, bazıları daha çok çalışır, bazıları ise tamamen geri çekilir.
+            </p>
+            <p>
+              Bu nedenle "kaygılıyım" demek başlangıçtır; asıl önemli olan kaygıyla ne yaptığımızı fark etmektir.
+              Enneagram, bu başa çıkma biçimlerini anlamada yardımcı bir çerçeve sunabilir.
+            </p>
+          </div>
+
+          <div class="note-mini-title">Kendine sor</div>
+          <ul class="note-list">
+            <li>Kaygılandığımda kontrol mü arıyorum, destek mi, başarı mı, kaçış mı?</li>
+            <li>Kaygımı saklıyor muyum yoksa dışarı mı taşıyorum?</li>
+            <li>Kaygım bana hangi ihtiyacımı gösteriyor?</li>
+          </ul>
+        </article>
+
+        <article class="note-card">
+          <h3>Kontrol ihtiyacı nereden gelir?</h3>
+          <div class="note-answer">
+            <p>
+              Kontrol ihtiyacı çoğu zaman güç merakı değil, güvende hissetme çabasıdır.
+              Belirsizlik arttığında bazı kişiler düzen kurarak, plan yaparak veya her şeyi önceden hesaplayarak rahatlamaya çalışır.
+            </p>
+            <p>
+              Fakat kontrol arttıkça bazen esneklik azalır. Enneagram, kontrolün hangi korkuya hizmet ettiğini görmeye yardımcı olur:
+              hata yapma korkusu mu, güçsüz kalma korkusu mu, güvensizlik mi?
+            </p>
+          </div>
+
+          <div class="note-mini-title">Kendine sor</div>
+          <ul class="note-list">
+            <li>Kontrolü bırakırsam ne olacağından korkuyorum?</li>
+            <li>Her şeyi yönetmeye çalıştığımda bedenim nasıl hissediyor?</li>
+            <li>Güvende hissetmek için başka neye ihtiyacım var?</li>
+          </ul>
+        </article>
+
+        <article class="note-card">
+          <h3>Belirsizlik neden bazı insanları daha çok zorlar?</h3>
+          <div class="note-answer">
+            <p>
+              Belirsizlik herkes için kolay değildir ama bazı insanlar için çok daha yorucudur.
+              Çünkü belirsizlik, zihnin tehlike ihtimallerini sürekli taramasına neden olabilir.
+            </p>
+            <p>
+              Bazı kişilik örüntüleri için cevap bilmemek, kontrolsüzlük ya da hazırlıksız yakalanmak ciddi bir iç gerilim yaratır.
+              Bu yüzden belirsizliği yönetmenin yolu, yalnızca daha fazla bilgi toplamak değil; güvende hissetme yollarını da geliştirmektir.
+            </p>
+          </div>
+
+          <div class="note-mini-title">Kendine sor</div>
+          <ul class="note-list">
+            <li>Belirsizlikte zihnim en çok hangi senaryoya gidiyor?</li>
+            <li>Kesinlik arayışım beni rahatlatıyor mu, daha çok mu yoruyor?</li>
+            <li>Bilmediğim şeylerle kalabilmek için neye ihtiyacım var?</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+
+    <div class="category-block" id="is-kariyer">
+      <div class="category-head">
+        <h2 class="category-title">İş ve Kariyer</h2>
+        <span class="category-tag">4 Not</span>
+      </div>
+
+      <div class="notes-grid">
+        <article class="note-card">
+          <h3>Mükemmeliyetçilik başarı mı getirir, tükenmişlik mi?</h3>
+          <div class="note-answer">
+            <p>
+              Mükemmeliyetçilik kısa vadede başarı getirebilir; çünkü kişi yüksek standartlarla çalışır.
+              Fakat uzun vadede her şeyi kusursuz yapma baskısı, erteleme, yorgunluk ve kendine sert davranma döngüsüne dönüşebilir.
+            </p>
+            <p>
+              Enneagram açısından önemli soru şudur: Bu yüksek standartlar gelişim isteğinden mi geliyor,
+              yoksa hata yaparsam değerim azalır korkusundan mı?
+            </p>
+          </div>
+
+          <div class="note-mini-title">Kendine sor</div>
+          <ul class="note-list">
+            <li>Bir işi bitirdiğimde başarıyı mı görüyorum, eksikleri mi?</li>
+            <li>Hata yapınca kendime nasıl konuşuyorum?</li>
+            <li>"Yeterince iyi" benim için ne demek?</li>
+          </ul>
+        </article>
+
+        <article class="note-card">
+          <h3>İş yerinde çatışmaların altında ne yatar?</h3>
+          <div class="note-answer">
+            <p>
+              İş yerindeki çatışmalar çoğu zaman yalnızca görev paylaşımıyla ilgili değildir.
+              Takdir edilme, kontrol, adalet, güven, hız, özgürlük veya sorumluluk gibi görünmeyen ihtiyaçlar çatışmayı büyütebilir.
+            </p>
+            <p>
+              Enneagram, insanların aynı durumu neden farklı algıladığını anlamaya yardımcı olur.
+              Birinin "sorumsuzluk" dediğine diğeri "özgürlük alanı" diyebilir.
+            </p>
+          </div>
+
+          <div class="note-mini-title">Kendine sor</div>
+          <ul class="note-list">
+            <li>İş yerinde beni en hızlı ne tetikliyor?</li>
+            <li>Çatışmada savunduğum şey görev mi, yoksa iç ihtiyacım mı?</li>
+            <li>Karşımdaki kişinin motivasyonu benimkinden nasıl farklı olabilir?</li>
+          </ul>
+        </article>
+
+        <article class="note-card">
+          <h3>Neden sürekli daha fazlasını başarmak istiyorum?</h3>
+          <div class="note-answer">
+            <p>
+              Başarmak istemek sağlıklı ve motive edici olabilir. Ama başarı ihtiyacı, kişinin değer duygusunun tek kaynağı haline geldiğinde
+              durmak zorlaşır.
+            </p>
+            <p>
+              Bazı kişiler için başarı, görülmenin ve değerli hissetmenin bir yoludur.
+              Bu yüzden hedefe ulaşınca bile iç ses "şimdi sıradaki ne?" diye sorabilir.
+            </p>
+          </div>
+
+          <div class="note-mini-title">Kendine sor</div>
+          <ul class="note-list">
+            <li>Başarılı olmadığımda kendimi nasıl görüyorum?</li>
+            <li>Dinlenirken suçluluk hissediyor muyum?</li>
+            <li>Başarı benim için gerçekten neyi temsil ediyor?</li>
+          </ul>
+        </article>
+
+        <article class="note-card">
+          <h3>Motivasyonumu neden kaybediyorum?</h3>
+          <div class="note-answer">
+            <p>
+              Motivasyon kaybı her zaman tembellik değildir. Bazen kişi kendi ihtiyacına uygun olmayan bir hedefin içinde kalır,
+              bazen de sürekli performans göstermeye çalıştığı için yorulur.
+            </p>
+            <p>
+              Enneagram, kişiyi neyin gerçekten harekete geçirdiğini anlamaya yardımcı olur.
+              Bazı kişiler anlam arar, bazıları güven, bazıları başarı, bazıları özgürlük, bazıları ise bağ kurma ihtiyacıyla motive olur.
+            </p>
+          </div>
+
+          <div class="note-mini-title">Kendine sor</div>
+          <ul class="note-list">
+            <li>Bu hedef gerçekten bana mı ait?</li>
+            <li>Motivasyonumu kaybettiğimde en çok ne eksik oluyor?</li>
+            <li>Enerjimi ne düşürüyor, ne toparlıyor?</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="cta-section">
+  <h2 class="section-title">Kendinde hangi döngülerin baskın olduğunu merak ediyor musun?</h2>
+  <p>
+    OANDA Enneagram Testi ile en yüksek 3 tipini, stres tepkilerini, ilişki dinamiklerini ve günlük hayatta kullanabileceğin farkındalık önerilerini içeren kişisel raporunu alabilirsin.
+  </p>
+  <a href="payment.html" class="btn-primary">Teste Başla — 150 TL</a>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-brand">OANDA Enneagram</div>
+  <div class="footer-text">Enneagram kişilik testi ve psikolojik farkındalık notları.</div>
+
+  <nav class="footer-links">
+    <a href="index.html">Ana Sayfa</a>
+    <a href="enneagram-hakkinda.html">Enneagram Hakkında</a>
+    <a href="privacy_v3.html">Gizlilik Politikası</a>
+    <a href="refund_v3.html">İptal & İade Şartları</a>
+    <a href="terms_v3.html">Kullanım Koşulları</a>
+  </nav>
+
+  <div class="footer-contact">
+    E-posta: <a href="mailto:oandaenneagram@gmail.com">oandaenneagram@gmail.com</a>
+  </div>
+
+  <div class="social-links">
+    <a href="https://www.facebook.com/oandapy" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+    <a href="https://twitter.com/oandapy" target="_blank" aria-label="Twitter / X"><i class="fa-brands fa-x-twitter"></i></a>
+    <a href="https://www.instagram.com/oandaenneagram" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+    <a href="https://www.linkedin.com/company/oandaprojeyonetimi/posts/?feedView=all" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+  </div>
+
+  <div class="footer-small">© 2026 OANDA Enneagram. Tüm hakları saklıdır.</div>
+</footer>
+
+<script src="//code.tidio.co/nrojdufualsqrnuhw9egxgbl6lc4lowo.js" async></script>
+
+</body>
+</html>

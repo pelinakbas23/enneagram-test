@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bilimsel Kaynaklar • OANDA Enneagram</title>
+  <meta name="description" content="Enneagram araştırmalarına dayanan hakemli bilimsel makaleler ve akademik kaynaklar." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0f2235;
+      --navy-mid: #1a3a55;
+      --gold: #c9a96e;
+      --gold-light: #e8d5b0;
+      --cream: #ffffff;
+      --cream-dark: #f5f5f3;
+      --text: #1a2b3c;
+      --text-muted: #5a7080;
+      --white: #ffffff;
+      --radius: 12px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: #ffffff; color: var(--text); line-height: 1.6; }
+
+    /* HEADER */
+    .site-header { background: var(--navy); padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
+    .header-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .header-logo-text { font-family: "DM Serif Display", serif; color: var(--white); font-size: 17px; letter-spacing: 0.01em; }
+    .header-nav { display: flex; align-items: center; gap: 16px; }
+    .header-link { color: rgba(255,255,255,0.72); font-size: 14px; font-weight: 500; text-decoration: none; transition: color 0.2s; padding: 8px 4px; }
+    .header-link:hover { color: var(--gold); }
+    .header-link.active { color: var(--gold); }
+    .header-cta { background: var(--white); color: var(--navy); font-weight: 600; font-size: 14px; padding: 9px 20px; border-radius: 6px; border: none; text-decoration: none; transition: background 0.2s; }
+    .header-cta:hover { background: rgba(255,255,255,0.85); }
+
+    /* PAGE HERO */
+    .page-hero { background: var(--navy); padding: 64px 32px 72px; text-align: center; position: relative; overflow: hidden; }
+    .page-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(201,169,110,0.15) 0%, transparent 70%); pointer-events: none; }
+    .page-kicker { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+    .page-hero h1 { font-family: 'DM Serif Display', serif; font-size: clamp(30px, 5vw, 48px); color: var(--white); line-height: 1.2; max-width: 640px; margin: 0 auto 16px; }
+    .page-hero h1 em { font-style: italic; color: var(--gold); }
+    .page-hero-sub { font-size: 16px; color: rgba(255,255,255,0.65); max-width: 560px; margin: 0 auto; line-height: 1.75; }
+
+    /* CONTENT */
+    .content-wrap { max-width: 860px; margin: 0 auto; padding: 64px 24px; }
+
+    .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(24px, 3.5vw, 34px); color: var(--navy); line-height: 1.2; margin-bottom: 14px; }
+    .section-body { font-size: 15px; color: var(--text-muted); line-height: 1.8; margin-bottom: 40px; }
+
+    /* DISCLAIMER KUTUSU */
+    .disclaimer-box {
+      background: #faf7f2;
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 18px 22px;
+      margin-bottom: 48px;
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+    .disclaimer-box strong { color: var(--navy); }
+
+    /* KATEGORİ BAŞLIĞI */
+    .cat-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 16px; margin-top: 48px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .cat-label::after {
+      content: ''; flex: 1; height: 1px;
+      background: rgba(0,0,0,0.08);
+    }
+    .cat-label:first-child { margin-top: 0; }
+
+    /* MAKALE KARTI */
+    .paper-card {
+      background: var(--white);
+      border: 1px solid rgba(0,0,0,0.07);
+      border-radius: var(--radius);
+      padding: 28px 28px 24px;
+      margin-bottom: 16px;
+      transition: border-color 0.2s;
+    }
+    .paper-card:hover { border-color: rgba(201,169,110,0.4); }
+
+    .paper-meta {
+      display: flex; align-items: center; gap: 10px;
+      flex-wrap: wrap; margin-bottom: 12px;
+    }
+    .paper-journal {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--gold);
+      background: rgba(201,169,110,0.1);
+      border: 1px solid rgba(201,169,110,0.2);
+      border-radius: 20px; padding: 4px 12px;
+    }
+    .paper-year {
+      font-size: 12px; color: var(--text-muted); font-weight: 500;
+    }
+    .paper-badge {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+      color: #2d6a4f; background: #d8f3dc;
+      border-radius: 20px; padding: 4px 10px;
+    }
+
+    .paper-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px; color: var(--navy);
+      line-height: 1.3; margin-bottom: 6px;
+    }
+    .paper-authors {
+      font-size: 13px; color: var(--text-muted);
+      margin-bottom: 16px; line-height: 1.5;
+    }
+
+    .paper-summary {
+      font-size: 14px; color: var(--text-muted);
+      line-height: 1.8; margin-bottom: 20px;
+    }
+    .paper-summary p + p { margin-top: 10px; }
+
+    .paper-findings {
+      background: var(--cream-dark);
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin-bottom: 20px;
+    }
+    .paper-findings-title {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .paper-findings ul { list-style: none; display: grid; gap: 7px; }
+    .paper-findings li {
+      font-size: 13px; color: var(--text-muted);
+      display: flex; gap: 8px; align-items: flex-start; line-height: 1.55;
+    }
+    .paper-findings li::before {
+      content: ''; width: 6px; height: 6px; background: var(--gold);
+      border-radius: 50%; flex-shrink: 0; margin-top: 7px;
+    }
+
+    .paper-link {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 13px; font-weight: 600; color: var(--navy);
+      text-decoration: none;
+      border: 1px solid rgba(0,0,0,0.12);
+      border-radius: 6px; padding: 8px 16px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .paper-link:hover { border-color: var(--gold); background: #faf7f2; }
+    .paper-link i { font-size: 13px; color: var(--gold); }
+
+    .divider { height: 1px; background: rgba(0,0,0,0.07); margin: 0; }
+
+    /* CTA BANT */
+    .cta-band { background: var(--navy); padding: 56px 24px; text-align: center; }
+    .cta-band h2 { font-family: 'DM Serif Display', serif; font-size: clamp(24px, 3.5vw, 36px); color: var(--white); margin-bottom: 14px; line-height: 1.3; }
+    .cta-band h2 em { color: var(--gold); font-style: italic; }
+    .cta-band p { font-size: 15px; color: rgba(255,255,255,0.6); margin-bottom: 28px; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+    .btn-primary { background: var(--gold); color: var(--navy); font-weight: 700; font-size: 16px; padding: 15px 36px; border-radius: 8px; text-decoration: none; transition: background 0.2s, transform 0.15s; display: inline-block; }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+    /* FOOTER */
+    .site-footer { background: var(--navy); padding: 40px 32px; text-align: center; border-top: 1px solid rgba(255,255,255,0.08); }
+    .footer-brand { font-family: 'DM Serif Display', serif; color: var(--white); font-size: 20px; margin-bottom: 6px; }
+    .footer-text { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
+    .footer-links { display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 16px; }
+    .footer-links a { font-size: 13px; color: rgba(255,255,255,0.5); text-decoration: none; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-contact { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+    .footer-contact a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    .social-links { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 20px; }
+    .social-links a { width: 36px; height: 36px; background: rgba(255,255,255,0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.5); font-size: 14px; text-decoration: none; transition: background 0.2s; }
+    .social-links a:hover { background: rgba(255,255,255,0.15); color: var(--white); }
+    .footer-small { font-size: 12px; color: rgba(255,255,255,0.25); }
+
+    @media (max-width: 680px) {
+      .site-header { padding: 14px 20px; }
+      .header-logo-text { display: none; }
+      .content-wrap { padding: 48px 20px; }
+      .page-hero { padding: 52px 20px 60px; }
+      .paper-card { padding: 22px 18px 18px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <a href="index.html" class="header-logo">
+    <span class="header-logo-text">OANDA Enneagram Kişilik Testi</span>
+  </a>
+  <nav class="header-nav">
+    <a href="index.html" class="header-link">Ana Sayfa</a>
+    <a href="enneagram-hakkinda.html" class="header-link">Enneagram Hakkında</a>
+    <a href="psikologdan-notlar.html" class="header-link">Psikologdan Notlar</a>
+    <a href="kaynaklar.html" class="header-link active">Kaynaklar</a>
+    <a href="payment.html" class="header-cta">Teste Başla</a>
+  </nav>
+</header>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="page-kicker">Akademik Kaynaklar</div>
+  <h1>Enneagram'ın <em>bilimsel</em> arka planı</h1>
+  <p class="page-hero-sub">Hakemli dergilerde yayımlanmış araştırmalar Enneagram hakkında ne söylüyor? Dört temel çalışmayı kısa özetleriyle bir araya getirdik.</p>
+</section>
+
+<!-- CONTENT -->
+<section style="background: var(--white);">
+  <div class="content-wrap">
+
+    <p class="section-label">Önemli Not</p>
+    <div class="disclaimer-box">
+      <strong>Enneagram, gelişmekte olan bir araştırma alanıdır.</strong> Aşağıdaki çalışmalar umut verici bulgular ortaya koymaktadır; ancak bilimsel topluluk içinde tartışmalar sürmektedir. Bu sayfanın amacı "kanıtlanmış bilim" sunmak değil, mevcut akademik literatürü şeffaf bir biçimde paylaşmaktır. Her makale bağlantısına tıklayarak kaynağa doğrudan ulaşabilirsiniz.
+    </div>
+
+    <!-- KATEGORİ 1: GEÇERLİLİK & GÜVENİLİRLİK -->
+    <div class="cat-label">Geçerlilik ve Güvenilirlik</div>
+
+    <!-- MAKALE 1 -->
+    <div class="paper-card">
+      <div class="paper-meta">
+        <span class="paper-journal">Journal of Clinical Psychology</span>
+        <span class="paper-year">2021</span>
+        <span class="paper-badge"><i class="fa-solid fa-circle-check" style="font-size:10px; margin-right:4px;"></i> Hakemli</span>
+      </div>
+      <h2 class="paper-title">The Enneagram: A Systematic Review of the Literature and Directions for Future Research</h2>
+      <p class="paper-authors">Hook, J. N., Hall, T. W., Davis, D. E., Van Tongeren, D. R., &amp; Conner, M. — Wiley Online Library</p>
+      <div class="paper-summary">
+        <p>Bu çalışma, Enneagram üzerine yapılmış en kapsamlı akademik derlemedir. Araştırmacılar, 104 bağımsız örneklemi ve onlarca yıla yayılan literatürü sistematik olarak incelemiş; Enneagram'ın güvenilirlik ve geçerlilik kanıtlarını hem klinisyenler hem de araştırmacılar için erişilebilir biçimde özetlemiştir.</p>
+        <p>Çalışma, Enneagram'ın kişilik ve kişilerarası örüntüleri anlamada kullanışlı bir çerçeve sunduğunu, ancak psikometrik kanıtların hâlâ karma (mixed) bir görünüm sergilediğini ve alanın daha fazla araştırmaya ihtiyaç duyduğunu ortaya koymaktadır.</p>
+      </div>
+      <div class="paper-findings">
+        <p class="paper-findings-title">Temel Bulgular</p>
+        <ul>
+          <li>104 bağımsız örneklem incelenerek güvenilirlik ve geçerlilik için karma kanıtlar bulunmuştur.</li>
+          <li>Enneagram tipleri ile Big Five kişilik boyutları arasında tutarlı ilişkiler saptanmıştır (örn. Tip 1 her çalışmada yüksek Sorumluluk skoruyla ilişkilidir).</li>
+          <li>Kişisel gelişim ve spiritüel büyüme alanlarında olumlu klinik uygulamaları destekler nitelikte bulgular rapor edilmiştir.</li>
+          <li>Araştırmacılar, alanın metodolojik kalitesini artırmak için standardize edilmiş ölçüm araçlarına ihtiyaç duyulduğunu vurgulamıştır.</li>
+        </ul>
+      </div>
+      <a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/jclp.23097" target="_blank" rel="noopener" class="paper-link">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Makaleye Git (Wiley)
+      </a>
+    </div>
+
+    <!-- MAKALE 2 -->
+    <div class="paper-card">
+      <div class="paper-meta">
+        <span class="paper-journal">Personality and Individual Differences</span>
+        <span class="paper-year">2022</span>
+        <span class="paper-badge"><i class="fa-solid fa-circle-check" style="font-size:10px; margin-right:4px;"></i> Hakemli</span>
+      </div>
+      <h2 class="paper-title">Psychometric Properties of Enneagram Personality Inventories: A Meta-Analytic Review</h2>
+      <p class="paper-authors">Yanartaş, Ö., Yıldırım, M. H., &amp; Bal, P. N. — Elsevier</p>
+      <div class="paper-summary">
+        <p>Türk araştırmacılar tarafından yürütülen bu meta-analiz, Enneagram kişilik envanterlerinin psikometrik özelliklerini — yani ölçüm tutarlılığını ve geçerliliğini — farklı çalışmalar genelinde sistematik olarak değerlendirmektedir.</p>
+        <p>Çalışma; mevcut Enneagram ölçüm araçlarının genel psikometrik niteliklerini özetlemekte, güçlü ve zayıf yönleri karşılaştırmalı olarak ortaya koymakta ve alanın standartlaşması için öneriler sunmaktadır.</p>
+      </div>
+      <div class="paper-findings">
+        <p class="paper-findings-title">Temel Bulgular</p>
+        <ul>
+          <li>Farklı Enneagram envanterlerinin psikometrik kalitesi anlamlı biçimde farklılık göstermektedir; bazı araçlar diğerlerine kıyasla daha tutarlı sonuçlar üretmektedir.</li>
+          <li>Test-tekrar test güvenilirliği kabul edilebilir sınırlar içinde kalsa da ölçüm aracına göre değişkenlik göstermektedir.</li>
+          <li>Enneagram tiplerinin Big Five boyutlarıyla orta düzey korelasyonlar sergilediği meta-analitik olarak doğrulanmıştır.</li>
+          <li>Araştırmacılar, alanın gelişimi için daha büyük ve çeşitli örneklemlerle yapılacak çalışmalara ihtiyaç olduğunu vurgulamaktadır.</li>
+        </ul>
+      </div>
+      <a href="https://www.sciencedirect.com/science/article/pii/S0191886921007534" target="_blank" rel="noopener" class="paper-link">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Makaleye Git (ScienceDirect)
+      </a>
+    </div>
+
+    <!-- KATEGORİ 2: İŞ HAYATI -->
+    <div class="cat-label" style="margin-top: 56px;">İş Hayatı ve Öz-Farkındalık</div>
+
+    <!-- MAKALE 3 -->
+    <div class="paper-card">
+      <div class="paper-meta">
+        <span class="paper-journal">European Management Journal</span>
+        <span class="paper-year">2013</span>
+        <span class="paper-badge"><i class="fa-solid fa-circle-check" style="font-size:10px; margin-right:4px;"></i> Hakemli</span>
+      </div>
+      <h2 class="paper-title">Personality Type and Work-Related Outcomes: An Exploratory Application of the Enneagram Model</h2>
+      <p class="paper-authors">Sutton, A., Williams, H. M., &amp; Allinson, C. W. — Elsevier</p>
+      <div class="paper-summary">
+        <p>Enneagram'ın iş ortamındaki geçerliliğini inceleyen ilk akademik çalışmalardan biri olan bu araştırma, 416 çalışan katılımcıyla yürütülmüştür. Araştırmacılar, Enneagram tiplerinin iş tutumları ve bilişleriyle (motivasyon, iş tatmini, stres) olan ilişkisini hem Big Five hem de değerler/güdüler ölçümleriyle karşılaştırmalı olarak test etmiştir.</p>
+        <p>Çalışma, Enneagram tiplerinin iş yerindeki tutumları öngörmede Big Five'a yakın bir performans sergilediğini ortaya koymuştur — bu, modelin iş ortamında kullanışlı bir araç olabileceğine işaret eden önemli bir bulgudur.</p>
+      </div>
+      <div class="paper-findings">
+        <p class="paper-findings-title">Temel Bulgular</p>
+        <ul>
+          <li>Enneagram tipleri, motivasyon ve iş tatminini Big Five'a yakın bir doğrulukla öngörebilmektedir.</li>
+          <li>Her tipin kendine özgü örtük güdülerle (implicit motives) tutarlı ilişkiler sergilediği saptanmıştır.</li>
+          <li>Çalışma, Enneagram'ın iş ortamında geçerli ve kullanışlı bir araç olabileceğine dair ilk sistematik kanıtı sunmaktadır.</li>
+          <li>Araştırmacılar, bulguların örneklem sınırlılıkları göz önünde bulundurularak yorumlanması gerektiğini belirtmiştir.</li>
+        </ul>
+      </div>
+      <a href="https://www.sciencedirect.com/science/article/abs/pii/S0263237312001442" target="_blank" rel="noopener" class="paper-link">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Makaleye Git (ScienceDirect)
+      </a>
+    </div>
+
+    <!-- KATEGORİ 3: KLİNİK & STRES -->
+    <div class="cat-label" style="margin-top: 56px;">Klinik Uygulama ve Stres</div>
+
+    <!-- MAKALE 4 -->
+    <div class="paper-card">
+      <div class="paper-meta">
+        <span class="paper-journal">Frontiers in Psychology</span>
+        <span class="paper-year">2022</span>
+        <span class="paper-badge"><i class="fa-solid fa-circle-check" style="font-size:10px; margin-right:4px;"></i> Hakemli · Açık Erişim</span>
+      </div>
+      <h2 class="paper-title">Enneagram Typologies and Healthy Personality to Psychosocial Stress: A Network Approach</h2>
+      <p class="paper-authors">Ramos-Vera, C., Barrientos, I., Baños-Chaparro, J., Saldarriaga, S., &amp; Saintila, J. — Frontiers Media</p>
+      <div class="paper-summary">
+        <p>Bu açık erişimli çalışma, Enneagram tipleri, sağlıklı kişilik özellikleri ve psikososyal stres arasındaki ilişkileri ağ analizi (network analysis) yöntemiyle incelemektedir. Ağ analizi, değişkenler arasındaki doğrudan ve dolaylı ilişkileri aynı anda görselleştirmeyi sağlayan güncel bir istatistiksel yaklaşımdır.</p>
+        <p>Çalışma; Enneagram'ın terapötik ittifakı güçlendirdiğini, fiziksel ve duygusal acıyı yönetmeye yardımcı olduğunu ve bireylerin iyileşme süreçlerinde daha etkin bir rol üstlenmelerini desteklediğini önceki literatürü bütünleştirerek ortaya koymaktadır.</p>
+      </div>
+      <div class="paper-findings">
+        <p class="paper-findings-title">Temel Bulgular</p>
+        <ul>
+          <li>Enneagram tipleri ile psikososyal stres tepkileri arasında anlamlı ve tipler arasında farklılaşan ilişkiler bulunmuştur.</li>
+          <li>Sağlıklı kişilik özellikleri, stres ile Enneagram tipleri arasındaki ilişkide belirleyici bir aracı rol oynamaktadır.</li>
+          <li>Ağ analizi, bazı tiplerin strese karşı daha kırılgan olduğunu; bazılarının ise koruyucu kişilik özellikleri sergilediğini göstermiştir.</li>
+          <li>Bulgular, Enneagram'ın psikoterapötik süreçlerde terapötik ittifakı güçlendirici bir araç olarak kullanılabileceğini desteklemektedir.</li>
+        </ul>
+      </div>
+      <a href="https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2022.1051271/full" target="_blank" rel="noopener" class="paper-link">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Makaleye Git (Frontiers — Açık Erişim)
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA BANT -->
+<section class="cta-band">
+  <h2>Kendi tipinizi <em>keşfetmeye</em> hazır mısınız?</h2>
+  <p>~20 dakikalık test; ardından size özel hazırlanan detaylı rapor hemen e-postanıza gelir.</p>
+  <a href="payment.html" class="btn-primary">Teste Başla — 150 TL</a>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-brand">OANDA Enneagram</div>
+  <div class="footer-text">Enneagram kişilik testi ve raporlama hizmeti.</div>
+  <nav class="footer-links">
+    <a href="index.html">Ana Sayfa</a>
+    <a href="enneagram-hakkinda.html">Enneagram Hakkında</a>
+    <a href="psikologdan-notlar.html">Psikologdan Notlar</a>
+    <a href="privacy_v3.html">Gizlilik Politikası</a>
+    <a href="refund_v3.html">İptal &amp; İade Şartları</a>
+    <a href="terms_v3.html">Kullanım Koşulları</a>
+  </nav>
+  <div class="footer-contact">
+    E-posta: <a href="mailto:oandaenneagram@gmail.com">oandaenneagram@gmail.com</a>
+  </div>
+  <div class="social-links">
+    <a href="https://www.facebook.com/oandapy" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+    <a href="https://twitter.com/oandapy" target="_blank" aria-label="Twitter / X"><i class="fa-brands fa-x-twitter"></i></a>
+    <a href="https://www.instagram.com/oandaenneagram" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+    <a href="https://www.linkedin.com/company/oandaprojeyonetimi/posts/?feedView=all" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+  </div>
+  <div class="footer-small">© 2026 OANDA Enneagram. Tüm hakları saklıdır.</div>
+</footer>
+
+</body>
+</html>
