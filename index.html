@@ -27,8 +27,8 @@
       --navy-mid: #1a3a55;
       --gold: #c9a96e;
       --gold-light: #e8d5b0;
-      --cream: #faf7f2;
-      --cream-dark: #f0ebe1;
+      --cream: #ffffff;
+      --cream-dark: #f5f5f3;
       --text: #1a2b3c;
       --text-muted: #5a7080;
       --white: #ffffff;
@@ -39,7 +39,7 @@
 
     body {
       font-family: 'DM Sans', sans-serif;
-      background: var(--cream);
+      background: #ffffff;
       color: var(--text);
       line-height: 1.6;
     }
@@ -324,16 +324,24 @@
   <div class="hero-kicker">Enneagram Kişilik Testi ve Sonuç Raporu</div>
   <h1>Neden hep aynı yerde<br><em>takılıyorum?</em></h1>
   <p class="hero-sub">
-    Stres anındaki otomatik tepkilerini, ilişki döngülerini ve iş hayatındaki motivasyonlarını daha net gör.
+  Stres anındaki otomatik tepkilerini, ilişki döngülerini ve iş hayatındaki motivasyonlarını daha net gör.
+</p>
+<div style="display:inline-block; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.3); border-radius:8px; padding:8px 18px; margin-top:-20px; margin-bottom:16px;">
+  <p style="font-size:13px; color:#ffffff; margin:0; letter-spacing:0.02em;">
+    Prof. Dr. Murat Günaydın ve Uzm. Psk. Pelin Akbaş iş birliğiyle geliştirildi.
   </p>
+</div>
 
   <div class="hero-trust" style="margin-bottom: 28px;">
     <span class="trust-item"><i class="fa-solid fa-lock"></i> iyzico ile güvenli ödeme</span>
-    <span class="trust-item"><i class="fa-solid fa-pencil"></i> Kendinle ilgili soruları yanıtlayacağın test ~20 dakika sürer</span>
-    <span class="trust-item"><i class="fa-solid fa-envelope"></i> Cevaplarına göre hazırlanan kişilik raporu hemen e-postana gönderilir</span>
+    <span class="trust-item"><i class="fa-solid fa-pencil"></i> kendinle ilgili soruları yanıtlayacağın test ~20 dakika sürer</span>
+    <span class="trust-item"><i class="fa-solid fa-envelope"></i> cevaplarına göre hazırlanan kişilik raporu hemen e-postana gönderilir</span>
   </div>
 
-  <a href="payment.html" class="btn-primary">Teste Başla — 150 TL</a>
+  <div style="display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap;">
+    <a href="payment.html" class="btn-primary">Teste Başla — 150 TL</a>
+    <a href="cocuk-testi.html" style="display:inline-block; background:transparent; border:1.5px solid rgba(201,169,110,0.6); color:var(--gold); font-family:'DM Sans',sans-serif; font-weight:600; font-size:15px; padding:13px 24px; border-radius:8px; text-decoration:none; transition:background 0.2s;" onmouseover="this.style.background='rgba(201,169,110,0.1)'" onmouseout="this.style.background='transparent'">🌱 Çocuğum için Teste Başla — Ücretsiz</a>
+  </div>
 
   <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin-top:20px;">
     <span style="color:var(--gold); font-size:15px; letter-spacing:2px;">★★★★★</span>
@@ -475,7 +483,7 @@
         <div class="step-num">1</div>
         <div class="step-icon"><i class="fa-solid fa-lock"></i> Güvenli ödeme</div>
         <div class="step-title">iyzico ile güvenle öde</div>
-        <div class="step-desc">Visa, Mastercard, Troy veya American Express ile tek seferlik 150 TL ödeme yap. Bilgilerin şifrelenerek korunur.</div>
+        <div class="step-desc">Tek seferlik 150 TL ödeme yap. Bilgilerin şifrelenerek korunur.</div>
       </div>
       <div class="step-item">
         <div class="step-num">2</div>
@@ -634,7 +642,7 @@
     <h2 class="section-title">OANDA Enneagram ekibi</h2>
     <div class="about-grid">
       <div class="about-text">
-        <p>OANDA Enneagram, alanında uzman akademisyenlerden ve bilişsel psikoloğun yer aldığı bir ekip tarafından, bilimsel bilgiyle gerçek hayatı buluşturmak amacıyla oluşturuldu.</p>
+        <p>OANDA Enneagram Testi, Prof. Dr. Murat Günaydın ve Uzm. Psk. Pelin Akbaş iş birliğiyle oluşturuldu.</p>
         <p>Bu testi insanları sınıflamak için değil; kendilerini daha net görmelerine yardımcı olmak için geliştirdik.</p>
       </div>
       <div class="conviction">
@@ -673,6 +681,45 @@
     </form>
   </div>
 </section>
+
+<!--
+  ============================================================
+  BU BLOĞU index.html'e ekleyin.
+  Nereye? Footer'dan hemen ÖNCE, yani:
+  <footer class="site-footer"> satırının üstüne yapıştırın.
+  ============================================================
+-->
+
+<!-- ÇOCUK TESTİ TANITIM BÖLÜMÜ -->
+<section style="background: var(--cream-dark); border-top: 1px solid rgba(0,0,0,0.06);">
+  <div class="section">
+    <div class="section-label">Yeni</div>
+    <h2 class="section-title">Çocuğunuzun kişilik tipini de keşfedin</h2>
+    <p class="section-body" style="margin-bottom: 32px;">
+      3–5 yaş çocuklar için hazırlanan bu ücretsiz test, ebeveynlerin çocuklarını gözlemleyerek yanıtladığı 10 sorudan oluşuyor.
+      Sonunda kişilik tipi, güçlü yönler ve size özel ebeveynlik önerileri içeren bir rapor görüyorsunuz.
+    </p>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px;">
+      <div class="benefit-card">
+        <div class="benefit-icon"><i class="fa-solid fa-child" style="color: var(--navy); font-size: 16px;"></i></div>
+        <h3>3–5 Yaş İçin</h3>
+        <p>Ebeveynin çocuğunu gözlemleyerek yanıtladığı, bu yaşa özel davranış senaryoları.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon"><i class="fa-solid fa-file-lines" style="color: var(--navy); font-size: 16px;"></i></div>
+        <h3>Detaylı Analiz</h3>
+        <p>Güçlü yönler, zorlandığı alanlar ve size özel ebeveynlik önerileri. PDF olarak indirilebilir.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon"><i class="fa-solid fa-heart" style="color: var(--navy); font-size: 16px;"></i></div>
+        <h3>İletişimi Güçlendir</h3>
+        <p>Hem sizin hem çocuğunuzun tipini bilerek ebeveynlik tarzınızı bilinçli şekillendirin.</p>
+      </div>
+    </div>
+    <a href="cocuk-testi.html" class="btn-primary">Çocuğum için teste başla — Ücretsiz</a>
+  </div>
+</section>
+<!-- /ÇOCUK TESTİ TANITIM BÖLÜMÜ -->
 
 <!-- FOOTER -->
 <footer class="site-footer">

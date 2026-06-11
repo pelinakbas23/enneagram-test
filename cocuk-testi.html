@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Çocuk Enneagram Testi (3–5 Yaş) • OANDA Enneagram</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0f2235;
+      --navy-mid: #1a3a55;
+      --gold: #c9a96e;
+      --gold-light: #e8d5b0;
+      --cream: #faf7f2;
+      --cream-dark: #f0ebe1;
+      --text: #1a2b3c;
+      --text-muted: #5a7080;
+      --white: #ffffff;
+      --radius: 12px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); line-height: 1.6; }
+
+    /* HEADER */
+    .site-header { background: var(--navy); padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
+    .header-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .header-logo-text { font-family: "DM Serif Display", serif; color: var(--white); font-size: 17px; }
+    .header-back { color: rgba(255,255,255,0.65); font-size: 14px; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
+    .header-back:hover { color: var(--gold); }
+
+    /* HERO */
+    .page-hero { background: var(--navy); padding: 56px 32px 64px; text-align: center; position: relative; overflow: hidden; }
+    .page-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(201,169,110,0.13) 0%, transparent 70%); pointer-events: none; }
+    .hero-kicker { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+    .page-hero h1 { font-family: 'DM Serif Display', serif; font-size: clamp(28px, 5vw, 46px); color: var(--white); line-height: 1.2; max-width: 620px; margin: 0 auto 16px; }
+    .page-hero h1 em { font-style: italic; color: var(--gold); }
+    .page-hero p { font-size: 16px; color: rgba(255,255,255,0.68); max-width: 480px; margin: 0 auto; line-height: 1.7; }
+
+    /* TEST WRAPPER */
+    .test-outer { max-width: 660px; margin: 0 auto; padding: 48px 24px 72px; }
+
+    /* NAME INPUT */
+    .name-card { background: var(--white); border: 1px solid rgba(0,0,0,0.08); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 28px; display: flex; align-items: center; gap: 14px; }
+    .name-card label { font-size: 14px; font-weight: 600; color: var(--navy); white-space: nowrap; }
+    .name-card input { flex: 1; font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 10px 14px; border: 1.5px solid rgba(0,0,0,0.12); border-radius: 8px; color: var(--text); background: var(--cream); transition: border-color 0.2s; }
+    .name-card input:focus { outline: none; border-color: var(--navy); }
+
+    /* PROGRESS */
+    .progress-wrap { margin-bottom: 8px; }
+    .progress-bar-bg { height: 5px; background: rgba(0,0,0,0.08); border-radius: 99px; overflow: hidden; }
+    .progress-bar-fill { height: 5px; background: var(--gold); border-radius: 99px; transition: width 0.4s ease; }
+    .progress-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; margin-bottom: 20px; }
+    .progress-label { font-size: 12px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.04em; }
+
+    /* QUESTION CARD */
+    .q-card { background: var(--white); border: 1px solid rgba(0,0,0,0.08); border-radius: var(--radius); padding: 28px 28px 24px; margin-bottom: 20px; }
+    .q-text { font-size: 16px; font-weight: 600; color: var(--navy); line-height: 1.6; margin-bottom: 20px; }
+    .opts { display: flex; flex-direction: column; gap: 10px; }
+    .opt { background: var(--cream); border: 1.5px solid rgba(0,0,0,0.08); border-radius: 8px; padding: 13px 16px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); cursor: pointer; text-align: left; line-height: 1.55; transition: border-color 0.15s, background 0.15s; }
+    .opt:hover { border-color: var(--gold); background: var(--white); }
+    .opt.sel { border-color: var(--navy); background: var(--white); color: var(--navy); font-weight: 500; }
+
+    /* NAV */
+    .nav-row { display: flex; justify-content: space-between; align-items: center; }
+    .btn-ghost { background: transparent; border: 1.5px solid rgba(0,0,0,0.14); color: var(--text-muted); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; padding: 11px 22px; border-radius: 8px; cursor: pointer; transition: border-color 0.2s; }
+    .btn-ghost:hover { border-color: var(--navy); color: var(--navy); }
+    .btn-next { background: var(--navy); color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; padding: 11px 28px; border-radius: 8px; border: none; cursor: pointer; transition: background 0.2s; }
+    .btn-next:hover { background: var(--navy-mid); }
+    .btn-next:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* RESULT */
+    .result-wrap { display: none; }
+
+    .result-hero { background: var(--navy); border-radius: var(--radius); padding: 32px 28px; text-align: center; margin-bottom: 16px; position: relative; overflow: hidden; }
+    .result-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(201,169,110,0.18) 0%, transparent 70%); pointer-events: none; }
+    .result-kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+    .result-num { font-family: 'DM Serif Display', serif; font-size: 64px; color: var(--gold); line-height: 1; }
+    .result-name { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--white); margin: 8px 0 10px; }
+    .result-tagline { font-size: 14px; color: rgba(255,255,255,0.68); max-width: 440px; margin: 0 auto; line-height: 1.7; }
+
+    .pdf-row { display: flex; justify-content: center; margin: 16px 0 8px; }
+    .btn-pdf { display: flex; align-items: center; gap: 8px; background: var(--white); border: 1.5px solid rgba(0,0,0,0.12); color: var(--navy); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; padding: 10px 22px; border-radius: 8px; cursor: pointer; transition: background 0.2s; }
+    .btn-pdf:hover { background: var(--cream-dark); }
+
+    .report-card { background: var(--white); border: 1px solid rgba(0,0,0,0.08); border-radius: var(--radius); padding: 22px 24px; margin-bottom: 12px; }
+    .report-card-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+    .report-card p { font-size: 14px; color: var(--text-muted); line-height: 1.75; }
+    .traits-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+    .trait-tag { background: var(--cream-dark); border: 1px solid rgba(0,0,0,0.07); border-radius: 20px; padding: 5px 13px; font-size: 13px; color: var(--text-muted); }
+
+    .score-list { display: flex; flex-direction: column; gap: 9px; }
+    .score-row { display: flex; align-items: center; gap: 10px; font-size: 12px; }
+    .score-lbl { width: 130px; text-align: right; flex-shrink: 0; color: var(--text-muted); font-size: 12px; }
+    .score-bg { flex: 1; height: 5px; background: rgba(0,0,0,0.07); border-radius: 99px; }
+    .score-fill { height: 5px; border-radius: 99px; background: var(--gold); opacity: 0.5; transition: width 0.7s ease; }
+    .score-fill.top { opacity: 1; background: var(--navy); }
+    .score-val { width: 22px; font-size: 12px; color: var(--text-muted); }
+
+    /* CTA */
+    .cta-banner { background: var(--navy); border-radius: var(--radius); padding: 32px 28px; text-align: center; margin-top: 24px; }
+    .cta-banner h3 { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--white); margin-bottom: 10px; }
+    .cta-banner p { font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.7; margin-bottom: 20px; max-width: 420px; margin-left: auto; margin-right: auto; }
+    .btn-gold { display: inline-block; background: var(--gold); color: var(--navy); font-weight: 700; font-size: 15px; padding: 13px 32px; border-radius: 8px; text-decoration: none; transition: background 0.2s; }
+    .btn-gold:hover { background: var(--gold-light); }
+
+    .restart-link { display: block; text-align: center; margin-top: 14px; font-size: 13px; color: var(--text-muted); cursor: pointer; text-decoration: underline; background: none; border: none; font-family: 'DM Sans', sans-serif; }
+
+    /* FOOTER */
+    .site-footer { background: var(--navy); padding: 32px; text-align: center; margin-top: 0; }
+    .footer-brand { font-family: 'DM Serif Display', serif; color: var(--white); font-size: 18px; margin-bottom: 8px; }
+    .footer-small { font-size: 12px; color: rgba(255,255,255,0.25); }
+
+    @media (max-width: 600px) {
+      .page-hero { padding: 40px 20px 48px; }
+      .test-outer { padding: 32px 16px 56px; }
+      .name-card { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .q-card { padding: 20px 16px; }
+      .score-lbl { width: 100px; font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="index.html" class="header-logo">
+    <span class="header-logo-text">OANDA Enneagram</span>
+  </a>
+  <a href="index.html" class="header-back"><i class="fa-solid fa-arrow-left" style="font-size:12px"></i> Ana sayfa</a>
+</header>
+
+<section class="page-hero">
+  <div class="hero-kicker">3–5 Yaş Çocuklar İçin</div>
+  <h1>Çocuğunuzun <em>kişilik tipini</em> keşfedin</h1>
+  <p>Çocuğunuzu düşünerek 10 soruyu yanıtlayın. Sonunda kişilik tipi ve detaylı bir ebeveynlik rehberi sizi bekliyor.</p>
+</section>
+
+<div class="test-outer">
+
+  <!-- QUIZ -->
+  <div id="qwrap">
+    <div class="progress-wrap">
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="pbar" style="width:0%"></div></div>
+      <div class="progress-meta">
+        <span class="progress-label" id="qctr">Soru 1 / 10</span>
+        <span class="progress-label" id="pct">0%</span>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-text" id="qtxt"></div>
+      <div class="opts" id="qopts"></div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-ghost" id="pbtn" onclick="prevQ()" style="visibility:hidden">← Geri</button>
+      <button class="btn-next" id="nbtn" onclick="nextQ()" disabled>İleri →</button>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="result-wrap" id="res">
+    <div class="result-hero">
+      <div class="result-kicker" id="rbadge">Enneagram Tip 1</div>
+      <div class="result-num" id="rnum">1</div>
+      <div class="result-name" id="rname"></div>
+      <div class="result-tagline" id="rtag"></div>
+    </div>
+
+    <div class="report-card">
+      <div class="report-card-label">Temel özellikler</div>
+      <div class="traits-wrap" id="rtraits"></div>
+    </div>
+    <div class="report-card">
+      <div class="report-card-label">Güçlü yönleri</div>
+      <p id="rstr"></p>
+    </div>
+    <div class="report-card">
+      <div class="report-card-label">Zorlandığı alanlar</div>
+      <p id="rchal"></p>
+    </div>
+    <div class="report-card">
+      <div class="report-card-label">Ebeveyn olarak size öneriler</div>
+      <p id="rpar"></p>
+    </div>
+    <div class="report-card">
+      <div class="report-card-label">Tüm tipler — puan dağılımı</div>
+      <div class="score-list" id="rscores"></div>
+    </div>
+
+    <div class="cta-banner">
+      <h3>Peki ya sizin kişilik tipiniz?</h3>
+      <p>Çocuğunuzla iletişiminizi güçlendirmek, ebeveynlik tarzınızı keşfetmek ve kendinizi daha iyi tanımak için kendi enneagram tipinizi de öğrenin.</p>
+      <a class="btn-gold" href="payment.html">Kendim için Teste Başla</a>
+    </div>
+
+    <!-- EBEVEYN BİLGİ BÖLÜMÜ -->
+    <div style="margin-top: 12px; border-top: 1px solid rgba(0,0,0,0.07); padding-top: 32px;">
+
+      <!-- Bu test nasıl çalışır -->
+      <div class="report-card" style="margin-bottom: 12px;">
+        <div class="report-card-label">Bu test nasıl çalışır?</div>
+        <p style="font-size:14px; color:var(--text-muted); line-height:1.75; margin-bottom: 12px;">
+          Enneagram, insanların dünyayı nasıl algıladığını ve tepki verdiğini 9 farklı temel örüntü üzerinden açıklayan bir kişilik çerçevesidir. Her tip, farklı bir temel motivasyona, korkuya ve otomatik davranış eğilimine sahiptir.
+        </p>
+        <p style="font-size:14px; color:var(--text-muted); line-height:1.75;">
+          3–5 yaş döneminde kişilik tipleri henüz tam şekillenmemiştir — ama bu yaşta belirgin olan davranış örüntüleri, çocuğun hangi yöne doğru geliştiğinin erken sinyallerini verir. Bu test, o sinyalleri ebeveynin gözünden okumaya yardımcı olmak için tasarlandı. Bir tanı koymaz; bir pencere açar.
+        </p>
+      </div>
+
+      <!-- Raporunuzda neler var -->
+      <div class="report-card" style="margin-bottom: 12px;">
+        <div class="report-card-label">Sizin raporunuzda neler olacak?</div>
+        <p style="font-size:14px; color:var(--text-muted); line-height:1.75; margin-bottom:14px;">
+          Kendi enneagram testinizi tamamladığınızda size hazırlanan rapor yalnızca bir kişilik özeti değil — günlük hayatta kullanabileceğiniz somut bir rehberdir:
+        </p>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="display:flex; align-items:flex-start; gap:12px;">
+            <div style="width:32px; height:32px; background:var(--cream-dark); border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:14px;">🔍</div>
+            <div>
+              <div style="font-size:14px; font-weight:600; color:var(--navy); margin-bottom:3px;">Temel motivasyonlarınız ve korkularınız</div>
+              <div style="font-size:13px; color:var(--text-muted); line-height:1.6;">Neden hep aynı noktalarda zorlandığınızı ve hangi iç dinamiğin sizi harekete geçirdiğini açıklar.</div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:flex-start; gap:12px;">
+            <div style="width:32px; height:32px; background:var(--cream-dark); border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:14px;">⚡</div>
+            <div>
+              <div style="font-size:14px; font-weight:600; color:var(--navy); margin-bottom:3px;">Stres altındaki otomatik tepkileriniz</div>
+              <div style="font-size:13px; color:var(--text-muted); line-height:1.6;">Zor anlarda neden o şekilde davrandığınızı — ve bunu nasıl fark edebileceğinizi — somut örneklerle gösterir.</div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:flex-start; gap:12px;">
+            <div style="width:32px; height:32px; background:var(--cream-dark); border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:14px;">🤝</div>
+            <div>
+              <div style="font-size:14px; font-weight:600; color:var(--navy); margin-bottom:3px;">İlişki ve iletişim örüntüleriniz</div>
+              <div style="font-size:13px; color:var(--text-muted); line-height:1.6;">Çatışma anlarında nasıl tepki verdiğinizi, başkalarını nasıl algıladığınızı ve size nasıl yaklaşıldığını açıklar.</div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:flex-start; gap:12px;">
+            <div style="width:32px; height:32px; background:var(--cream-dark); border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:14px;">📅</div>
+            <div>
+              <div style="font-size:14px; font-weight:600; color:var(--navy); margin-bottom:3px;">7 günlük kişisel gelişim planı</div>
+              <div style="font-size:13px; color:var(--text-muted); line-height:1.6;">Tipinize özel, günlük hayata uyarlanmış pratik farkındalık ve davranış önerileri.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ebeveynliğe katkısı -->
+      <div class="report-card" style="margin-bottom: 12px;">
+        <div class="report-card-label">Ebeveynliğinize nasıl katkı sağlar?</div>
+        <p style="font-size:14px; color:var(--text-muted); line-height:1.75; margin-bottom:14px;">
+          Çocuğunuzun tipini bilmek güçlü bir başlangıç. Ama asıl dönüşüm, kendi tipinizi de öğrendiğinizde başlar.
+        </p>
+        <div style="background: var(--navy); border-radius: var(--radius); padding: 20px 22px; margin-bottom:14px;">
+          <p style="font-size:14px; color:rgba(255,255,255,0.82); line-height:1.75; font-style:italic;">
+            "Bir Tip 8 ebeveyn ile Tip 6 çocuk arasındaki gerilimin kaynağı çoğunlukla birbirini sevmemek değil, dünyayı farklı okumaklarıdır. Biri kontrolü güvenlik olarak görür, diğeri bağlılığı. İkisini de bildiğinizde o gerilimi çok daha erken fark eder, çok daha kolay çözersiniz."
+          </p>
+          <div style="font-size:12px; color:var(--gold); font-weight:600; margin-top:10px;">OANDA Enneagram Ekibi</div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div style="background:var(--cream-dark); border-radius:8px; padding:14px 16px;">
+            <div style="font-size:13px; font-weight:600; color:var(--navy); margin-bottom:5px;">Tetiklenme anlarını erkenden fark edin</div>
+            <div style="font-size:12px; color:var(--text-muted); line-height:1.6;">Hangi durumlarda sabırsızlandığınızı veya aşırı tepki verdiğinizi önceden görmek, çocuğunuzla kurduğunuz anı korur.</div>
+          </div>
+          <div style="background:var(--cream-dark); border-radius:8px; padding:14px 16px;">
+            <div style="font-size:13px; font-weight:600; color:var(--navy); margin-bottom:5px;">İletişim tarzınızı bilinçle seçin</div>
+            <div style="font-size:12px; color:var(--text-muted); line-height:1.6;">Çocuğunuzun tipine göre hangi yaklaşımın işe yarayacağını, hangisinin onu kapattığını daha net görürsünüz.</div>
+          </div>
+          <div style="background:var(--cream-dark); border-radius:8px; padding:14px 16px;">
+            <div style="font-size:13px; font-weight:600; color:var(--navy); margin-bottom:5px;">Kendi ihtiyaçlarınızı tanıyın</div>
+            <div style="font-size:12px; color:var(--text-muted); line-height:1.6;">İyi bir ebeveyn olmak için önce kendi içsel dinamiklerinizi anlamak gerekir. Rapor bunu somutlaştırır.</div>
+          </div>
+          <div style="background:var(--cream-dark); border-radius:8px; padding:14px 16px;">
+            <div style="font-size:13px; font-weight:600; color:var(--navy); margin-bottom:5px;">Döngüleri kırmak mümkün</div>
+            <div style="font-size:12px; color:var(--text-muted); line-height:1.6;">Kendinizden devraldığınız tepki kalıplarını fark etmek, onları çocuğunuza aktarmama konusunda size alan açar.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Son CTA tekrarı -->
+      <div style="background: var(--cream-dark); border: 1px solid rgba(0,0,0,0.07); border-radius: var(--radius); padding: 24px; text-align:center; margin-bottom: 8px;">
+        <div style="font-size:13px; font-weight:600; color:var(--text-muted); margin-bottom:6px;">Tek seferlik ödeme • ~20 dakika • Rapor anında e-postanıza gelir</div>
+        <a href="payment.html" style="display:inline-block; background:var(--navy); color:var(--white); font-family:'DM Sans',sans-serif; font-weight:600; font-size:15px; padding:13px 32px; border-radius:8px; text-decoration:none; margin-top:4px;">Kendim için Teste Başla </a>
+      </div>
+
+    </div>
+    <!-- /EBEVEYN BİLGİ BÖLÜMÜ -->
+
+    <button class="restart-link" onclick="restart()">Testi yeniden başlat</button>
+  </div>
+
+</div>
+
+<footer class="site-footer">
+  <div class="footer-brand">OANDA Enneagram</div>
+  <div class="footer-small">© 2026 OANDA Enneagram. Tüm hakları saklıdır.</div>
+</footer>
+
+<script>
+const Qs=[
+  {text:"Oyun sırasında bir şey 'yanlış' yapıldığında (kule devrildi, kural bozuldu) nasıl tepki verir?",opts:[{t:"Çok rahatsız olur, düzeltmek için ısrarcı davranır",s:[1,1,0,0,0,0,0,0,0]},{t:"Biraz üzülür ama başka şeye geçer",s:[0,1,0,0,1,0,0,0,0]},{t:"Herkesin mutlu olduğundan emin olmaya çalışır",s:[0,0,0,0,0,0,0,0,1]},{t:"Fark etmez gibi oyuna devam eder",s:[0,0,0,0,0,0,1,0,0]}]},
+  {text:"Yabancı biriyle ya da az tanıdığı bir çocukla karşılaştığında ne yapar?",opts:[{t:"Hemen yanına gider, konuşmaya çalışır",s:[0,1,0,1,0,0,0,0,1]},{t:"Önce uzaktan gözler, sonra yaklaşabilir",s:[0,0,0,0,0,1,0,0,0]},{t:"Size yapışır, yüreklendirmenizi bekler",s:[0,0,0,0,0,1,0,0,1]},{t:"Kendi işiyle meşgul olmayı tercih eder",s:[0,0,0,0,1,1,0,0,0]}]},
+  {text:"Bir şeyi başaramadığında (lego oturmadı, boyama istediği gibi olmadı) ne yapar?",opts:[{t:"Sinirle iter veya 'yapamıyorum' der",s:[0,0,0,0,0,0,0,1,0]},{t:"Sakin bir şekilde tekrar tekrar dener",s:[1,0,0,0,0,0,0,0,0]},{t:"Ağlar ya da hayal kırıklığını açıkça ifade eder",s:[0,0,1,0,0,0,0,0,0]},{t:"Terk edip başka bir oyuna geçer",s:[0,0,0,0,0,0,1,1,0]}]},
+  {text:"Çocuğunuzun oyun tercihi genellikle nasıldır?",opts:[{t:"Kurallı oyunlar, yapısal aktiviteler (puzzle, sıralama)",s:[1,0,0,0,0,0,0,0,0]},{t:"Rol yapma, karakter canlandırma, drama",s:[0,0,1,0,0,0,0,0,0]},{t:"Hız, hareket ve rekabet gerektiren oyunlar",s:[0,0,0,0,0,0,0,1,0]},{t:"Tek başına sakin araştırma (kitap, doğa, lego)",s:[0,0,0,0,1,0,0,0,0]}]},
+  {text:"Arkadaş grubuyla oynarken nasıl bir rol üstlenir?",opts:[{t:"Oyunu organize etmeye, kuralları belirlemeye çalışır",s:[1,0,0,0,0,0,0,1,0]},{t:"Herkesin mutlu olmasını sağlamaya odaklanır",s:[0,1,0,0,0,0,0,0,1]},{t:"Kendi özgün fikirlerini önerir, yön gösterir",s:[0,0,0,0,1,0,0,0,0]},{t:"Diğerlerine uyum sağlar, çatışmadan kaçınır",s:[0,0,0,0,0,0,1,0,0]}]},
+  {text:"Bir ödül (çıkartma, şeker, küçük oyuncak) verileceğini söylediğinizde nasıl davranır?",opts:[{t:"Çok heyecanlanır, sürekli ödülü sorar",s:[0,1,0,0,0,0,0,0,0]},{t:"Sakin karşılar, göreve odaklanmaya devam eder",s:[1,0,0,0,0,0,0,0,0]},{t:"Ödülü arkadaşıyla paylaşmak istediğini söyler",s:[0,0,0,0,0,0,0,0,1]},{t:"Daha büyük ya da farklı bir şey ister",s:[0,0,0,0,0,0,0,1,0]}]},
+  {text:"Yorgun veya stresli olduğunda nasıl davranır?",opts:[{t:"Sinirli ve kontrolcü olur, 'ben yapacağım' der",s:[1,0,0,0,0,0,0,1,0]},{t:"Ağlar, yanınızda olmak ister, duygusal destek arar",s:[0,0,1,0,0,0,0,0,1]},{t:"Sessizleşir, köşesine çekilir",s:[0,0,0,0,0,1,0,0,0]},{t:"Olmadık istekler yapar, drama çıkarır",s:[0,1,0,0,0,0,0,0,0]}]},
+  {text:"Yeni bir beceri öğrenirken (bisiklet, kalem tutma) nasıl bir tutum sergiler?",opts:[{t:"Önce izler, anladığından emin olunca dener",s:[0,0,0,0,1,1,0,0,0]},{t:"Hemen dalar, çabuk pes etmez",s:[0,0,0,1,0,0,0,1,0]},{t:"Sizi izletmek, onayınızı almak ister",s:[0,1,0,0,0,0,0,0,0]},{t:"Mükemmel yapmak için çok uğraşır, bıkmaz",s:[1,0,0,0,0,0,0,0,0]}]},
+  {text:"'Hayır' ya da 'istemiyorum' dediğinde genellikle hangi durum bu tepkiye yol açar?",opts:[{t:"Sırası gelmeden başka birinin almak istediği durum",s:[1,0,0,0,0,0,0,1,0]},{t:"Dikkatinin dağıtılması, yarım bıraktırılması",s:[0,0,0,0,1,1,0,0,0]},{t:"Duygusal anların sonlandırılması (sarılma, oyun)",s:[0,0,1,0,0,0,0,0,1]},{t:"İstediği şeyin yapılmaması / kurallar",s:[0,0,0,0,0,0,1,1,0]}]},
+  {text:"Sizi ya da sevdiği birini üzdüğünde nasıl tepki verir?",opts:[{t:"Hemen özür diler, durumu düzeltmeye çalışır",s:[1,0,0,0,0,0,0,0,1]},{t:"Sarılır, teselli etmeye çalışır",s:[0,1,0,0,0,0,0,0,1]},{t:"Fark etmez gibi oyununa devam eder",s:[0,0,0,0,0,0,1,0,0]},{t:"Suçlamayı başkasına yıkar ya da konuyu değiştirir",s:[0,0,0,1,0,0,0,1,0]}]}
+];
+
+const TY=[
+  {n:1,name:"Küçük Mükemmeliyetçi",tag:"Kurallara uyan, dürüst, düzeni seven bu çocuklar 'doğru' yapmak konusunda güçlü bir içgüdüye sahiptir.",traits:["Düzenli","Kurallara saygılı","Titiz","Adil","İçten eleştirel"],str:"Bu yaştaki Tip 1 çocuklar inanılmaz derecede güvenilirdir. Oyun sırasında kurallara uyar, paylaşmayı öğrenmede erken yaşta ustalaşır ve 'doğru' davranmanın gurururunu içselleştirir. Detaylara dikkat eder, işleri bitirene kadar ısrar eder.",chal:"İşlerin 'mükemmel' olmaması durumunda yoğun hayal kırıklığı yaşayabilir. Hata yaptığında kendini çok sert yargılar; beden dili ve ağlama nöbetleri olarak kendini gösterir.",par:"Hata yapmasına izin verin ve 'denemenin' başarı olduğunu sık sık tekrarlayın. Katı çerçeveli eleştiriden kaçının; neden kuralın önemli olduğunu açıklayan bir yaklaşım benimseyin."},
+  {n:2,name:"Küçük Yardımsever",tag:"Sevgi dolu, dikkatli, ilgi arayan bu çocuklar başkalarının ihtiyaçlarına çok erken yaşta duyarlı hale gelir.",traits:["Sıcakkanlı","Paylaşımcı","İlgi seven","Empatik","Dışa dönük"],str:"Duyguları fark etmekte ve tepki vermekte son derece başarılıdır. Bir arkadaşı ağladığında sarılmak için koşar, paylaşmayı sever, büyüklere yardım etmekten keyif alır.",chal:"Sevildiğini hissetmek için gereğinden fazla çaba gösterebilir. Dikkat çekemediğinde dramatik tepkiler verebilir. İhtiyaçlarını ifade etmekte zorlanır.",par:"Verdiği için değil, sadece var olduğu için sevdiğinizi hissettirin. 'Sen ne istiyorsun?' sorusunu düzenli sorun."},
+  {n:3,name:"Küçük Başarıcı",tag:"Enerjik, hedef odaklı, izlenimlere duyarlı bu çocuklar çok erken yaşta 'başarma' duygusunu içselleştirir.",traits:["Enerjik","Rekabetçi","Özgüvenli","Pratik","Hızlı öğrenen"],str:"Yeni şeylere adapte olmak için yüksek motivasyonu vardır. Takdir edildiğinde parlar; sahne almayı, gösterilmeyi sever.",chal:"Başarısızlık karşısında öfke ya da utanç yaşayabilir. Beğenilmemekten çok korkar ve duygularını bastırma eğilimi gösterebilir.",par:"Başarıyı değil süreci takdir edin. 'Nasıl yaptın?' sorusu 'Ne kadar iyi yaptın!' cümlesinden daha değerlidir."},
+  {n:4,name:"Küçük Bireyci",tag:"Derin hisseden, yaratıcı, özgün olmak isteyen bu çocuklar içten zengin bir dünyaya sahiptir.",traits:["Duygusal","Yaratıcı","Özgün","Hayalperest","Hassas"],str:"Müzik, sanat ve drama gibi yaratıcı alanlarda parlayabilir. Derin bağ kurabilme kapasitesi vardır, empati güçlüdür.",chal:"Anlaşılamadığını hissettiğinde içe çekilir ya da derin bir hüzne bürünebilir. Kıyaslamaya çok duyarlıdır.",par:"Duygularını normalleştirin ve isimlendirin. Yaratıcılığını yargılamadan izleyin; özgünlüğünü kısıtlamak bu çocuğu çok etkiler."},
+  {n:5,name:"Küçük Gözlemci",tag:"Meraklı, bağımsız, sessiz ama derin düşünen bu çocuklar dünyayı önce izler, sonra anlamlandırır.",traits:["Meraklı","Bağımsız","Sessiz","Analitik","Yoğunlaşan"],str:"Bir konuya odaklandığında inanılmaz derinlikte inceleyebilir. Kendi kendine oynamaktan keyif alır; gözlem kapasitesi çok gelişmiştir.",chal:"Sosyal ortamlarda enerji kaybeder. Baskı altında içine kapanabilir, kelime bulmakta zorlanabilir.",par:"Yalnız kalma ihtiyacını saygıyla karşılayın. Gruba katılmaları için zorlamak yerine hazır hissettiklerinde davet edin."},
+  {n:6,name:"Küçük Sadık",tag:"Güvenlik arayan, bağlı, sezgili bu çocuklar için güvenilir ortam ve ilişkiler her şeyin temelidir.",traits:["Bağlı","Güvenlik arayan","Sezgili","Sorumlu","Temkinli"],str:"Güvendiği yetişkinlere son derece bağlıdır. Tehlikeyi önceden hissedebilir, ihtiyatlı davranır, derin aile bağı kurar.",chal:"Bilinmeyen veya öngörülemeyen durumlar ciddi kaygıya yol açabilir. Sürekli onay ve güvence arar.",par:"Tahmin edilebilir rutinler bu çocuk için güvenlik kalesidir. Değişiklikleri önceden bildirin."},
+  {n:7,name:"Küçük Maceracı",tag:"Neşeli, özgür ruhlu, meraklı bu çocuklar hayatı büyük bir macera olarak görür. Her şeyi denemek ister.",traits:["Neşeli","Meraklı","Enerjik","Çok yönlü","Spontane"],str:"Yeni deneyimlere açıklığı olağanüstüdür. Grubu neşelendirir, pes etmeyi bilmez, her şeyden eğlence çıkarabilir.",chal:"Bir şeye uzun süre odaklanmakta zorlanabilir. Hayal kırıklığı ve sınır anlarıyla başa çıkmak güçtür.",par:"Sınırları kurallar değil değerler üzerinden açıklayın. Enerji için çıkış yolları sağlayın."},
+  {n:8,name:"Küçük Lider",tag:"Güçlü, doğrudan, bağımsız bu çocuklar çok erken yaşta 'ben bilirim, ben yaparım' enerjisi taşır.",traits:["Güçlü iradeli","Liderlik eğilimli","Dürüst","Yoğun","Koruyucu"],str:"Cesur ve kararlıdır; zorluklardan geri çekilmez. Arkadaşlarını koruma içgüdüsü vardır, liderlik doğasına işlemiştir.",chal:"Kontrol kaybettiğinde şiddetli tepki verebilir. 'Hayır' duymak güçtür; kırılgan duygularını saklar.",par:"Ona seçim hakkı verin. Güç mücadelesine girmeyin; bunun yerine iş birliği teklif edin."},
+  {n:9,name:"Küçük Arabulucu",tag:"Sakin, uyumlu, huzur seven bu çocuklar çevresindekilerin ihtiyaçlarına uyum sağlar.",traits:["Sakin","Uyumlu","Sabırlı","Sıcak","Çatışmaktan kaçınan"],str:"Gruba uyum sağlama kapasitesi yüksektir. Sakin enerjisi çevresindekileri rahatlatır; sabırla dinler.",chal:"Kendi isteklerini dile getirmekte zorlanabilir. Bastırılmış öfke pasif direnç olarak patlak verebilir.",par:"'Sen ne istersin?' sorusu alışkanlık olsun. İç dünyanın sesini duymasına yardımcı olacak güvenli anlar yaratın."}
+];
+
+let cur=0,ans=new Array(10).fill(null);
+
+function renderQ(){
+  const q=Qs[cur];
+  document.getElementById('qtxt').textContent=q.text;
+  const o=document.getElementById('qopts');o.innerHTML='';
+  q.opts.forEach((opt,i)=>{
+    const b=document.createElement('button');b.className='opt'+(ans[cur]===i?' sel':'');
+    b.textContent=opt.t;b.onclick=()=>selAns(i);o.appendChild(b);
+  });
+  const pct=Math.round(((cur+(ans[cur]!==null?1:0))/10)*100);
+  document.getElementById('qctr').textContent=`Soru ${cur+1} / 10`;
+  document.getElementById('pct').textContent=pct+'%';
+  document.getElementById('pbar').style.width=pct+'%';
+  document.getElementById('nbtn').disabled=ans[cur]===null;
+  document.getElementById('pbtn').style.visibility=cur===0?'hidden':'visible';
+  document.getElementById('nbtn').textContent=cur===9?'Sonucu Gör →':'İleri →';
+}
+
+function selAns(i){
+  ans[cur]=i;
+  document.querySelectorAll('.opt').forEach((b,idx)=>b.classList.toggle('sel',idx===i));
+  document.getElementById('nbtn').disabled=false;
+  const pct=Math.round(((cur+1)/10)*100);
+  document.getElementById('pbar').style.width=pct+'%';
+  document.getElementById('pct').textContent=pct+'%';
+}
+
+function nextQ(){if(ans[cur]===null)return;if(cur<9){cur++;renderQ();}else showRes();}
+function prevQ(){if(cur>0){cur--;renderQ();}}
+
+function calcScores(){
+  const sc=new Array(9).fill(0);
+  Qs.forEach((q,qi)=>{if(ans[qi]!==null)q.opts[ans[qi]].s.forEach((v,ti)=>sc[ti]+=v);});
+  return sc;
+}
+
+function showRes(){
+  const sc=calcScores();const mx=Math.max(...sc);const ti=sc.indexOf(mx);const t=TY[ti];
+  document.getElementById('qwrap').style.display='none';
+  document.getElementById('res').style.display='block';
+  document.getElementById('rbadge').textContent=`Enneagram Tip ${t.n}`;
+  document.getElementById('rnum').textContent=t.n;
+  document.getElementById('rname').textContent=t.name;
+  document.getElementById('rtag').textContent=t.tag;
+  const tw=document.getElementById('rtraits');tw.innerHTML='';
+  t.traits.forEach(tr=>{const s=document.createElement('span');s.className='trait-tag';s.textContent=tr;tw.appendChild(s);});
+  document.getElementById('rstr').textContent=t.str;
+  document.getElementById('rchal').textContent=t.chal;
+  document.getElementById('rpar').textContent=t.par;
+  const sb=document.getElementById('rscores');sb.innerHTML='';
+  sc.map((s,i)=>i).sort((a,b)=>sc[b]-sc[a]).forEach(i=>{
+    const isTop=i===ti;
+    const row=document.createElement('div');row.className='score-row';
+    row.innerHTML=`<span class="score-lbl">Tip ${TY[i].n} — ${TY[i].name.replace('Küçük ','')}</span><div class="score-bg"><div class="score-fill${isTop?' top':''}" style="width:${mx?Math.round((sc[i]/mx)*100):0}%"></div></div><span class="score-val">${sc[i]}</span>`;
+    sb.appendChild(row);
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function restart(){cur=0;ans=new Array(10).fill(null);document.getElementById('res').style.display='none';document.getElementById('qwrap').style.display='block';renderQ();window.scrollTo({top:0,behavior:'smooth'});}
+renderQ();
+</script>
+
+</body>
+</html>
