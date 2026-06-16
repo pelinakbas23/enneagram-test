@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Çocuk Enneagram Testi (3–5 Yaş) • OANDA Enneagram</title>
+  <title>Çocuk Enneagram Testi • OANDA Enneagram</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -47,6 +47,24 @@
     /* TEST WRAPPER */
     .test-outer { max-width: 660px; margin: 0 auto; padding: 48px 24px 72px; }
 
+    /* AGE SELECTION SCREEN */
+    .age-select-wrap { text-align: center; }
+    .age-select-title { font-family: 'DM Serif Display', serif; font-size: 26px; color: var(--navy); margin-bottom: 10px; }
+    .age-select-sub { font-size: 15px; color: var(--text-muted); margin-bottom: 36px; line-height: 1.7; }
+    .age-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 8px; }
+    .age-card {
+      background: var(--white); border: 2px solid rgba(0,0,0,0.08); border-radius: var(--radius);
+      padding: 28px 20px 24px; cursor: pointer; text-align: left; transition: border-color 0.2s, box-shadow 0.2s;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .age-card:hover { border-color: var(--gold); box-shadow: 0 4px 20px rgba(201,169,110,0.15); }
+    .age-card-range {
+      font-family: 'DM Serif Display', serif; font-size: 32px; color: var(--navy); line-height: 1;
+    }
+    .age-card-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+    .age-card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-top: 4px; }
+    .age-card-arrow { font-size: 12px; color: var(--gold); margin-top: 8px; }
+
     /* NAME INPUT */
     .name-card { background: var(--white); border: 1px solid rgba(0,0,0,0.08); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 28px; display: flex; align-items: center; gap: 14px; }
     .name-card label { font-size: 14px; font-weight: 600; color: var(--navy); white-space: nowrap; }
@@ -59,6 +77,15 @@
     .progress-bar-fill { height: 5px; background: var(--gold); border-radius: 99px; transition: width 0.4s ease; }
     .progress-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; margin-bottom: 20px; }
     .progress-label { font-size: 12px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.04em; }
+
+    /* AGE BADGE IN QUIZ */
+    .age-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(201,169,110,0.12); border: 1px solid rgba(201,169,110,0.3);
+      border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 600;
+      color: var(--navy); margin-bottom: 20px; cursor: pointer; transition: background 0.2s;
+    }
+    .age-badge:hover { background: rgba(201,169,110,0.2); }
 
     /* QUESTION CARD */
     .q-card { background: var(--white); border: 1px solid rgba(0,0,0,0.08); border-radius: var(--radius); padding: 28px 28px 24px; margin-bottom: 20px; }
@@ -121,6 +148,7 @@
     @media (max-width: 600px) {
       .page-hero { padding: 40px 20px 48px; }
       .test-outer { padding: 32px 16px 56px; }
+      .age-grid { grid-template-columns: 1fr; }
       .name-card { flex-direction: column; align-items: flex-start; gap: 8px; }
       .q-card { padding: 20px 16px; }
       .score-lbl { width: 100px; font-size: 11px; }
@@ -137,15 +165,59 @@
 </header>
 
 <section class="page-hero">
-  <div class="hero-kicker">3–5 Yaş Çocuklar İçin</div>
+  <div class="hero-kicker">Çocuk Enneagram Testi</div>
   <h1>Çocuğunuzun <em>kişilik tipini</em> keşfedin</h1>
-  <p>Çocuğunuzu düşünerek 10 soruyu yanıtlayın. Sonunda kişilik tipi ve detaylı bir ebeveynlik rehberi sizi bekliyor.</p>
+  <p>Önce yaş grubunu seçin, ardından 10 soruyu yanıtlayın. Sonunda kişilik tipi ve ebeveynlik rehberi sizi bekliyor.</p>
 </section>
 
 <div class="test-outer">
 
+  <!-- YAŞ SEÇİM EKRANI -->
+  <div id="age-screen" class="age-select-wrap">
+    <p class="age-select-title">Çocuğunuz hangi yaş grubunda?</p>
+    <p class="age-select-sub">Her yaş dönemine özel sorular ve yorumlar hazırladık.</p>
+    <div class="age-grid">
+      <div class="age-card" onclick="selectAge('3-5')">
+        <div class="age-card-label">Erken çocukluk</div>
+        <div class="age-card-range">3–5</div>
+        <div class="age-card-desc">Temel mizaç örüntüleri ve ilk kişilik sinyalleri bu dönemde belirginleşmeye başlar.</div>
+        <div class="age-card-arrow">Teste başla →</div>
+      </div>
+      <div class="age-card" onclick="selectAge('6-9')">
+        <div class="age-card-label">İlk okul dönemi</div>
+        <div class="age-card-range">6–9</div>
+        <div class="age-card-desc">Sosyal ilişkiler, okul ortamı ve kural sistemleriyle kişilik tipleri daha net şekillenir.</div>
+        <div class="age-card-arrow">Teste başla →</div>
+      </div>
+      <div class="age-card" onclick="selectAge('10-13')">
+        <div class="age-card-label">Ön ergenlik</div>
+        <div class="age-card-range">10–13</div>
+        <div class="age-card-desc">Kimlik arayışı, akran ilişkileri ve bağımsızlık ihtiyacının yoğunlaştığı dönem.</div>
+        <div class="age-card-arrow">Teste başla →</div>
+      </div>
+      <div class="age-card" onclick="selectAge('14-17')">
+        <div class="age-card-label">Ergenlik</div>
+        <div class="age-card-range">14–17</div>
+        <div class="age-card-desc">Enneagram tipleri ergenlikte çok daha belirgin hale gelir; değerler ve kimlik kristalleşir.</div>
+        <div class="age-card-arrow">Teste başla →</div>
+      </div>
+    </div>
+  </div>
+
   <!-- QUIZ -->
-  <div id="qwrap">
+  <div id="qwrap" style="display:none">
+    <div style="text-align:center; margin-bottom:24px;">
+      <span class="age-badge" id="age-badge-btn" onclick="goBack()">
+        <i class="fa-solid fa-arrow-left" style="font-size:10px"></i>
+        <span id="age-badge-text">3–5 Yaş</span>
+      </span>
+    </div>
+
+    <div class="name-card">
+      <label for="childname">Çocuğunuzun adı</label>
+      <input type="text" id="childname" placeholder="(isteğe bağlı)" maxlength="40" />
+    </div>
+
     <div class="progress-wrap">
       <div class="progress-bar-bg"><div class="progress-bar-fill" id="pbar" style="width:0%"></div></div>
       <div class="progress-meta">
@@ -204,56 +276,16 @@
     <!-- EBEVEYN BİLGİ BÖLÜMÜ -->
     <div style="margin-top: 12px; border-top: 1px solid rgba(0,0,0,0.07); padding-top: 32px;">
 
-      <!-- Bu test nasıl çalışır -->
       <div class="report-card" style="margin-bottom: 12px;">
         <div class="report-card-label">Bu test nasıl çalışır?</div>
         <p style="font-size:14px; color:var(--text-muted); line-height:1.75; margin-bottom: 12px;">
           Enneagram, insanların dünyayı nasıl algıladığını ve tepki verdiğini 9 farklı temel örüntü üzerinden açıklayan bir kişilik çerçevesidir. Her tip, farklı bir temel motivasyona, korkuya ve otomatik davranış eğilimine sahiptir.
         </p>
         <p style="font-size:14px; color:var(--text-muted); line-height:1.75;">
-          3–5 yaş döneminde kişilik tipleri henüz tam şekillenmemiştir — ama bu yaşta belirgin olan davranış örüntüleri, çocuğun hangi yöne doğru geliştiğinin erken sinyallerini verir. Bu test, o sinyalleri ebeveynin gözünden okumaya yardımcı olmak için tasarlandı. Bir tanı koymaz; bir pencere açar.
+          Çocuklukta kişilik tipleri henüz tam şekillenmemiştir — ama belirgin olan davranış örüntüleri, çocuğun hangi yöne doğru geliştiğinin erken sinyallerini verir. Bu test, o sinyalleri ebeveynin gözünden okumaya yardımcı olmak için tasarlandı. Bir tanı koymaz; bir pencere açar.
         </p>
       </div>
 
-      <!-- Raporunuzda neler var -->
-      <div class="report-card" style="margin-bottom: 12px;">
-        <div class="report-card-label">Sizin raporunuzda neler olacak?</div>
-        <p style="font-size:14px; color:var(--text-muted); line-height:1.75; margin-bottom:14px;">
-          Kendi enneagram testinizi tamamladığınızda size hazırlanan rapor yalnızca bir kişilik özeti değil — günlük hayatta kullanabileceğiniz somut bir rehberdir:
-        </p>
-        <div style="display:flex; flex-direction:column; gap:10px;">
-          <div style="display:flex; align-items:flex-start; gap:12px;">
-            <div style="width:32px; height:32px; background:var(--cream-dark); border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:14px;">🔍</div>
-            <div>
-              <div style="font-size:14px; font-weight:600; color:var(--navy); margin-bottom:3px;">Temel motivasyonlarınız ve korkularınız</div>
-              <div style="font-size:13px; color:var(--text-muted); line-height:1.6;">Neden hep aynı noktalarda zorlandığınızı ve hangi iç dinamiğin sizi harekete geçirdiğini açıklar.</div>
-            </div>
-          </div>
-          <div style="display:flex; align-items:flex-start; gap:12px;">
-            <div style="width:32px; height:32px; background:var(--cream-dark); border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:14px;">⚡</div>
-            <div>
-              <div style="font-size:14px; font-weight:600; color:var(--navy); margin-bottom:3px;">Stres altındaki otomatik tepkileriniz</div>
-              <div style="font-size:13px; color:var(--text-muted); line-height:1.6;">Zor anlarda neden o şekilde davrandığınızı — ve bunu nasıl fark edebileceğinizi — somut örneklerle gösterir.</div>
-            </div>
-          </div>
-          <div style="display:flex; align-items:flex-start; gap:12px;">
-            <div style="width:32px; height:32px; background:var(--cream-dark); border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:14px;">🤝</div>
-            <div>
-              <div style="font-size:14px; font-weight:600; color:var(--navy); margin-bottom:3px;">İlişki ve iletişim örüntüleriniz</div>
-              <div style="font-size:13px; color:var(--text-muted); line-height:1.6;">Çatışma anlarında nasıl tepki verdiğinizi, başkalarını nasıl algıladığınızı ve size nasıl yaklaşıldığını açıklar.</div>
-            </div>
-          </div>
-          <div style="display:flex; align-items:flex-start; gap:12px;">
-            <div style="width:32px; height:32px; background:var(--cream-dark); border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:14px;">📅</div>
-            <div>
-              <div style="font-size:14px; font-weight:600; color:var(--navy); margin-bottom:3px;">7 günlük kişisel gelişim planı</div>
-              <div style="font-size:13px; color:var(--text-muted); line-height:1.6;">Tipinize özel, günlük hayata uyarlanmış pratik farkındalık ve davranış önerileri.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Ebeveynliğe katkısı -->
       <div class="report-card" style="margin-bottom: 12px;">
         <div class="report-card-label">Ebeveynliğinize nasıl katkı sağlar?</div>
         <p style="font-size:14px; color:var(--text-muted); line-height:1.75; margin-bottom:14px;">
@@ -265,34 +297,14 @@
           </p>
           <div style="font-size:12px; color:var(--gold); font-weight:600; margin-top:10px;">OANDA Enneagram Ekibi</div>
         </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-          <div style="background:var(--cream-dark); border-radius:8px; padding:14px 16px;">
-            <div style="font-size:13px; font-weight:600; color:var(--navy); margin-bottom:5px;">Tetiklenme anlarını erkenden fark edin</div>
-            <div style="font-size:12px; color:var(--text-muted); line-height:1.6;">Hangi durumlarda sabırsızlandığınızı veya aşırı tepki verdiğinizi önceden görmek, çocuğunuzla kurduğunuz anı korur.</div>
-          </div>
-          <div style="background:var(--cream-dark); border-radius:8px; padding:14px 16px;">
-            <div style="font-size:13px; font-weight:600; color:var(--navy); margin-bottom:5px;">İletişim tarzınızı bilinçle seçin</div>
-            <div style="font-size:12px; color:var(--text-muted); line-height:1.6;">Çocuğunuzun tipine göre hangi yaklaşımın işe yarayacağını, hangisinin onu kapattığını daha net görürsünüz.</div>
-          </div>
-          <div style="background:var(--cream-dark); border-radius:8px; padding:14px 16px;">
-            <div style="font-size:13px; font-weight:600; color:var(--navy); margin-bottom:5px;">Kendi ihtiyaçlarınızı tanıyın</div>
-            <div style="font-size:12px; color:var(--text-muted); line-height:1.6;">İyi bir ebeveyn olmak için önce kendi içsel dinamiklerinizi anlamak gerekir. Rapor bunu somutlaştırır.</div>
-          </div>
-          <div style="background:var(--cream-dark); border-radius:8px; padding:14px 16px;">
-            <div style="font-size:13px; font-weight:600; color:var(--navy); margin-bottom:5px;">Döngüleri kırmak mümkün</div>
-            <div style="font-size:12px; color:var(--text-muted); line-height:1.6;">Kendinizden devraldığınız tepki kalıplarını fark etmek, onları çocuğunuza aktarmama konusunda size alan açar.</div>
-          </div>
-        </div>
       </div>
 
-      <!-- Son CTA tekrarı -->
       <div style="background: var(--cream-dark); border: 1px solid rgba(0,0,0,0.07); border-radius: var(--radius); padding: 24px; text-align:center; margin-bottom: 8px;">
         <div style="font-size:13px; font-weight:600; color:var(--text-muted); margin-bottom:6px;">Tek seferlik ödeme • ~20 dakika • Rapor anında e-postanıza gelir</div>
-        <a href="payment.html" style="display:inline-block; background:var(--navy); color:var(--white); font-family:'DM Sans',sans-serif; font-weight:600; font-size:15px; padding:13px 32px; border-radius:8px; text-decoration:none; margin-top:4px;">Kendim için Teste Başla </a>
+        <a href="payment.html" style="display:inline-block; background:var(--navy); color:var(--white); font-family:'DM Sans',sans-serif; font-weight:600; font-size:15px; padding:13px 32px; border-radius:8px; text-decoration:none; margin-top:4px;">Kendim için Teste Başla</a>
       </div>
 
     </div>
-    <!-- /EBEVEYN BİLGİ BÖLÜMÜ -->
 
     <button class="restart-link" onclick="restart()">Testi yeniden başlat</button>
   </div>
@@ -305,93 +317,246 @@
 </footer>
 
 <script>
-const Qs=[
-  {text:"Oyun sırasında bir şey 'yanlış' yapıldığında (kule devrildi, kural bozuldu) nasıl tepki verir?",opts:[{t:"Çok rahatsız olur, düzeltmek için ısrarcı davranır",s:[1,1,0,0,0,0,0,0,0]},{t:"Biraz üzülür ama başka şeye geçer",s:[0,1,0,0,1,0,0,0,0]},{t:"Herkesin mutlu olduğundan emin olmaya çalışır",s:[0,0,0,0,0,0,0,0,1]},{t:"Fark etmez gibi oyuna devam eder",s:[0,0,0,0,0,0,1,0,0]}]},
-  {text:"Yabancı biriyle ya da az tanıdığı bir çocukla karşılaştığında ne yapar?",opts:[{t:"Hemen yanına gider, konuşmaya çalışır",s:[0,1,0,1,0,0,0,0,1]},{t:"Önce uzaktan gözler, sonra yaklaşabilir",s:[0,0,0,0,0,1,0,0,0]},{t:"Size yapışır, yüreklendirmenizi bekler",s:[0,0,0,0,0,1,0,0,1]},{t:"Kendi işiyle meşgul olmayı tercih eder",s:[0,0,0,0,1,1,0,0,0]}]},
-  {text:"Bir şeyi başaramadığında (lego oturmadı, boyama istediği gibi olmadı) ne yapar?",opts:[{t:"Sinirle iter veya 'yapamıyorum' der",s:[0,0,0,0,0,0,0,1,0]},{t:"Sakin bir şekilde tekrar tekrar dener",s:[1,0,0,0,0,0,0,0,0]},{t:"Ağlar ya da hayal kırıklığını açıkça ifade eder",s:[0,0,1,0,0,0,0,0,0]},{t:"Terk edip başka bir oyuna geçer",s:[0,0,0,0,0,0,1,1,0]}]},
-  {text:"Çocuğunuzun oyun tercihi genellikle nasıldır?",opts:[{t:"Kurallı oyunlar, yapısal aktiviteler (puzzle, sıralama)",s:[1,0,0,0,0,0,0,0,0]},{t:"Rol yapma, karakter canlandırma, drama",s:[0,0,1,0,0,0,0,0,0]},{t:"Hız, hareket ve rekabet gerektiren oyunlar",s:[0,0,0,0,0,0,0,1,0]},{t:"Tek başına sakin araştırma (kitap, doğa, lego)",s:[0,0,0,0,1,0,0,0,0]}]},
-  {text:"Arkadaş grubuyla oynarken nasıl bir rol üstlenir?",opts:[{t:"Oyunu organize etmeye, kuralları belirlemeye çalışır",s:[1,0,0,0,0,0,0,1,0]},{t:"Herkesin mutlu olmasını sağlamaya odaklanır",s:[0,1,0,0,0,0,0,0,1]},{t:"Kendi özgün fikirlerini önerir, yön gösterir",s:[0,0,0,0,1,0,0,0,0]},{t:"Diğerlerine uyum sağlar, çatışmadan kaçınır",s:[0,0,0,0,0,0,1,0,0]}]},
-  {text:"Bir ödül (çıkartma, şeker, küçük oyuncak) verileceğini söylediğinizde nasıl davranır?",opts:[{t:"Çok heyecanlanır, sürekli ödülü sorar",s:[0,1,0,0,0,0,0,0,0]},{t:"Sakin karşılar, göreve odaklanmaya devam eder",s:[1,0,0,0,0,0,0,0,0]},{t:"Ödülü arkadaşıyla paylaşmak istediğini söyler",s:[0,0,0,0,0,0,0,0,1]},{t:"Daha büyük ya da farklı bir şey ister",s:[0,0,0,0,0,0,0,1,0]}]},
-  {text:"Yorgun veya stresli olduğunda nasıl davranır?",opts:[{t:"Sinirli ve kontrolcü olur, 'ben yapacağım' der",s:[1,0,0,0,0,0,0,1,0]},{t:"Ağlar, yanınızda olmak ister, duygusal destek arar",s:[0,0,1,0,0,0,0,0,1]},{t:"Sessizleşir, köşesine çekilir",s:[0,0,0,0,0,1,0,0,0]},{t:"Olmadık istekler yapar, drama çıkarır",s:[0,1,0,0,0,0,0,0,0]}]},
-  {text:"Yeni bir beceri öğrenirken (bisiklet, kalem tutma) nasıl bir tutum sergiler?",opts:[{t:"Önce izler, anladığından emin olunca dener",s:[0,0,0,0,1,1,0,0,0]},{t:"Hemen dalar, çabuk pes etmez",s:[0,0,0,1,0,0,0,1,0]},{t:"Sizi izletmek, onayınızı almak ister",s:[0,1,0,0,0,0,0,0,0]},{t:"Mükemmel yapmak için çok uğraşır, bıkmaz",s:[1,0,0,0,0,0,0,0,0]}]},
-  {text:"'Hayır' ya da 'istemiyorum' dediğinde genellikle hangi durum bu tepkiye yol açar?",opts:[{t:"Sırası gelmeden başka birinin almak istediği durum",s:[1,0,0,0,0,0,0,1,0]},{t:"Dikkatinin dağıtılması, yarım bıraktırılması",s:[0,0,0,0,1,1,0,0,0]},{t:"Duygusal anların sonlandırılması (sarılma, oyun)",s:[0,0,1,0,0,0,0,0,1]},{t:"İstediği şeyin yapılmaması / kurallar",s:[0,0,0,0,0,0,1,1,0]}]},
-  {text:"Sizi ya da sevdiği birini üzdüğünde nasıl tepki verir?",opts:[{t:"Hemen özür diler, durumu düzeltmeye çalışır",s:[1,0,0,0,0,0,0,0,1]},{t:"Sarılır, teselli etmeye çalışır",s:[0,1,0,0,0,0,0,0,1]},{t:"Fark etmez gibi oyununa devam eder",s:[0,0,0,0,0,0,1,0,0]},{t:"Suçlamayı başkasına yıkar ya da konuyu değiştirir",s:[0,0,0,1,0,0,0,1,0]}]}
-];
+/* ===================== SORU VE TİP VERİLERİ ===================== */
 
-const TY=[
-  {n:1,name:"Küçük Mükemmeliyetçi",tag:"Kurallara uyan, dürüst, düzeni seven bu çocuklar 'doğru' yapmak konusunda güçlü bir içgüdüye sahiptir.",traits:["Düzenli","Kurallara saygılı","Titiz","Adil","İçten eleştirel"],str:"Bu yaştaki Tip 1 çocuklar inanılmaz derecede güvenilirdir. Oyun sırasında kurallara uyar, paylaşmayı öğrenmede erken yaşta ustalaşır ve 'doğru' davranmanın gurururunu içselleştirir. Detaylara dikkat eder, işleri bitirene kadar ısrar eder.",chal:"İşlerin 'mükemmel' olmaması durumunda yoğun hayal kırıklığı yaşayabilir. Hata yaptığında kendini çok sert yargılar; beden dili ve ağlama nöbetleri olarak kendini gösterir.",par:"Hata yapmasına izin verin ve 'denemenin' başarı olduğunu sık sık tekrarlayın. Katı çerçeveli eleştiriden kaçının; neden kuralın önemli olduğunu açıklayan bir yaklaşım benimseyin."},
-  {n:2,name:"Küçük Yardımsever",tag:"Sevgi dolu, dikkatli, ilgi arayan bu çocuklar başkalarının ihtiyaçlarına çok erken yaşta duyarlı hale gelir.",traits:["Sıcakkanlı","Paylaşımcı","İlgi seven","Empatik","Dışa dönük"],str:"Duyguları fark etmekte ve tepki vermekte son derece başarılıdır. Bir arkadaşı ağladığında sarılmak için koşar, paylaşmayı sever, büyüklere yardım etmekten keyif alır.",chal:"Sevildiğini hissetmek için gereğinden fazla çaba gösterebilir. Dikkat çekemediğinde dramatik tepkiler verebilir. İhtiyaçlarını ifade etmekte zorlanır.",par:"Verdiği için değil, sadece var olduğu için sevdiğinizi hissettirin. 'Sen ne istiyorsun?' sorusunu düzenli sorun."},
-  {n:3,name:"Küçük Başarıcı",tag:"Enerjik, hedef odaklı, izlenimlere duyarlı bu çocuklar çok erken yaşta 'başarma' duygusunu içselleştirir.",traits:["Enerjik","Rekabetçi","Özgüvenli","Pratik","Hızlı öğrenen"],str:"Yeni şeylere adapte olmak için yüksek motivasyonu vardır. Takdir edildiğinde parlar; sahne almayı, gösterilmeyi sever.",chal:"Başarısızlık karşısında öfke ya da utanç yaşayabilir. Beğenilmemekten çok korkar ve duygularını bastırma eğilimi gösterebilir.",par:"Başarıyı değil süreci takdir edin. 'Nasıl yaptın?' sorusu 'Ne kadar iyi yaptın!' cümlesinden daha değerlidir."},
-  {n:4,name:"Küçük Bireyci",tag:"Derin hisseden, yaratıcı, özgün olmak isteyen bu çocuklar içten zengin bir dünyaya sahiptir.",traits:["Duygusal","Yaratıcı","Özgün","Hayalperest","Hassas"],str:"Müzik, sanat ve drama gibi yaratıcı alanlarda parlayabilir. Derin bağ kurabilme kapasitesi vardır, empati güçlüdür.",chal:"Anlaşılamadığını hissettiğinde içe çekilir ya da derin bir hüzne bürünebilir. Kıyaslamaya çok duyarlıdır.",par:"Duygularını normalleştirin ve isimlendirin. Yaratıcılığını yargılamadan izleyin; özgünlüğünü kısıtlamak bu çocuğu çok etkiler."},
-  {n:5,name:"Küçük Gözlemci",tag:"Meraklı, bağımsız, sessiz ama derin düşünen bu çocuklar dünyayı önce izler, sonra anlamlandırır.",traits:["Meraklı","Bağımsız","Sessiz","Analitik","Yoğunlaşan"],str:"Bir konuya odaklandığında inanılmaz derinlikte inceleyebilir. Kendi kendine oynamaktan keyif alır; gözlem kapasitesi çok gelişmiştir.",chal:"Sosyal ortamlarda enerji kaybeder. Baskı altında içine kapanabilir, kelime bulmakta zorlanabilir.",par:"Yalnız kalma ihtiyacını saygıyla karşılayın. Gruba katılmaları için zorlamak yerine hazır hissettiklerinde davet edin."},
-  {n:6,name:"Küçük Sadık",tag:"Güvenlik arayan, bağlı, sezgili bu çocuklar için güvenilir ortam ve ilişkiler her şeyin temelidir.",traits:["Bağlı","Güvenlik arayan","Sezgili","Sorumlu","Temkinli"],str:"Güvendiği yetişkinlere son derece bağlıdır. Tehlikeyi önceden hissedebilir, ihtiyatlı davranır, derin aile bağı kurar.",chal:"Bilinmeyen veya öngörülemeyen durumlar ciddi kaygıya yol açabilir. Sürekli onay ve güvence arar.",par:"Tahmin edilebilir rutinler bu çocuk için güvenlik kalesidir. Değişiklikleri önceden bildirin."},
-  {n:7,name:"Küçük Maceracı",tag:"Neşeli, özgür ruhlu, meraklı bu çocuklar hayatı büyük bir macera olarak görür. Her şeyi denemek ister.",traits:["Neşeli","Meraklı","Enerjik","Çok yönlü","Spontane"],str:"Yeni deneyimlere açıklığı olağanüstüdür. Grubu neşelendirir, pes etmeyi bilmez, her şeyden eğlence çıkarabilir.",chal:"Bir şeye uzun süre odaklanmakta zorlanabilir. Hayal kırıklığı ve sınır anlarıyla başa çıkmak güçtür.",par:"Sınırları kurallar değil değerler üzerinden açıklayın. Enerji için çıkış yolları sağlayın."},
-  {n:8,name:"Küçük Lider",tag:"Güçlü, doğrudan, bağımsız bu çocuklar çok erken yaşta 'ben bilirim, ben yaparım' enerjisi taşır.",traits:["Güçlü iradeli","Liderlik eğilimli","Dürüst","Yoğun","Koruyucu"],str:"Cesur ve kararlıdır; zorluklardan geri çekilmez. Arkadaşlarını koruma içgüdüsü vardır, liderlik doğasına işlemiştir.",chal:"Kontrol kaybettiğinde şiddetli tepki verebilir. 'Hayır' duymak güçtür; kırılgan duygularını saklar.",par:"Ona seçim hakkı verin. Güç mücadelesine girmeyin; bunun yerine iş birliği teklif edin."},
-  {n:9,name:"Küçük Arabulucu",tag:"Sakin, uyumlu, huzur seven bu çocuklar çevresindekilerin ihtiyaçlarına uyum sağlar.",traits:["Sakin","Uyumlu","Sabırlı","Sıcak","Çatışmaktan kaçınan"],str:"Gruba uyum sağlama kapasitesi yüksektir. Sakin enerjisi çevresindekileri rahatlatır; sabırla dinler.",chal:"Kendi isteklerini dile getirmekte zorlanabilir. Bastırılmış öfke pasif direnç olarak patlak verebilir.",par:"'Sen ne istersin?' sorusu alışkanlık olsun. İç dünyanın sesini duymasına yardımcı olacak güvenli anlar yaratın."}
-];
+const DATA = {
 
-let cur=0,ans=new Array(10).fill(null);
+  /* ─── 3–5 YAŞ ─── */
+  '3-5': {
+    label: '3–5 Yaş',
+    questions: [
+      {text:"Oyun sırasında bir şey 'yanlış' yapıldığında (kule devrildi, kural bozuldu) nasıl tepki verir?",opts:[{t:"Çok rahatsız olur, düzeltmek için ısrarcı davranır",s:[1,1,0,0,0,0,0,0,0]},{t:"Biraz üzülür ama başka şeye geçer",s:[0,1,0,0,1,0,0,0,0]},{t:"Herkesin mutlu olduğundan emin olmaya çalışır",s:[0,0,0,0,0,0,0,0,1]},{t:"Fark etmez gibi oyuna devam eder",s:[0,0,0,0,0,0,1,0,0]}]},
+      {text:"Yabancı biriyle ya da az tanıdığı bir çocukla karşılaştığında ne yapar?",opts:[{t:"Hemen yanına gider, konuşmaya çalışır",s:[0,1,0,1,0,0,0,0,1]},{t:"Önce uzaktan gözler, sonra yaklaşabilir",s:[0,0,0,0,0,1,0,0,0]},{t:"Size yapışır, yüreklendirmenizi bekler",s:[0,0,0,0,0,1,0,0,1]},{t:"Kendi işiyle meşgul olmayı tercih eder",s:[0,0,0,0,1,1,0,0,0]}]},
+      {text:"Bir şeyi başaramadığında (lego oturmadı, boyama istediği gibi olmadı) ne yapar?",opts:[{t:"Sinirle iter veya 'yapamıyorum' der",s:[0,0,0,0,0,0,0,1,0]},{t:"Sakin bir şekilde tekrar tekrar dener",s:[1,0,0,0,0,0,0,0,0]},{t:"Ağlar ya da hayal kırıklığını açıkça ifade eder",s:[0,0,1,0,0,0,0,0,0]},{t:"Terk edip başka bir oyuna geçer",s:[0,0,0,0,0,0,1,1,0]}]},
+      {text:"Çocuğunuzun oyun tercihi genellikle nasıldır?",opts:[{t:"Kurallı oyunlar, yapısal aktiviteler (puzzle, sıralama)",s:[1,0,0,0,0,0,0,0,0]},{t:"Rol yapma, karakter canlandırma, drama",s:[0,0,1,0,0,0,0,0,0]},{t:"Hız, hareket ve rekabet gerektiren oyunlar",s:[0,0,0,0,0,0,0,1,0]},{t:"Tek başına sakin araştırma (kitap, doğa, lego)",s:[0,0,0,0,1,0,0,0,0]}]},
+      {text:"Arkadaş grubuyla oynarken nasıl bir rol üstlenir?",opts:[{t:"Oyunu organize etmeye, kuralları belirlemeye çalışır",s:[1,0,0,0,0,0,0,1,0]},{t:"Herkesin mutlu olmasını sağlamaya odaklanır",s:[0,1,0,0,0,0,0,0,1]},{t:"Kendi özgün fikirlerini önerir, yön gösterir",s:[0,0,0,0,1,0,0,0,0]},{t:"Diğerlerine uyum sağlar, çatışmadan kaçınır",s:[0,0,0,0,0,0,1,0,0]}]},
+      {text:"Bir ödül (çıkartma, şeker, küçük oyuncak) verileceğini söylediğinizde nasıl davranır?",opts:[{t:"Çok heyecanlanır, sürekli ödülü sorar",s:[0,1,0,0,0,0,0,0,0]},{t:"Sakin karşılar, göreve odaklanmaya devam eder",s:[1,0,0,0,0,0,0,0,0]},{t:"Ödülü arkadaşıyla paylaşmak istediğini söyler",s:[0,0,0,0,0,0,0,0,1]},{t:"Daha büyük ya da farklı bir şey ister",s:[0,0,0,0,0,0,0,1,0]}]},
+      {text:"Yorgun veya stresli olduğunda nasıl davranır?",opts:[{t:"Sinirli ve kontrolcü olur, 'ben yapacağım' der",s:[1,0,0,0,0,0,0,1,0]},{t:"Ağlar, yanınızda olmak ister, duygusal destek arar",s:[0,0,1,0,0,0,0,0,1]},{t:"Sessizleşir, köşesine çekilir",s:[0,0,0,0,0,1,0,0,0]},{t:"Olmadık istekler yapar, drama çıkarır",s:[0,1,0,0,0,0,0,0,0]}]},
+      {text:"Yeni bir beceri öğrenirken (bisiklet, kalem tutma) nasıl bir tutum sergiler?",opts:[{t:"Önce izler, anladığından emin olunca dener",s:[0,0,0,0,1,1,0,0,0]},{t:"Hemen dalar, çabuk pes etmez",s:[0,0,0,1,0,0,0,1,0]},{t:"Sizi izletmek, onayınızı almak ister",s:[0,1,0,0,0,0,0,0,0]},{t:"Mükemmel yapmak için çok uğraşır, bıkmaz",s:[1,0,0,0,0,0,0,0,0]}]},
+      {text:"'Hayır' ya da 'istemiyorum' dediğinde genellikle hangi durum bu tepkiye yol açar?",opts:[{t:"Sırası gelmeden başka birinin almak istediği durum",s:[1,0,0,0,0,0,0,1,0]},{t:"Dikkatinin dağıtılması, yarım bıraktırılması",s:[0,0,0,0,1,1,0,0,0]},{t:"Duygusal anların sonlandırılması (sarılma, oyun)",s:[0,0,1,0,0,0,0,0,1]},{t:"İstediği şeyin yapılmaması / kurallar",s:[0,0,0,0,0,0,1,1,0]}]},
+      {text:"Sizi ya da sevdiği birini üzdüğünde nasıl tepki verir?",opts:[{t:"Hemen özür diler, durumu düzeltmeye çalışır",s:[1,0,0,0,0,0,0,0,1]},{t:"Sarılır, teselli etmeye çalışır",s:[0,1,0,0,0,0,0,0,1]},{t:"Fark etmez gibi oyununa devam eder",s:[0,0,0,0,0,0,1,0,0]},{t:"Suçlamayı başkasına yıkar ya da konuyu değiştirir",s:[0,0,0,1,0,0,0,1,0]}]}
+    ],
+    types: [
+      {n:1,name:"Küçük Mükemmeliyetçi",tag:"Kurallara uyan, dürüst, düzeni seven bu çocuklar 'doğru' yapmak konusunda güçlü bir içgüdüye sahiptir.",traits:["Düzenli","Kurallara saygılı","Titiz","Adil","İçten eleştirel"],str:"Bu yaştaki Tip 1 çocuklar inanılmaz derecede güvenilirdir. Oyun sırasında kurallara uyar, paylaşmayı öğrenmede erken yaşta ustalaşır ve 'doğru' davranmanın gurururunu içselleştirir.",chal:"İşlerin 'mükemmel' olmaması durumunda yoğun hayal kırıklığı yaşayabilir. Hata yaptığında kendini çok sert yargılar.",par:"Hata yapmasına izin verin ve 'denemenin' başarı olduğunu sık sık tekrarlayın. Katı çerçeveli eleştiriden kaçının."},
+      {n:2,name:"Küçük Yardımsever",tag:"Sevgi dolu, dikkatli, ilgi arayan bu çocuklar başkalarının ihtiyaçlarına çok erken yaşta duyarlı hale gelir.",traits:["Sıcakkanlı","Paylaşımcı","İlgi seven","Empatik","Dışa dönük"],str:"Duyguları fark etmekte ve tepki vermekte son derece başarılıdır. Bir arkadaşı ağladığında sarılmak için koşar, paylaşmayı sever.",chal:"Sevildiğini hissetmek için gereğinden fazla çaba gösterebilir. Dikkat çekemediğinde dramatik tepkiler verebilir.",par:"Verdiği için değil, sadece var olduğu için sevdiğinizi hissettirin. 'Sen ne istiyorsun?' sorusunu düzenli sorun."},
+      {n:3,name:"Küçük Başarıcı",tag:"Enerjik, hedef odaklı, izlenimlere duyarlı bu çocuklar çok erken yaşta 'başarma' duygusunu içselleştirir.",traits:["Enerjik","Rekabetçi","Özgüvenli","Pratik","Hızlı öğrenen"],str:"Yeni şeylere adapte olmak için yüksek motivasyonu vardır. Takdir edildiğinde parlar; sahne almayı, gösterilmeyi sever.",chal:"Başarısızlık karşısında öfke ya da utanç yaşayabilir. Beğenilmemekten çok korkar.",par:"Başarıyı değil süreci takdir edin. 'Nasıl yaptın?' sorusu 'Ne kadar iyi yaptın!' cümlesinden daha değerlidir."},
+      {n:4,name:"Küçük Bireyci",tag:"Derin hisseden, yaratıcı, özgün olmak isteyen bu çocuklar içten zengin bir dünyaya sahiptir.",traits:["Duygusal","Yaratıcı","Özgün","Hayalperest","Hassas"],str:"Müzik, sanat ve drama gibi yaratıcı alanlarda parlayabilir. Derin bağ kurabilme kapasitesi vardır, empati güçlüdür.",chal:"Anlaşılamadığını hissettiğinde içe çekilir ya da derin bir hüzne bürünebilir. Kıyaslamaya çok duyarlıdır.",par:"Duygularını normalleştirin ve isimlendirin. Yaratıcılığını yargılamadan izleyin."},
+      {n:5,name:"Küçük Gözlemci",tag:"Meraklı, bağımsız, sessiz ama derin düşünen bu çocuklar dünyayı önce izler, sonra anlamlandırır.",traits:["Meraklı","Bağımsız","Sessiz","Analitik","Yoğunlaşan"],str:"Bir konuya odaklandığında inanılmaz derinlikte inceleyebilir. Kendi kendine oynamaktan keyif alır.",chal:"Sosyal ortamlarda enerji kaybeder. Baskı altında içine kapanabilir.",par:"Yalnız kalma ihtiyacını saygıyla karşılayın. Gruba katılmaları için zorlamak yerine hazır hissettiklerinde davet edin."},
+      {n:6,name:"Küçük Sadık",tag:"Güvenlik arayan, bağlı, sezgili bu çocuklar için güvenilir ortam ve ilişkiler her şeyin temelidir.",traits:["Bağlı","Güvenlik arayan","Sezgili","Sorumlu","Temkinli"],str:"Güvendiği yetişkinlere son derece bağlıdır. Tehlikeyi önceden hissedebilir, ihtiyatlı davranır.",chal:"Bilinmeyen veya öngörülemeyen durumlar ciddi kaygıya yol açabilir. Sürekli onay ve güvence arar.",par:"Tahmin edilebilir rutinler bu çocuk için güvenlik kalesidir. Değişiklikleri önceden bildirin."},
+      {n:7,name:"Küçük Maceracı",tag:"Neşeli, özgür ruhlu, meraklı bu çocuklar hayatı büyük bir macera olarak görür. Her şeyi denemek ister.",traits:["Neşeli","Meraklı","Enerjik","Çok yönlü","Spontane"],str:"Yeni deneyimlere açıklığı olağanüstüdür. Grubu neşelendirir, pes etmeyi bilmez.",chal:"Bir şeye uzun süre odaklanmakta zorlanabilir. Hayal kırıklığı ve sınır anlarıyla başa çıkmak güçtür.",par:"Sınırları kurallar değil değerler üzerinden açıklayın. Enerji için çıkış yolları sağlayın."},
+      {n:8,name:"Küçük Lider",tag:"Güçlü, doğrudan, bağımsız bu çocuklar çok erken yaşta 'ben bilirim, ben yaparım' enerjisi taşır.",traits:["Güçlü iradeli","Liderlik eğilimli","Dürüst","Yoğun","Koruyucu"],str:"Cesur ve kararlıdır; zorluklardan geri çekilmez. Arkadaşlarını koruma içgüdüsü vardır.",chal:"Kontrol kaybettiğinde şiddetli tepki verebilir. 'Hayır' duymak güçtür.",par:"Ona seçim hakkı verin. Güç mücadelesine girmeyin; bunun yerine iş birliği teklif edin."},
+      {n:9,name:"Küçük Arabulucu",tag:"Sakin, uyumlu, huzur seven bu çocuklar çevresindekilerin ihtiyaçlarına uyum sağlar.",traits:["Sakin","Uyumlu","Sabırlı","Sıcak","Çatışmaktan kaçınan"],str:"Gruba uyum sağlama kapasitesi yüksektir. Sakin enerjisi çevresindekileri rahatlatır.",chal:"Kendi isteklerini dile getirmekte zorlanabilir. Bastırılmış öfke pasif direnç olarak patlak verebilir.",par:"'Sen ne istersin?' sorusu alışkanlık olsun. İç dünyanın sesini duymasına yardımcı olacak güvenli anlar yaratın."}
+    ]
+  },
 
-function renderQ(){
-  const q=Qs[cur];
-  document.getElementById('qtxt').textContent=q.text;
-  const o=document.getElementById('qopts');o.innerHTML='';
-  q.opts.forEach((opt,i)=>{
-    const b=document.createElement('button');b.className='opt'+(ans[cur]===i?' sel':'');
-    b.textContent=opt.t;b.onclick=()=>selAns(i);o.appendChild(b);
+  /* ─── 6–9 YAŞ ─── */
+  '6-9': {
+    label: '6–9 Yaş',
+    questions: [
+      {text:"Okulda bir ödev ya da proje yanlış giderse nasıl tepki verir?",opts:[{t:"Mükemmel yapana kadar baştan yapar, asla eksik bırakmaz",s:[1,0,0,0,0,0,0,0,0]},{t:"Öğretmeni ya da sizi mutlu etmek için hemen düzeltmeye çalışır",s:[0,1,0,0,0,0,0,0,0]},{t:"Kızar, ağlar ya da 'Bu adaletsiz!' der",s:[0,0,0,1,0,0,0,0,0]},{t:"Biraz kötüleşir ama başka bir şeyle teselli olur",s:[0,0,0,0,0,0,1,0,0]}]},
+      {text:"Sınıfta arkadaş grubu içinde nasıl bir konumda olur?",opts:[{t:"Kurallara dikkat eder, haksızlıkları fark eder ve belirtir",s:[1,0,0,0,0,0,0,0,0]},{t:"Herkesle iyi geçinmeye çalışır, arabuluculuk yapar",s:[0,1,0,0,0,0,0,0,1]},{t:"Lider olmayı sever, grubu yönlendirir",s:[0,0,1,0,0,0,0,1,0]},{t:"Gözlemci kalır, küçük ama güvende bir çevre edinir",s:[0,0,0,0,1,1,0,0,0]}]},
+      {text:"Sınav, sunum veya önemli bir performans öncesinde nasıl davranır?",opts:[{t:"Çok hazırlanır, her ayrıntıyı kontrol eder",s:[1,0,0,0,1,0,0,0,0]},{t:"Kaygılanır, sürekli 'ya yanlış yaparsam' der",s:[0,0,0,0,0,1,0,0,0]},{t:"Heyecanlı ve emin görünür, performansı sever",s:[0,0,1,0,0,0,0,0,0]},{t:"Son dakikaya kadar rahat davranır, o an yapacağını bilir",s:[0,0,0,0,0,0,1,0,0]}]},
+      {text:"Bir arkadaşıyla kavga ya da anlaşmazlık yaşadığında ne yapar?",opts:[{t:"Haklı olduğunu kanıtlamaya çalışır, tartışır",s:[1,0,0,0,0,0,0,1,0]},{t:"Üzülür ve ilişkiyi kurtarmak için adım atar",s:[0,1,0,0,0,0,0,0,1]},{t:"Olayı dramatize eder, duygusal yoğunluk yaşar",s:[0,0,0,1,0,0,0,0,0]},{t:"Çatışmadan kaçınır, mesafeye çekilir",s:[0,0,0,0,0,0,0,0,1]}]},
+      {text:"Ödev ya da sorumluluk söz konusu olduğunda tutumu nasıldır?",opts:[{t:"Kendi kendine yapar, yardım istemekten kaçınır",s:[0,0,0,0,1,0,0,1,0]},{t:"Zamanında, düzenli yapar — kurallara uyar",s:[1,0,0,0,0,0,0,0,0]},{t:"Bazen erteler, ama son anda başarır",s:[0,0,1,0,0,0,1,0,0]},{t:"Sizi memnun etmek için istekle yapar",s:[0,1,0,0,0,0,0,0,1]}]},
+      {text:"Hayal gücünü ya da yaratıcılığını nasıl kullanır?",opts:[{t:"Çizim, yazı, hikâye — duygularını sanat yoluyla ifade eder",s:[0,0,0,1,0,0,0,0,0]},{t:"Mekanik ya da mantıksal şeyler üretmekten keyif alır",s:[0,0,0,0,1,0,0,0,0]},{t:"Macera ve aksiyon temalı oyunlar kurar",s:[0,0,0,0,0,0,1,1,0]},{t:"Gerçek hayatta işe yarayacak projeler planlar",s:[1,0,1,0,0,0,0,0,0]}]},
+      {text:"Bir kural ya da sistem haksız geldiğinde ne yapar?",opts:[{t:"Yüksek sesle itiraz eder, neden haksız olduğunu açıklar",s:[1,0,0,0,0,0,0,1,0]},{t:"İçinde tutar ama çok rahatsız olur",s:[0,0,0,1,1,0,0,0,0]},{t:"Kurala sessizce uymakla yetinir",s:[0,0,0,0,0,0,0,0,1]},{t:"Kuralı delecek yaratıcı bir yol arar",s:[0,0,0,0,0,0,1,0,0]}]},
+      {text:"Yeni bir ortama (yeni okul, yeni spor kulübü) uyum süreci nasıl geçer?",opts:[{t:"Yavaş başlar, güven oluşunca açılır",s:[0,0,0,0,0,1,0,0,0]},{t:"Hızla uyum sağlar, yeni arkadaşlar edinir",s:[0,1,0,0,0,0,0,0,0]},{t:"Dikkatle gözlemler, ne zaman ve nasıl gireceğini hesaplar",s:[0,0,0,0,1,0,0,0,0]},{t:"Akışa bırakır, ne çıkarsa kabul eder",s:[0,0,0,0,0,0,1,0,1]}]},
+      {text:"Sevildiğini ve değer gördüğünü en çok nasıl anlar?",opts:[{t:"Takdir edildiğinde, başarısının fark edilmesiyle",s:[0,0,1,0,0,0,0,0,0]},{t:"Sevgi ve ilgiyle, 'seni seviyorum' denildiğinde",s:[0,1,0,1,0,0,0,0,1]},{t:"Güvenildiğinde ve sorumluluk verildiğinde",s:[1,0,0,0,0,1,0,0,0]},{t:"Yargılanmadan, olduğu gibi kabul edildiğinde",s:[0,0,0,0,1,0,1,0,0]}]},
+      {text:"Hayal kırıklığı ya da hayal kırıklığı yaratan bir an nasıl geçer?",opts:[{t:"Öfkesini dışa vurur, sonra hızla toparlanır",s:[0,0,1,0,0,0,0,1,0]},{t:"İçine kapanır, uzun süre sessiz kalır",s:[0,0,0,1,1,0,0,0,0]},{t:"Konuyu değiştirir, başka bir şeye odaklanır",s:[0,0,0,0,0,0,1,0,0]},{t:"Güvendiği birine anlatmak ister, destek arar",s:[0,1,0,0,0,1,0,0,1]}]}
+    ],
+    types: [
+      {n:1,name:"Adalet Bekçisi",tag:"Kurallara derin saygısı olan, haksızlıklara tahammül edemeyen, titiz ve sorumlu bir çocuk.",traits:["Adil","Düzenli","Titiz","Kurallara bağlı","Öz eleştirel"],str:"Okulda güvenilir ve sorumludur. Verilen görevi eksiksiz yerine getirir, haksızlık gördüğünde bunu söylemekten çekinmez. Kural ve yapıya saygısı yüksek.",chal:"Hatalarında kendine çok sert davranabilir. Esnek olmayan bir 'doğru/yanlış' çerçevesiyle dünyayı yorumladığı için hayal kırıklığına çabuk uğrar.",par:"'Mükemmel değil, yeterince iyi' mesajını sık verin. Çabayı, sonuçtan önce takdir edin."},
+      {n:2,name:"Bağ Kurucu",tag:"Arkadaş ilişkilerini merkeze alan, sevilmek için çaba gösteren, sıcak kalpli bir çocuk.",traits:["Empati kuran","Yardımsever","İlgi odaklı","Bağ arayan","Nazik"],str:"Arkadaş gruplarında doğal bir köprüdür. Birinin üzüldüğünü fark eder ve hemen yanına gider. Öğretmenlerle iyi ilişkiler kurar.",chal:"Sevilmek için kendi ihtiyaçlarını görmezden gelebilir. 'Hayır' diyemez; bu zamanla yorgunluğa dönüşür.",par:"Yardım ettiği için değil, sadece var olduğu için değerli olduğunu hissettirin. Kendi ihtiyaçlarını ifade etmesine alan açın."},
+      {n:3,name:"Başarı Odaklı",tag:"Sonuç almak için çalışan, rekabeti seven, imaj ve takdire duyarlı bir çocuk.",traits:["Hırslı","Pratik","Uyumlu","Özgüvenli","Hedefe yönelik"],str:"Başarıyı içselleştirir. Öğretmen takdiri, kupa, en iyi notu almak motivasyonunu artırır. Sosyal ortama hızla uyum sağlar.",chal:"Başarısızlık ya da eleştiri karşısında kimliği sarsılabilir. Duygularını performansının arkasına saklayabilir.",par:"'Kazandığın için değil, denediğin için gurur duyuyorum' cümlelerini kullanın. Süreç odaklı konuşmalar yapın."},
+      {n:4,name:"Derin Hisseden",tag:"Özgünlüğe değer veren, duygusal derinliği olan, yaratıcılıkla kendini ifade eden bir çocuk.",traits:["Hassas","Yaratıcı","İçe dönük","Özgün","Hayalperest"],str:"Sanat, müzik veya yazı yoluyla kendini derinlemesine ifade edebilir. Güçlü empatisi vardır; insanları derinden anlar.",chal:"'Kimse beni anlamıyor' hissiyle baş başa kalabilir. Kıyaslama ve 'normal' olmaya zorlama bu çocuğu derinden etkiler.",par:"Duygularını doğrulayın, yargılamadan dinleyin. Özgünlüğünü bir hata değil, güç olarak tanımlayın."},
+      {n:5,name:"Araştırmacı",tag:"Meraklı, derinlemesine düşünen, bilgiyi biriktirmekten güç alan bağımsız bir çocuk.",traits:["Analitik","Meraklı","Sessiz","Bağımsız","Odaklı"],str:"İlgi alanlarında inanılmaz bilgi birikimi oluşturabilir. Gözlem kapasitesi yüksek, kendi kendine çalışmayı sever.",chal:"Grup projelerinde zorluk yaşayabilir. Duygusal ifade konusunda kısa sürede kapanır.",par:"Yalnızlık ihtiyacını saygıyla karşılayın. 'Ne düşünüyorsun?' sorusu 'Nasıl hissediyorsun?' sorusundan önce gelsin."},
+      {n:6,name:"Güvenlik Arayan",tag:"Güvenilir figürlere bağlı, sorumlu, kaygıya yatkın ama son derece sadık bir çocuk.",traits:["Sadık","Temkinli","Sorumluluk sahibi","Sezgili","Destek arayan"],str:"Güvendiği yetişkinlere büyük bağlılık duyar. Kuralları öğrenmek ve uygulamak konusunda çok sorumluluk sahibidir.",chal:"Bilinmezlik karşısında ciddi kaygı yaşar. 'Ya olmazsa?' düşüncesi sık ziyaret edebilir.",par:"Tutarlı ve öngörülebilir olun. Planlarınızı önceden paylaşın ve kaygısını küçümsemek yerine adlandırmasına yardım edin."},
+      {n:7,name:"Özgür Ruhlu",tag:"Hayattan keyif alan, meraklı, enerji dolu ve sınırları zorlayan bir çocuk.",traits:["Neşeli","Çok yönlü","Spontane","Sosyal","Hızlı düşünen"],str:"Arkadaş ortamında enerji kaynağıdır. Çabuk öğrenir, yaratıcı çözümler üretir, yeni şeylere atlamaktan keyif alır.",chal:"Sıkıldığında görev ortasında bırakabilir. Hoş olmayan duygularla yüzleşmek yerine kaçma eğilimindedir.",par:"Monoton kurallara değil, neden önemli olduğuna odaklanın. Bitirmenin gururunu birlikte deneyimleyin."},
+      {n:8,name:"Güç Odaklı",tag:"Cesur, doğrudan, güçlü iradesini çok erken keşfetmiş liderlik eğilimli bir çocuk.",traits:["Kararlı","Doğrudan","Koruyucu","Yoğun","Bağımsız"],str:"Gruplar içinde doğal liderlik üstlenir. Adaletsizliğe karşı çıkar, arkadaşlarını korur. Güçlük karşısında geri çekilmez.",chal:"Kontrolü kaybettiğinde çok sert tepki verebilir. Kırılganlığını saklar; zayıf görünmekten çekinir.",par:"Güç mücadelesi kurmaktan kaçının; bunun yerine iş birliği önerin. Güçlü olduğunu kabul edin ama kırılganlığına da alan açın."},
+      {n:9,name:"Uyumlu Arabulucu",tag:"Barışçıl, sabırlı, gruba uyum sağlayan ve çatışmadan uzak duran huzur seven bir çocuk.",traits:["Sakin","Sabırlı","Uyumlu","Dinleyen","Nazik"],str:"Sınıf içinde huzur unsurudur. İki tarafı da dinler, arabuluculuk yapar. Sabırla ve sıcakkanlılıkla yaklaşır.",chal:"Kendi isteklerini söylemekte zorlanır. Uzun süre bastırılan duygular ani ve beklenmedik patlamalar olarak çıkabilir.",par:"'Sen ne istersin?' sorusu alışkanlık haline gelmeli. Sessizliğini onay olarak yorumlamayın."}
+    ]
+  },
+
+  /* ─── 10–13 YAŞ ─── */
+  '10-13': {
+    label: '10–13 Yaş',
+    questions: [
+      {text:"Okul ya da grup içinde haksız bir kural ya da durum olduğunda tepkisi ne olur?",opts:[{t:"Bunu açıkça söyler, değiştirmek için ısrar eder",s:[1,0,0,0,0,0,0,1,0]},{t:"İçten içe rahatsız olur ama pek dışa vurmaز",s:[0,0,0,1,0,1,0,0,0]},{t:"Şikâyetini güvendiği birine anlatır",s:[0,1,0,0,0,0,0,0,1]},{t:"Fazla önemsemez, geçer gider",s:[0,0,0,0,0,0,1,0,0]}]},
+      {text:"Yakın arkadaş ilişkilerinde nasıl bir profil çizer?",opts:[{t:"Bir iki çok yakın arkadaş tercih eder, derin bağlar kurar",s:[0,0,0,1,1,1,0,0,0]},{t:"Geniş çevresi vardır, kolayca arkadaş edinir",s:[0,1,0,0,0,0,1,0,0]},{t:"Kendine özgü bir grupta yer alır, sıradan olmaktan kaçınır",s:[0,0,0,1,0,0,0,0,0]},{t:"Liderlik yaptığı ya da sözünün geçtiği ortamlarda bulunur",s:[0,0,1,0,0,0,0,1,0]}]},
+      {text:"Eleştiri ya da geri bildirim aldığında tutumu nasıldır?",opts:[{t:"Savunmaya geçer ya da itiraz eder",s:[1,0,0,0,0,0,0,1,0]},{t:"Derinden etkiler; uzun süre düşünür",s:[0,0,0,1,1,0,0,0,0]},{t:"Doğruysa kabul eder, yoksa önemsemez",s:[0,0,1,0,0,0,1,0,0]},{t:"Onaylayan kişiyle ilişkisine göre tepki verir",s:[0,1,0,0,0,1,0,0,1]}]},
+      {text:"Derste ya da grup projesinde nasıl bir rol alır?",opts:[{t:"Organize eden, planı yapan, süreci yöneten",s:[1,0,0,0,0,0,0,1,0]},{t:"Farklı bir bakış açısı sunan, yaratıcı fikirler öneren",s:[0,0,0,1,0,0,0,0,0]},{t:"Sessizce en fazla işi yapan, güvenilir olan",s:[0,0,0,0,1,0,0,0,0]},{t:"Grubu motive eden, havayı hafif tutan",s:[0,1,0,0,0,0,1,0,0]}]},
+      {text:"Sosyal medya ya da akranların görüşleri hakkındaki tutumu nasıl?",opts:[{t:"Başkalarının görüşüne fazla önem vermez, kendi çizgisinde kalır",s:[0,0,0,1,1,0,0,1,0]},{t:"Beğenilmek, takdir görmek onu motive eder",s:[0,1,1,0,0,0,0,0,0]},{t:"Güvendiği kişilerin görüşü önemli, yabancılarınki değil",s:[0,0,0,0,0,1,0,0,0]},{t:"Çevresindeki herkesin görüşüne duyarlı, çatışmaktan kaçınır",s:[0,0,0,0,0,0,0,0,1]}]},
+      {text:"Stresli ya da zor bir dönemde başa çıkma biçimi nedir?",opts:[{t:"Kendinle meşgul olur — kitap, müzik, oyun gibi kaçış yolları arar",s:[0,0,0,0,1,0,1,0,0]},{t:"Konuşmak, paylaşmak ister; destekten güç alır",s:[0,1,0,0,0,1,0,0,1]},{t:"Kontrol edebileceği bir alana odaklanır",s:[1,0,1,0,0,0,0,1,0]},{t:"Duygu yoğunluğuyla baş başa kalır, içe çekilir",s:[0,0,0,1,0,0,0,0,0]}]},
+      {text:"Kendini başkalarına ifade etme biçimi nasıl?",opts:[{t:"Doğrudan ve net; ne düşünüyorsa onu söyler",s:[1,0,0,0,0,0,0,1,0]},{t:"Dikkatli seçer; ilişkiyi bozmamaya özen gösterir",s:[0,1,0,0,0,0,0,0,1]},{t:"Yaratıcı yollarla (yazı, sanat, müzik) ifade eder",s:[0,0,0,1,0,0,0,0,0]},{t:"Güvenli olmadığında kendini geri çeker",s:[0,0,0,0,1,1,0,0,0]}]},
+      {text:"Hatalarıyla ya da başarısızlıklarıyla nasıl yüzleşir?",opts:[{t:"Kendini sert eleştirir, uzun süre taşır",s:[1,0,0,0,0,0,0,0,0]},{t:"Hızla öğrenir, fazla takılmaz",s:[0,0,1,0,0,0,1,0,0]},{t:"Kimseye göstermeye çalışmaz, içsel olarak çözmeye çalışır",s:[0,0,0,0,1,0,0,1,0]},{t:"Duygusal yoğunluk yaşar ama sonunda kabullenip ilerler",s:[0,0,0,1,0,0,0,0,1]}]},
+      {text:"Kendi geleceğine ya da hayallerine bakışı nasıl?",opts:[{t:"Belirsizlik onu kaygılandırır; plan yapmak güvence hissettirir",s:[1,0,0,0,0,1,0,0,0]},{t:"Büyük ve özgün bir yaşam hayal eder, sıradan olmak istemez",s:[0,0,0,1,0,0,1,0,0]},{t:"Başarılı, tanınan ve başardıklarıyla anılan biri olmak ister",s:[0,0,1,0,0,0,0,0,0]},{t:"Huzurlu, çatışmasız bir gelecek hayal eder",s:[0,1,0,0,0,0,0,0,1]}]},
+      {text:"Serbest zamanını nasıl değerlendirmeyi tercih eder?",opts:[{t:"Önceden planlanmış, amaçlı aktiviteler",s:[1,0,0,0,0,0,0,0,0]},{t:"Arkadaşlarla sosyal, spontane etkinlikler",s:[0,1,0,0,0,0,1,0,0]},{t:"Kendi ilgi alanlarına yoğunlaşma, derinlemesine araştırma",s:[0,0,0,0,1,0,0,0,0]},{t:"Özgür yaratıcı ifade: müzik, yazı, çizim",s:[0,0,0,1,0,0,0,0,0]}]}
+    ],
+    types: [
+      {n:1,name:"İlkeli Reformcu",tag:"Haksızlıklara duyarlı, yüksek standartları olan, sistemi daha iyi yapmak isteyen bir genç.",traits:["Adalet odaklı","Titiz","Eleştirel","Sorumlu","Prensipli"],str:"Etik değerleri güçlüdür ve bunları savunmaktan çekinmez. Akranları arasında dürüstlüğüyle öne çıkar. Projelerde sorumluluk almaktan keyif alır.",chal:"Kendine ve başkalarına karşı aşırı eleştirel olabilir. 'Yeterince iyi' kavramını içselleştirmekte zorlanır.",par:"Çabasını takdir edin, sonuçtan önce niyeti görün. 'Hata insanı olgunlaştırır' mesajını somut örneklerle verin."},
+      {n:2,name:"Bağlantı Kuran",tag:"İlişkileri her şeyin merkezine koyan, sevilmek için çaba gösteren, sıcak kalpli bir genç.",traits:["Empati güçlü","İlişki odaklı","Yardımsever","Sezgili","Duygusal zekâ yüksek"],str:"İnsanların ihtiyaçlarını sezgisel olarak fark eder. Grubun duygusal sağlığını takip eder ve yapıştırıcı rolü üstlenir.",chal:"Hayır diyemez; kendi ihtiyaçlarını erteleyebilir. Onay almadığında kendini yetersiz hissedebilir.",par:"'Sadece var olman yeterli' mesajını sık sık verin. Kendi ihtiyaçlarını ifade etmesini destekleyin."},
+      {n:3,name:"Başarı Odaklı",tag:"Hedef belirleyen, sonuç alan, imajına değer veren ve motive eden bir genç.",traits:["Hırslı","Pratik","Uyumlu","Sosyal","Performans odaklı"],str:"Hedef belirleme ve ulaşma konusunda güçlü içgüdüsü vardır. Yeni ortamlara çabuk uyum sağlar ve başarısını sosyal kanıt olarak kullanır.",chal:"Başarısızlıktan kimliği tehdit altındaymış gibi hissedebilir. Duygularını ve kırılganlığını saklar.",par:"Sadece başarılarını değil, özellikle zorlandığı anları takdir edin. Başarısız olduğunda yanınızda olduğunuzu hissettirin."},
+      {n:4,name:"Kimlik Arayışındaki Yaratıcı",tag:"Özgünlük arayan, duygusal derinliği olan, kendini sanat veya yaratıcılıkla ifade eden bir genç.",traits:["Hassas","Özgün","Yaratıcı","Derin hisseden","Kıyaslamaya duyarlı"],str:"Kimliğini keşfetme konusunda cesur ve özgündür. Sanat, müzik veya yazı yoluyla duygusal derinliğini aktarabilir.",chal:"'Kimse beni anlamıyor' düşüncesine çok yatkındır. Kıyaslama ve sıradanlaştırma bu çocuğu derinden yaralayabilir.",par:"Onun bakış açısını merak edin. Farklılıklarını bir problem değil, bir güç olarak çerçeveleyin."},
+      {n:5,name:"Derin Araştırmacı",tag:"Bilgiyi derinlemesine araştıran, gözlemleyen ve kendi içinde işleyen bağımsız bir genç.",traits:["Analitik","Bağımsız","Meraklı","Az enerji paylaşan","Odaklı"],str:"İlgi alanlarında uzmanlaşma kapasitesi yüksektir. Gözlem gücü ve analitik düşüncesi akranlarından önde olabilir.",chal:"Sosyal ortamlarda enerji kaybeder. Duygularını paylaşmakta ve yardım istemekte zorlanır.",par:"Yalnızlık ihtiyacını saygıyla karşılayın. Fikirlerini paylaştığında aktif olarak dinleyin."},
+      {n:6,name:"Güvenlik Odaklı",tag:"Sorumlu, sadık, otorite figürlerine bağlı ve belirsizliği zor yöneten bir genç.",traits:["Güvenilir","Sadık","Kaygıya eğilimli","Temkinli","Sorumlu"],str:"Güvendiği kişilere karşı son derece sadık ve koruyucudur. Sorumluluk almayı sever; sistemin içinde güvenli şekilde var olmaktan güç alır.",chal:"Bilinmezlik ve belirsizlik ciddi kaygı yaratır. Kararlarında aşırı tereddüt yaşayabilir.",par:"Kararlarını birlikte düşünün. 'Yanlış karar vermekten korkma, ben yanındayım' güvencesini hissettirin."},
+      {n:7,name:"Maceraperest Ruh",tag:"Hayatı tam yaşamak isteyen, meraklı, neşeli ve sınırları test eden özgür bir genç.",traits:["Enerjik","Çok ilgili","Spontane","Optimist","Hızlı düşünen"],str:"Geniş ilgi alanlarıyla çeşitli deneyimler edinir. Grubu canlandırır, yeni fikirleri benimsemekte çok hızlıdır.",chal:"Sıkıcı bulduğu şeyleri bırakabilir. Hoş olmayan duygularla yüzleşmek yerine kaçış yolları arar.",par:"Bıraktığı şeyleri yargılamak yerine, tamamlamanın ne hissettireceğini birlikte keşfedin."},
+      {n:8,name:"Güçlü İradeli",tag:"Cesur, doğrudan, koruyucu ve gücü açıkça kullanan lider ruhlu bir genç.",traits:["Kararlı","Doğrudan","Liderlik odaklı","Koruyucu","Yoğun"],str:"Gruplar içinde güçlü bir ses ve lider figürdür. Haksızlığa karşı durur; zayıfları korur, adaleti savunur.",chal:"Kontrolü kaybettiğinde sert tepkiler verebilir. Kırılganlığını göstermek çok zor gelir.",par:"Gücünü görün ve tanıyın. 'Güçlü olmak, her şeyi tek başına taşımak değil' mesajını paylaşın."},
+      {n:9,name:"Huzur Arayan",tag:"Barışçıl, uyumlu, anlaşmazlıktan kaçınan ve arka planda kalmayı seven sakin bir genç.",traits:["Sabırlı","Dinleyen","Uyumlu","Sakin","Kendi isteğini erteleme eğilimli"],str:"İnsan ilişkilerinde denge unsurudur. Farklı gruplarla rahatça var olabilir; anlaşmazlıkları yatıştırma konusunda yeteneklidir.",chal:"Kendi ihtiyaçlarını ve görüşlerini ortaya koymakta zorlanır. Bastırılan duygular beklenmedik anlarda patlak verebilir.",par:"'Sen ne düşünüyorsun?' diye sorun ve gerçekten bekleyin. Sessizliğini onay olarak okumayın."}
+    ]
+  },
+
+  /* ─── 14–17 YAŞ ─── */
+  '14-17': {
+    label: '14–17 Yaş',
+    questions: [
+      {text:"Değerleriyle çelişen bir baskıyla karşılaştığında (akranlar, kural, otorite) ne yapar?",opts:[{t:"Buna açıkça karşı çıkar; tartışmaktan çekinmez",s:[1,0,0,0,0,0,0,1,0]},{t:"İçten rahatsız olur ama başkasını kırmamak için uyar",s:[0,1,0,0,0,0,0,0,1]},{t:"Sonucu hesaplayarak stratejik davranır",s:[0,0,1,0,0,1,0,0,0]},{t:"Çatışmayı en aza indirecek bir orta yol arar",s:[0,0,0,0,0,0,0,0,1]}]},
+      {text:"Kimlik ve ait olma duygusu nasıl şekilleniyor?",opts:[{t:"Özgün ve farklı olduğunu hissettiren şeylere doğru çekiliyor",s:[0,0,0,1,0,0,0,0,0]},{t:"Güçlü olduğu, lider konumda bulunduğu yerlerde kendini tam hissediyor",s:[0,0,1,0,0,0,0,1,0]},{t:"Güvendiği ve kendini ait hissettiği bir grupta var olmayı tercih ediyor",s:[0,1,0,0,0,1,0,0,1]},{t:"Özgür, bağımsız ve kuralları kendinin belirlediği anlarda kendisi oluyor",s:[0,0,0,0,1,0,1,0,0]}]},
+      {text:"Hayal ettiği geleceğe ya da büyük hedeflere bakışı nasıl?",opts:[{t:"Sistemi iyileştirmek, adaleti savunmak — anlam arıyor",s:[1,0,0,0,0,0,0,0,0]},{t:"Özgün, farklı ve anlamlı bir hayat — sıradan olmaktan kaçınıyor",s:[0,0,0,1,0,0,0,0,0]},{t:"Başarılı, tanınan ve izleri olan biri olmak istiyor",s:[0,0,1,0,0,0,0,0,0]},{t:"Huzurlu, çatışmasız ve anlamlı bir yaşam istiyor",s:[0,1,0,0,0,0,0,0,1]}]},
+      {text:"Yakın ilişkilerde ne arar ve ne bekler?",opts:[{t:"Dürüstlük, sözünde durma ve güvenilirlik",s:[1,0,0,0,0,1,0,1,0]},{t:"Derin anlayış, duygusal bağlılık ve kabul",s:[0,1,0,1,0,0,0,0,0]},{t:"Birlikte büyüme, ortak hedefler ve uyum",s:[0,0,1,0,0,0,0,0,0]},{t:"Özgürlük, baskısızlık ve hafif bir enerji",s:[0,0,0,0,1,0,1,0,1]}]},
+      {text:"Zorlu bir karar anında nasıl davranır?",opts:[{t:"Uzun düşünür, doğru olanı yapmaya çalışır",s:[1,0,0,0,0,0,0,0,0]},{t:"Güvendiği birine danışır, onayını arar",s:[0,1,0,0,0,1,0,0,1]},{t:"Sonuçlara odaklanır, pratik olarak değerlendirir",s:[0,0,1,0,0,0,0,1,0]},{t:"İçgüdülerine güvenir, sezgisiyle ilerler",s:[0,0,0,1,0,0,1,0,0]}]},
+      {text:"Stres altında ya da zorluk dönemlerinde nasıl tepki verir?",opts:[{t:"Daha kontrollü ve sert hale gelir, içine kapanır",s:[1,0,0,0,0,0,0,1,0]},{t:"Bağlantı arar; yalnız kalmak daha da zorlaştırır",s:[0,1,0,0,0,1,0,0,1]},{t:"Kaçış stratejileri devreye girer; dağıtıcı şeyler arar",s:[0,0,0,0,0,0,1,0,0]},{t:"Duygu yoğunluğuyla mücadele eder, melankoliye girer",s:[0,0,0,1,1,0,0,0,0]}]},
+      {text:"Başkalarıyla çatışma ya da anlaşmazlıkta tutumu ne olur?",opts:[{t:"Haklılığını kanıtlamak için tartışır, geri adım atmaz",s:[1,0,0,0,0,0,0,1,0]},{t:"İlişkiye zarar vermemek için kendi pozisyonundan ödün verebilir",s:[0,1,0,0,0,0,0,0,1]},{t:"Soğukkanlı kalır, pragmatik çözüm önerir",s:[0,0,1,0,0,0,0,0,0]},{t:"Çatışmayı tamamen önlemek için konuyu kapatır",s:[0,0,0,0,0,0,0,0,1]}]},
+      {text:"Başarı ve onay konusundaki iç tutumu nasıl?",opts:[{t:"Başarı önemli ama asıl mesele doğru yapmak",s:[1,0,0,0,0,0,0,0,0]},{t:"Onaylanmak, takdir görmek güçlü bir ihtiyaç",s:[0,1,1,0,0,0,0,0,0]},{t:"Başarı kendi için bir ispat aracı",s:[0,0,0,0,0,0,0,1,0]},{t:"Başarıyı önemsemek yetersiz ya da yüzeysel geliyor",s:[0,0,0,1,1,0,1,0,0]}]},
+      {text:"Kendi iç dünyasını nasıl tanımlar?",opts:[{t:"Sürekli değerlendiren, analiz eden ve sorgulayan bir zihin",s:[1,0,0,0,1,0,0,0,0]},{t:"Derin duygular ve onları hissetme kapasitesi",s:[0,1,0,1,0,0,0,0,0]},{t:"Net hedefler ve bu hedeflere odaklanan bir enerji",s:[0,0,1,0,0,0,0,1,0]},{t:"Güvenlik ve bağlılık ihtiyacı her şeyin temelinde",s:[0,0,0,0,0,1,0,0,1]}]},
+      {text:"Büyüme ve gelişme konusundaki en büyük zorluğu nedir sence?",opts:[{t:"Kendine karşı çok sert ve eleştirel olmak",s:[1,0,0,0,0,0,0,0,0]},{t:"Kendi ihtiyaçlarını başkalarının önüne koymakta zorlanmak",s:[0,1,0,0,0,0,0,0,1]},{t:"Yavaşlamak, derinleşmek yerine sürekli ileriye koşmak",s:[0,0,1,0,0,0,1,0,0]},{t:"Güvenlik hissi olmadan adım atmak",s:[0,0,0,1,0,1,0,1,0]}]}
+    ],
+    types: [
+      {n:1,name:"İlkeli Aktivist",tag:"Güçlü değerleri olan, adaleti savunan, sistemleri iyileştirmek isteyen idealist bir genç.",traits:["Prensipli","Adalet odaklı","Öz eleştirel","Titiz","Değer odaklı"],str:"Etik duruşu güçlü ve tutarlıdır. Haksızlığa ses çıkarır; değerlerine uygun yaşamak için çaba gösterir. Sorumluluğu ciddiye alır.",chal:"Kendine ve çevresine karşı aşırı yüksek standartlar koyabilir. 'Yeterince iyi' kavramını kişisel düzeyde içselleştirmekte zorlanır.",par:"Çabasını ve niyetini takdir edin. 'Mükemmel olmak zorunda değilsin' mesajını hem söz hem tutumla verin."},
+      {n:2,name:"İlişki Odaklı",tag:"Empati kurma kapasitesi yüksek, bağ kurmayı seven ama kendi ihtiyaçlarını arka plana iten bir genç.",traits:["Empatik","Bağ arayan","Yardımsever","Sezgili","Onay ihtiyacı duyan"],str:"İlişkilerinde derin ve gerçek bağlar kurar. Başkalarının duygusal durumunu çok iyi okur ve çoğunlukla ilk yardım eli uzatan olur.",chal:"Kendi ihtiyaçlarını ifade etmekte güçlük çeker. Onaylanmadığında değersizlik hissine kapılabilir.",par:"'Sen önemlisin ve bunu ispat etmene gerek yok' mesajını yaşatın. Kendi ihtiyaçlarını dile getirmesini aktif olarak destekleyin."},
+      {n:3,name:"Performans Odaklı",tag:"Başarıyı içselleştirmiş, hedef belirleyen, imajına değer veren kararlı bir genç.",traits:["Hırslı","Pratik","Sosyal","Hedefe yönelik","Uyumlu"],str:"Hedef belirleme ve gerçekleştirme konusunda güçlü bir içgüdüye sahiptir. Yeni ortamlara çabuk uyum sağlar, çevresini motive eder.",chal:"Başarısızlık ya da eleştiri karşısında kimliği sarsılabilir. Duygularını ve kırılganlığını başkalarından saklar.",par:"Sadece başarılarınla değil, seninle gurur duyuyorum deyin. Zorlandığı anlarda yargılamadan yanında olun."},
+      {n:4,name:"Kimlik Arayışı",tag:"Özgünlük isteyen, derin hisseden, kendini sanat veya felsefeyle ifade eden yaratıcı bir genç.",traits:["Özgün","Hassas","Yaratıcı","Derin hisseden","Anlam arayan"],str:"Kimliğini keşfetme sürecinde cesur ve bütünleşik bir tutum sergiler. Sanat, müzik, yazı ya da felsefeyle kendini gerçek anlamda ifade edebilir.",chal:"'Kimse beni gerçekten anlamıyor' duygusuyla baş başa kalabilir. Yoğun duygular bazen bunaltıcı hale gelebilir.",par:"Farklılıklarını bir sorun değil, derinlik olarak görün. 'Seni anlamak istiyorum' diyerek gerçekten merak edin."},
+      {n:5,name:"Bağımsız Düşünür",tag:"Derinlemesine araştıran, kendi sistemini kuran, enerjisini dikkatle yöneten özgün bir genç.",traits:["Analitik","Bağımsız","Derinlemesine meraklı","Az sosyal enerji","Özgün"],str:"Kendi alanında olağanüstü bir derinlik geliştirebilir. Bağımsız düşünce ve analiz kapasitesi akranlarının önünde olabilir.",chal:"Duygusal ihtiyaçlarını ifade etmekte ve yardım istemekte güçlük çeker. Sosyal ortamlar çok enerji tüketir.",par:"Fikirlerini paylaştığında aktif ilgi gösterin. Sosyal baskı kurmadan bağlantı fırsatları yaratın."},
+      {n:6,name:"Sadık Sorgulayıcı",tag:"Güvenlik ihtiyacı güçlü, sistemi sorgulayan ama sadakat duygusu derin olan bir genç.",traits:["Güvenilir","Sadık","Kaygıya eğilimli","Sorumlu","Sorgulayıcı"],str:"Güvendiği insanlara ve değerlere derin bir bağlılık gösterir. Sorumluluğu ciddiye alır; güvende hissettiği ortamlarda büyük güç açığa çıkar.",chal:"Belirsizlik ve bilinmezlik ciddi kaygı yaratır. Karar verme süreçlerinde uzun tereddütler yaşayabilir.",par:"Belirsizlik anlarında yanında olduğunuzu gösterin. Kararlarını birlikte tartışın; yargılamadan güvence verin."},
+      {n:7,name:"Özgür Kaşif",tag:"Deneyim peşinde koşan, sınırları zorlayan, hayatı tam dolu yaşamak isteyen bir genç.",traits:["Enerjik","Çok ilgili","Spontane","Optimist","Haz odaklı"],str:"Geniş deneyim alanı oluşturur; yeni şeylere hızla adapte olur. Çevresini coşkusu ve enerjisiyle canlı tutar.",chal:"Hoş olmayan duygularla yüzleşmek yerine onlardan kaçabilir. Taahhütleri zor gelebilir.",par:"Kaçmadığı için değil, dönmeyi seçtiği için takdir edin. Zorluğun içinde büyüme fırsatı olduğunu gösterin."},
+      {n:8,name:"Güçlü Lider",tag:"Kendi gücünü açıkça kullanan, adaleti savunan, koruyucu ve doğrudan bir genç.",traits:["Kararlı","Doğrudan","Liderlik odaklı","Koruyucu","Sınır koyan"],str:"Gruplar içinde güçlü bir ses ve etki yaratır. Haksızlığa karşı durur; değer verdiği insanları koruma güdüsü kuvvetlidir.",chal:"Kontrolü kaybettiğinde sert ve yıkıcı tepkiler verebilir. Kırılganlığını kabullenmek çok zor gelir.",par:"Gücünü görün ve takdir edin. 'Güçlü olmak, her şeyi tek başına taşımak değil' mesajını hem sözle hem tutumla verin."},
+      {n:9,name:"Huzur Arayıcı",tag:"Barışçıl, uyumlu, arka planda kalmayı seven ama derin bir iç dünyaya sahip olan bir genç.",traits:["Sakin","Dinleyen","Uyumlu","Barışçıl","Kendini erteleme eğilimli"],str:"İnsan ilişkilerinde arabulucu ve denge unsurudur. Farklı gruplarla rahatça var olabilir; empati kapasitesi yüksektir.",chal:"Kendi görüşünü ve ihtiyaçlarını ortaya koymakta büyük güçlük çeker. Bastırılan ihtiyaçlar fark edilmeden yığılabilir.",par:"Aktif olarak ne düşündüğünü, ne hissettiğini sorun ve gerçekten bekleyin. Sessizliğini onay olarak okumaktan kaçının."}
+    ]
+  }
+
+};
+
+/* ===================== UYGULAMA MANTIĞI ===================== */
+
+let currentAge = null;
+let cur = 0;
+let ans = [];
+
+function selectAge(age) {
+  currentAge = age;
+  const d = DATA[age];
+  ans = new Array(d.questions.length).fill(null);
+  cur = 0;
+
+  document.getElementById('age-screen').style.display = 'none';
+  document.getElementById('qwrap').style.display = 'block';
+  document.getElementById('age-badge-text').textContent = d.label;
+
+  renderQ();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function goBack() {
+  if (confirm('Yaş grubunu değiştirmek istiyor musunuz? Cevaplarınız sıfırlanacak.')) {
+    document.getElementById('qwrap').style.display = 'none';
+    document.getElementById('res').style.display = 'none';
+    document.getElementById('age-screen').style.display = 'block';
+    currentAge = null;
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+}
+
+function renderQ() {
+  const d = DATA[currentAge];
+  const q = d.questions[cur];
+  const total = d.questions.length;
+
+  document.getElementById('qtxt').textContent = q.text;
+  const o = document.getElementById('qopts'); o.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const b = document.createElement('button');
+    b.className = 'opt' + (ans[cur] === i ? ' sel' : '');
+    b.textContent = opt.t;
+    b.onclick = () => selAns(i);
+    o.appendChild(b);
   });
-  const pct=Math.round(((cur+(ans[cur]!==null?1:0))/10)*100);
-  document.getElementById('qctr').textContent=`Soru ${cur+1} / 10`;
-  document.getElementById('pct').textContent=pct+'%';
-  document.getElementById('pbar').style.width=pct+'%';
-  document.getElementById('nbtn').disabled=ans[cur]===null;
-  document.getElementById('pbtn').style.visibility=cur===0?'hidden':'visible';
-  document.getElementById('nbtn').textContent=cur===9?'Sonucu Gör →':'İleri →';
+
+  const pct = Math.round(((cur + (ans[cur] !== null ? 1 : 0)) / total) * 100);
+  document.getElementById('qctr').textContent = `Soru ${cur + 1} / ${total}`;
+  document.getElementById('pct').textContent = pct + '%';
+  document.getElementById('pbar').style.width = pct + '%';
+  document.getElementById('nbtn').disabled = ans[cur] === null;
+  document.getElementById('pbtn').style.visibility = cur === 0 ? 'hidden' : 'visible';
+  document.getElementById('nbtn').textContent = cur === total - 1 ? 'Sonucu Gör →' : 'İleri →';
 }
 
-function selAns(i){
-  ans[cur]=i;
-  document.querySelectorAll('.opt').forEach((b,idx)=>b.classList.toggle('sel',idx===i));
-  document.getElementById('nbtn').disabled=false;
-  const pct=Math.round(((cur+1)/10)*100);
-  document.getElementById('pbar').style.width=pct+'%';
-  document.getElementById('pct').textContent=pct+'%';
+function selAns(i) {
+  ans[cur] = i;
+  document.querySelectorAll('.opt').forEach((b, idx) => b.classList.toggle('sel', idx === i));
+  document.getElementById('nbtn').disabled = false;
+  const total = DATA[currentAge].questions.length;
+  const pct = Math.round(((cur + 1) / total) * 100);
+  document.getElementById('pbar').style.width = pct + '%';
+  document.getElementById('pct').textContent = pct + '%';
 }
 
-function nextQ(){if(ans[cur]===null)return;if(cur<9){cur++;renderQ();}else showRes();}
-function prevQ(){if(cur>0){cur--;renderQ();}}
+function nextQ() {
+  if (ans[cur] === null) return;
+  const total = DATA[currentAge].questions.length;
+  if (cur < total - 1) { cur++; renderQ(); }
+  else showRes();
+}
+function prevQ() { if (cur > 0) { cur--; renderQ(); } }
 
-function calcScores(){
-  const sc=new Array(9).fill(0);
-  Qs.forEach((q,qi)=>{if(ans[qi]!==null)q.opts[ans[qi]].s.forEach((v,ti)=>sc[ti]+=v);});
+function calcScores() {
+  const d = DATA[currentAge];
+  const sc = new Array(9).fill(0);
+  d.questions.forEach((q, qi) => {
+    if (ans[qi] !== null) q.opts[ans[qi]].s.forEach((v, ti) => sc[ti] += v);
+  });
   return sc;
 }
 
-function showRes(){
-  const sc=calcScores();const mx=Math.max(...sc);const ti=sc.indexOf(mx);const t=TY[ti];
-  document.getElementById('qwrap').style.display='none';
-  document.getElementById('res').style.display='block';
-  document.getElementById('rbadge').textContent=`Enneagram Tip ${t.n}`;
-  document.getElementById('rnum').textContent=t.n;
-  document.getElementById('rname').textContent=t.name;
-  document.getElementById('rtag').textContent=t.tag;
-  const tw=document.getElementById('rtraits');tw.innerHTML='';
-  t.traits.forEach(tr=>{const s=document.createElement('span');s.className='trait-tag';s.textContent=tr;tw.appendChild(s);});
-  document.getElementById('rstr').textContent=t.str;
-  document.getElementById('rchal').textContent=t.chal;
-  document.getElementById('rpar').textContent=t.par;
-  const sb=document.getElementById('rscores');sb.innerHTML='';
-  sc.map((s,i)=>i).sort((a,b)=>sc[b]-sc[a]).forEach(i=>{
-    const isTop=i===ti;
-    const row=document.createElement('div');row.className='score-row';
-    row.innerHTML=`<span class="score-lbl">Tip ${TY[i].n} — ${TY[i].name.replace('Küçük ','')}</span><div class="score-bg"><div class="score-fill${isTop?' top':''}" style="width:${mx?Math.round((sc[i]/mx)*100):0}%"></div></div><span class="score-val">${sc[i]}</span>`;
+function showRes() {
+  const d = DATA[currentAge];
+  const sc = calcScores();
+  const mx = Math.max(...sc);
+  const ti = sc.indexOf(mx);
+  const t = d.types[ti];
+
+  document.getElementById('qwrap').style.display = 'none';
+  document.getElementById('res').style.display = 'block';
+  document.getElementById('rbadge').textContent = `Enneagram Tip ${t.n}`;
+  document.getElementById('rnum').textContent = t.n;
+  document.getElementById('rname').textContent = t.name;
+  document.getElementById('rtag').textContent = t.tag;
+
+  const tw = document.getElementById('rtraits'); tw.innerHTML = '';
+  t.traits.forEach(tr => { const s = document.createElement('span'); s.className = 'trait-tag'; s.textContent = tr; tw.appendChild(s); });
+
+  document.getElementById('rstr').textContent = t.str;
+  document.getElementById('rchal').textContent = t.chal;
+  document.getElementById('rpar').textContent = t.par;
+
+  const sb = document.getElementById('rscores'); sb.innerHTML = '';
+  sc.map((s, i) => i).sort((a, b) => sc[b] - sc[a]).forEach(i => {
+    const isTop = i === ti;
+    const row = document.createElement('div'); row.className = 'score-row';
+    row.innerHTML = `<span class="score-lbl">Tip ${d.types[i].n} — ${d.types[i].name}</span><div class="score-bg"><div class="score-fill${isTop ? ' top' : ''}" style="width:${mx ? Math.round((sc[i] / mx) * 100) : 0}%"></div></div><span class="score-val">${sc[i]}</span>`;
     sb.appendChild(row);
   });
-  window.scrollTo({top:0,behavior:'smooth'});
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function restart(){cur=0;ans=new Array(10).fill(null);document.getElementById('res').style.display='none';document.getElementById('qwrap').style.display='block';renderQ();window.scrollTo({top:0,behavior:'smooth'});}
-renderQ();
+function restart() {
+  cur = 0;
+  ans = [];
+  currentAge = null;
+  document.getElementById('res').style.display = 'none';
+  document.getElementById('qwrap').style.display = 'none';
+  document.getElementById('age-screen').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 </script>
 
 </body>
